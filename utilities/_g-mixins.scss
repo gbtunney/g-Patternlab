@@ -1,0 +1,75 @@
+@mixin column-width($numberColumns: 3) {
+	width: map-get( $columns, $numberColumns ) - ( ( $columns__margin * ( $numberColumns - 1 ) ) / $numberColumns );
+}
+
+@mixin vertical-align($position: relative) {
+	position: $position;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+@mixin container-padding() {
+
+	padding: rhythm(1, ms(0))/2 rhythm(1, ms(0));
+}
+
+@mixin center-align {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+@mixin center-align-horz {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+@mixin u-stick-to( $sides:bottom left,$selector: '*:last-child', $reset-child-rhythm: true ) {
+	position: relative;
+
+	#{$selector} {
+		position: absolute;
+		@if ( $reset-child-rhythm == true){
+			//@extend %u-reset-rhythm;
+		}
+		@for $i from 1 through length($sides) {
+			#{nth($sides, $i)} : 0;
+		}
+		@content;
+	}
+}
+
+@mixin u-float-rhythm($float:none) {
+
+	float: $float;
+
+	@if ($float == left) {
+		margin: rhythm(1) rhythm(2) rhythm(1) 0;
+
+	} @else if ($float == right) {
+		margin: rhythm(1) 0 rhythm(1) rhythm(2);
+	} @else {
+		margin: rhythm(1);
+	}
+	@include breakpoint-range(sm, "<=") {
+		float: none;
+		@include center-align-horz;
+		margin: rhythm(1) 0;
+	}
+}
+
+@mixin setType($size-unit: 0,$font: font-san-serif ) {
+
+	$font-map: setting($font);
+	$required-font-props: setting(required-font-props);
+
+	@for $i from 1 through length(setting(required-font-props)) {
+
+		#{nth($required-font-props, $i)}: map-get($font-map, nth($required-font-props, $i));
+	}
+	@include adjust-font-size-to(ms($size-unit));
+}
