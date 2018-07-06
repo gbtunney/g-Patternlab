@@ -1,0 +1,11 @@
+///MAP JSON CONFIG TO THE SETTINGS/VARIABLES.
+
+//structure vars.
+@include setting-set-multiple($slicer);
+
+
+
+@import "colors";
+//@import "typography";
+@import "structure";
+
