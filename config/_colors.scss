@@ -1,26 +1,26 @@
-$colors:(
-	white: #fff,
-	black: #000,
-	blue: #0e71b8,
-	red: #c00,
-	dark-gray: #585858,
-	tana: #bdba9c,
-	khaki: #f0e68c,
-	west-coast: #64551f,
-	highball: #90813b,
-	sandstone: #7b6d5c, //border
-	schooner: #8b8378,
-	spice: #66543e,
-	madras: #4c3b25, //background
-	onion: #33250d,
-	woodrush: #332915,
-	jacko-bean: #2e1c08,
-	acadia: #1e1205,
-	crowshead: #1a130a,
-	// Define a primary highlight color that has the value of our "blue" color.
-	// Note: if blue was specified without quotes, Chroma would interpret that as
-	// the color keyword blue and not a reference to the "blue" color name.
-	primary: 'blue',
+$colors: (
+    white: #fff,
+    black: #000,
+    blue: #0e71b8,
+    red: #c00,
+    dark-gray: #585858,
+    tana: #bdba9c,
+    khaki: #f0e68c,
+    west-coast: #64551f,
+    highball: #90813b,
+    sandstone: #7b6d5c, //border
+    schooner: #8b8378,
+    spice: #66543e,
+    madras: #4c3b25, //background
+    onion: #33250d,
+    woodrush: #332915,
+    jacko-bean: #2e1c08,
+    acadia: #1e1205,
+    crowshead: #1a130a,
+    // Define a primary highlight color that has the value of our "blue" color.
+    // Note: if blue was specified without quotes, Chroma would interpret that as
+    // the color keyword blue and not a reference to the "blue" color name.
+    primary: 'blue',
 );
 
 ///get variable from config flie
@@ -31,39 +31,22 @@ $chroma: define-default-color-scheme('Branding color names for use by "functiona
 // Add colors to the default color scheme.
 $chroma: add-colors($baseColors);
 
+@for $i from 1 through length($schemes) {
+    $scheme: nth($schemes, $i);
 
+    @if (map-get($scheme,'parent') ==false) {
+        $chroma: define-color-scheme(map-get($scheme, key));
 
+    } @else {
+        @debug map-get($scheme, parent);
+        $chroma: define-color-scheme(map-get($scheme, key), map-get($scheme, parent));
+    }
 
+    // Add colors to the functional color scheme.
+    $chroma: add-colors(map-get($scheme, key), map-get($scheme, colors));
 
+}
 
-	@for $i from 1 through length($schemes) {
-
-		$scheme: nth($schemes, $i);
-
-
-
-@if ( map-get($scheme,'parent') ==false ){
-	@debug "NO parent";
-	$chroma: define-color-scheme(map-get($scheme,key));
-
-}@else{
-
-		@debug "found a parent";
-		@debug map-get($scheme,parent);
-		$chroma: define-color-scheme(map-get($scheme,key),map-get($scheme,parent));
-	}
-
-		// Add colors to the functional color scheme.
-		$chroma: add-colors(map-get($scheme,key), map-get($scheme,colors));
-
-		//}
-
-		}
-
-
-
-
-@debug color(tabs,foreground);
 /*
 // Create a "functional" color scheme that inherits from the default color scheme.
 $chroma: define-color-scheme('light', 'Colors used by functional parts of the design.');
@@ -101,23 +84,22 @@ $chroma: add-colors('top-menu', (
 	background: jacko-bean
 ));*/
 
-
 $chroma: define-color-scheme('grid-helper', $parent: 'dark');
 //('alternate', 'Alternate colors for the site.',  'functional');
 // Add colors to the alternate color scheme.
 $chroma: add-colors('grid-helper', (
-	foreground: white,
-	background: madras,
-	accent: khaki,
-	border: red
+    foreground: white,
+    background: madras,
+    accent: khaki,
+    border: red
 ));
 
 $chroma: define-color-scheme('modal', $parent: 'dark');
 //('alternate', 'Alternate colors for the site.',  'functional');
 // Add colors to the alternate color scheme.
 $chroma: add-colors('modal', (
-	overlay: madras,
-	background: dark-gray
+    overlay: madras,
+    background: dark-gray
 ));
 
 // Set which color scheme should be used by default when calling the color()

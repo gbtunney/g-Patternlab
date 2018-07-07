@@ -1,0 +1,46 @@
+$component-name: '.g_Theme_Swatch';
+
+@mixin c-theme-swatch($color-scheme: $chroma-active-scheme ) {
+
+   // @include c-content-box($color-scheme, none);
+  //  @include margin-trailer(3);
+
+    @content;
+
+    &__wrapper {
+        //wrapper
+    }
+    &__label {
+        @include setType(2, font-san-serif);
+        @include trailing-border();
+        @include trailer(2);
+    }
+    &__background {
+        background: color($color-scheme, background);
+    }
+
+    &__foreground {
+        background: color($color-scheme, foreground);
+        color: color($color-scheme, background);
+    }
+    &__accent {
+        background: color($color-scheme, accent);
+        color: color($color-scheme, background);
+
+    }
+    &__border {
+        background: color($color-scheme, border);
+        color: color($color-scheme, background);
+    }
+}
+//TODO: Possible element on modifiers....
+@include u-block($component-name){
+    @include c-theme-swatch();
+}
+@each $item, $theme in setting(themes) {
+
+    @include u-modifier($component-name,$theme){
+        @include c-theme-swatch($theme);
+    }
+}
+

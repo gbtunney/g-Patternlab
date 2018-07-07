@@ -3,9 +3,29 @@
 //structure vars.
 @include setting-set-multiple($slicer);
 
-
+//type vars
+@include setting-set-multiple($typography);
 
 @import "colors";
-//@import "typography";
 @import "structure";
+@import "typography";
+
+//TODO:move
+$generate-col-placeholders: true;
+$generate-swatch-placeholders: false;
+$generate-type-placeholders: true;
+//actually generate them
+
+@if ($generate-swatch-placeholders) {
+    @include generate-swatches();
+}
+
+@if ($generate-type-placeholders) {
+    @each $key, $prop in $font-map {
+        @if ($key != 'default') {
+            @include generate-type-utility-classes($key);
+        }
+    }
+}
+
 

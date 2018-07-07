@@ -44,3 +44,13 @@
 @function u-header-selector(){
 	@return 'h1, h2, h3, h4, h5, h6';
 }
+@function get-contrast-color($color) {
+	@if (lightness($color) > 50) {
+		@return #000000; // Lighter backgorund, return dark color
+	} @else {
+		@return #ffffff; // Darker background, return light color
+	}
+}
+@function to-list($value) {
+	@return if(type-of($value) != list, ($value,), $value);
+}

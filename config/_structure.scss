@@ -16,17 +16,15 @@ $slicer-breakpoint-names: setting(slicer-breakpoint-names);
 @include breakpoint-range(sm) {  } or @include breakpoint(sm) {  } applied when width is inside the sm slice 'at(sm)'
  */
 
-$spacing-unit-lg: 20px;
-$spacing-unit-sm : 15px;
-
 //image assets
-
 $paths : (
 	image-path: 'assets/images/',
 	icon-path:  'assets/images/icons/',
 	pattern-path:  'assets/images/patterns/',
 );
 @include setting-set-multiple($paths);
+
+//TODO:move
 
 $generate-col-placeholders: true;
 

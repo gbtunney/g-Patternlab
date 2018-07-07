@@ -63,13 +63,15 @@
 }
 
 @mixin setType($size-unit: 0,$font: font-san-serif ) {
-
+//TODO : fix
+	$required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight);
 	$font-map: setting($font);
-	$required-font-props: setting(required-font-props);
 
-	@for $i from 1 through length(setting(required-font-props)) {
-
-		#{nth($required-font-props, $i)}: map-get($font-map, nth($required-font-props, $i));
-	}
 	@include adjust-font-size-to(ms($size-unit));
+
+	@include dry($font) {
+		@for $i from 1 through length($required-font-props) {
+			#{nth($required-font-props, $i)}: map-get($font-map, nth($required-font-props, $i));
+		}
+	}
 }
