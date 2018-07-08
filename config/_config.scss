@@ -1,7 +1,7 @@
 ///MAP JSON CONFIG TO THE SETTINGS/VARIABLES.
 
 //structure vars.
-@include setting-set-multiple($slicer);
+//@include setting-set-multiple($slicer);
 
 //type vars
 @include setting-set-multiple($typography);
@@ -12,7 +12,7 @@
 
 //TODO:move
 $generate-col-placeholders: true;
-$generate-swatch-placeholders: false;
+$generate-swatch-placeholders: true;
 $generate-type-placeholders: true;
 //actually generate them
 

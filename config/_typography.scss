@@ -7,18 +7,15 @@ $default-font-map: map-get($font-map, default);
 @each $key, $prop in $font-map {
     $font-map-merged: map_merge($default-font-map, $prop);
     @include setting-set($key, $font-map-merged);
-
-    //@include generate-type-utility-classes($key);
 }
 
 //modular scale and comppass props
 $modularscale: setting(modularscale);
+
+//$base-font-size: 20px; // Sets the base font size
+//$base-line-height: 36px; // Sets the base line height
 $base-font-size: map-get(setting(modularscale), base);
-$base-line-height: setting(line-height);
+//$base-line-height: setting(line-height);
 $relative-font-sizing: false;
 
 @import "node_modules/compass-mixins/lib/compass/typography/vertical_rhythm";
-
-.test-type {
-    @include setType(0);
-}
