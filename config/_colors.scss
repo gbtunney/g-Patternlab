@@ -31,6 +31,7 @@ $chroma: define-default-color-scheme('Branding color names for use by "functiona
 // Add colors to the default color scheme.
 $chroma: add-colors($baseColors);
 
+///IMPORT COLORS FROM CONFIG FILE
 @for $i from 1 through length($schemes) {
     $scheme: nth($schemes, $i);
 
@@ -38,70 +39,13 @@ $chroma: add-colors($baseColors);
         $chroma: define-color-scheme(map-get($scheme, key));
 
     } @else {
-        @debug map-get($scheme, parent);
-        $chroma: define-color-scheme(map-get($scheme, key), map-get($scheme, parent));
+        $chroma: define-color-scheme(map-get($scheme, key), $parent: map-get($scheme, parent));
     }
 
     // Add colors to the functional color scheme.
     $chroma: add-colors(map-get($scheme, key), map-get($scheme, colors));
 
 }
-
-/*
-// Create a "functional" color scheme that inherits from the default color scheme.
-$chroma: define-color-scheme('light', 'Colors used by functional parts of the design.');
-
-// Add colors to the functional color scheme.
-$chroma: add-colors('light', (
-	// Have the "text" color use the hex value given to the "black" color. Even
-	// though the "functional" color scheme doesn't define "black", it inherits
-	// from the "default" color scheme where "black" is defined.
-	foreground: woodrush,
-	background: tana,
-	accent: schooner,
-	border: highball,
-	link: accent,
-));
-*/
-
-// Create an "alternate" color scheme that inherits from the "functional" color scheme.
-/*$chroma: define-color-scheme('dark');
-
-// Add colors to the alternate color scheme.
-$chroma: add-colors('dark', (
-	foreground: tana,
-	background: crowshead,
-	accent: khaki,
-	border: foreground,
-	link: accent,
-));*/
-
-//**** TOP MENU COLORS
-/*$chroma: define-color-scheme('top-menu', $parent: 'dark');
-//('alternate', 'Alternate colors for the site.',  'functional');
-// Add colors to the alternate color scheme.
-$chroma: add-colors('top-menu', (
-	background: jacko-bean
-));*/
-
-$chroma: define-color-scheme('grid-helper', $parent: 'dark');
-//('alternate', 'Alternate colors for the site.',  'functional');
-// Add colors to the alternate color scheme.
-$chroma: add-colors('grid-helper', (
-    foreground: white,
-    background: madras,
-    accent: khaki,
-    border: red
-));
-
-$chroma: define-color-scheme('modal', $parent: 'dark');
-//('alternate', 'Alternate colors for the site.',  'functional');
-// Add colors to the alternate color scheme.
-$chroma: add-colors('modal', (
-    overlay: madras,
-    background: dark-gray
-));
-
 // Set which color scheme should be used by default when calling the color()
 // function.
 $chroma-active-scheme: 'dark';

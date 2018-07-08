@@ -20,20 +20,25 @@ $component-name: '.g_Heading';
 
 ///styles to generate.
 
-/*BLOCK*/
-@include u-block($component-name) {
+///MAIN BLOCK CSS
+#{ block($component-name) } {
 	@include c-heading() {
 		@include setType(0, font-serif);
 	}
 }
 
-/*theme modifiers*/
-@include u-modifier($component-name, dark) {
-	@include c-heading(dark);
+/*** THEME MODIFIERS	*/
+@each $key, $name in $render-component-themes {
+	#{ modifier($component-name,$key) } {
+		@include c-heading($key);
+	}
 }
 
-@include u-modifier($component-name, light) {
-	@include c-heading(light);
+/*BLOCK*/
+@include u-block($component-name) {
+	@include c-heading() {
+		@include setType(0, font-serif);
+	}
 }
 
 //TODO: standardize this
@@ -44,16 +49,10 @@ $component-name: '.g_Heading';
 @include u-type-modifier($component-name, 2, font-serif);
 
 //modifier:trailing-border;
-@include u-modifier($component-name, trailing-border) {
+#{ modifier($component-name,trailing-border)} {
 	@include trailing-border();
 }
 
-//modifier: horizontal-borders
-@include u-modifier($component-name, left-border) {
-	@include horizontal-borders();
-}
-
-//modifier: left-border
-@include u-modifier($component-name, left-border) {
+#{ modifier($component-name, left-border)} {
 	@include apply-side-rhythm-border(left);
 }

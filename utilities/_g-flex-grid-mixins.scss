@@ -184,12 +184,13 @@ $base-list-configuration: (
 
 }
 
+
 //generates some REPETER class default placeholders
-@mixin generate-grid-classes( $selector: '.grid-col', $debug-grid:false, $base-configuration: $base-list-configuration) {
+@mixin generate-grid-classes( $prefix: '.g-grid', $debug-grid:false, $base-configuration: $base-list-configuration) {
 	@for $i from 1 through length($column-system-list) {
 		$column-count: nth($column-system-list, $i);
 
-		#{$selector}-#{ $column-count } {
+		#{$prefix}-#{ $column-count } {
 
 			@include make-flex-list((flex-wrap: nowrap));
 

@@ -10,6 +10,10 @@
 
 	@return #{$selector}--#{$modifier};
 }
+@function modifier($selector, $modifier ){
+
+	@return #{$selector}--#{$modifier};
+}
 @mixin u-element( $selector, $element ) {
 	@if ($selector) {
 		#{$selector}__#{$element} {
@@ -41,6 +45,11 @@
 @function f-block($selector){
 	@return $selector;
 }
+@function block($selector){
+	@return $selector;
+}
+
+///TYPE MODIFIER HELPER
 @mixin u-type-modifier($selector:$component-name, $size: 0, $font: sans-serif ) {
 	#{$selector}--#{$size}-#{$font} {
 		a {

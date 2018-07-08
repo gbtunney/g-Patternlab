@@ -1,9 +1,8 @@
 $component-name: '.g_Theme_Swatch';
-
+//@debug 'schee@!!' #{$chroma-active-scheme};
 @mixin c-theme-swatch($color-scheme: $chroma-active-scheme ) {
-
-   // @include c-content-box($color-scheme, none);
-  //  @include margin-trailer(3);
+    @include c-content-box($color-scheme, none);
+    @include margin-trailer(3);
 
     @content;
 
@@ -33,14 +32,15 @@ $component-name: '.g_Theme_Swatch';
         color: color($color-scheme, background);
     }
 }
-//TODO: Possible element on modifiers....
-@include u-block($component-name){
+
+///MAIN BLOCK CSS
+#{ block($component-name) } {
     @include c-theme-swatch();
 }
-@each $item, $theme in setting(themes) {
 
-    @include u-modifier($component-name,$theme){
-        @include c-theme-swatch($theme);
+//THEME MODIFIER CSS
+@each $key, $name in $render-component-themes {
+    #{ modifier($component-name,$key) } {
+        @include c-theme-swatch($key);
     }
 }
-

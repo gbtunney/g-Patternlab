@@ -19,3 +19,13 @@ $type-size-list: -1, 0,1, 2,3,4,5!default;
         }
     }
 }
+
+@mixin generate-all-scheme-utility-classes( $prefix: '.g-scheme') {
+    @for $i from 1 through length($schemes) {
+        $scheme: nth($schemes, $i);
+        $key: map-get($scheme, key);
+        #{ $prefix }-#{ $key } {
+            @include color-scheme($key);
+        }
+    }
+}

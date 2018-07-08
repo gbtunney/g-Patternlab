@@ -1,0 +1,36 @@
+$component-name: '.g_Button';
+
+@mixin c-button($color-scheme: $chroma-active-scheme ) {
+	@include color-scheme($color-scheme, true, false);
+	@include container-padding;
+	transition: all 0.2s;
+	cursor: hand;
+	width: auto;
+	//this is for type primarily.
+	@content;
+
+	&:hover {
+		background: lighten(color($color-scheme, background), 10%);
+	}
+	&__link {
+		color: inherit;
+		text-decoration: none;
+	}
+
+}
+///CSS to generate.
+
+///MAIN BLOCK CSS
+#{ block($component-name) } {
+	@include c-button();
+}
+
+/*** THEME MODIFIERS	*/
+@each $key, $name in $render-component-themes {
+	#{ modifier($component-name,$key) } {
+		@include c-button($key);
+	}
+}
+
+/***  OTHER MODIFIERS	*/
+@include u-type-modifier($component-name, 0, font-small-caps);

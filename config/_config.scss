@@ -11,9 +11,11 @@
 @import "typography";
 
 //TODO:move
-$generate-col-placeholders: true;
+$generate-grid-placeholders: true;
 $generate-swatch-placeholders: true;
 $generate-type-placeholders: true;
+$generate-scheme-placeholders:true;
+
 //actually generate them
 
 @if ($generate-swatch-placeholders) {
@@ -27,5 +29,9 @@ $generate-type-placeholders: true;
         }
     }
 }
-
-
+@if ($generate-scheme-placeholders){
+    @include generate-all-scheme-utility-classes;
+}
+@if ($generate-grid-placeholders){
+    @include  generate-grid-classes();
+}

@@ -23,8 +23,3 @@ $paths : (
 	pattern-path:  'assets/images/patterns/',
 );
 @include setting-set-multiple($paths);
-
-//TODO:move
-
-$generate-col-placeholders: true;
-
