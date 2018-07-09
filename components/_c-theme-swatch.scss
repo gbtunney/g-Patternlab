@@ -39,7 +39,7 @@ $component-name: '.g_Theme_Swatch';
 }
 
 //THEME MODIFIER CSS
-@each $key, $name in $render-component-themes {
+@each $key, $name in $THEME_RENDER_KEYS {
     #{ modifier($component-name,$key) } {
         @include c-theme-swatch($key);
     }

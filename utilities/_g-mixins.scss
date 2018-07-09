@@ -42,6 +42,17 @@
 		@content;
 	}
 }
+@mixin u-stick( $sides:bottom left, $reset-child-rhythm: true ) {
+
+		position: absolute;
+		@if ( $reset-child-rhythm == true){
+			//@extend %u-reset-rhythm;
+		}
+		@for $i from 1 through length($sides) {
+			#{nth($sides, $i)} : 0;
+		}
+		@content;
+}
 
 @mixin u-float-rhythm($float:none) {
 

@@ -79,7 +79,7 @@ $component-name: '.g_Card';
 }
 
 /*** THEME MODIFIERS	*/
-@each $key, $name in $render-component-themes {
+@each $key, $name in $THEME_RENDER_KEYS {
 	#{ modifier($component-name,$key) } {
 		@include c-card($key);
 	}

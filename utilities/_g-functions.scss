@@ -54,3 +54,11 @@
 @function to-list($value) {
 	@return if(type-of($value) != list, ($value,), $value);
 }
+
+@function has-unit( $number ) {
+	@if (str-length( unit($number)) == 0) {
+		@return false;
+	} @else {
+		@return true;
+	}
+}

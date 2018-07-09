@@ -5,13 +5,14 @@
 
 //type vars
 @include setting-set-multiple($typography);
+$THEME_RENDER_KEYS: $render_component_themes;
 
 @import "colors";
 @import "structure";
 @import "typography";
 
 //TODO:move
-$debug: true;
+$debug: false;
 $generate-grid-placeholders: true!default;
 $generate-swatch-placeholders: true!default;
 $generate-type-placeholders: true!default;
@@ -50,3 +51,4 @@ $include-styleguide-classes:true!default;
 @if ($generate-grid-placeholders){
     @include  generate-grid-classes();
 }
+

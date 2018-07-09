@@ -1,5 +1,4 @@
 $component-name: '.g_Button';
-
 @mixin c-button($color-scheme: $chroma-active-scheme ) {
 	@include color-scheme($color-scheme, true, false);
 	@include container-padding;
@@ -26,7 +25,7 @@ $component-name: '.g_Button';
 }
 
 /*** THEME MODIFIERS	*/
-@each $key, $name in $render-component-themes {
+@each $key, $name in $THEME_RENDER_KEYS {
 	#{ modifier($component-name,$key) } {
 		@include c-button($key);
 	}

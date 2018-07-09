@@ -2,9 +2,9 @@ $component-name: '.g_content-boxed';
 
 //TODO: Break these up
 
-@mixin c-content-box($color-scheme: $chroma-active-scheme,$border:true, $width: 35%) {
+@mixin c-content-box($color-scheme: $chroma-active-scheme, $width: 35%,$border:true,$accent:false) {
 
-	@include color-scheme($color-scheme, $border, false);
+	@include color-scheme($color-scheme, $border, $accent);
 	padding: rhythm(1) rhythm(2);
 	width: $width;
 
@@ -28,7 +28,7 @@ $component-name: '.g_content-boxed';
 }
 
 /*** THEME MODIFIERS	*/
-@each $key, $name in $render-component-themes {
+@each $key, $name in $THEME_RENDER_KEYS {
 	#{ modifier($component-name,$key) } {
 		@include c-content-box($key);
 		@extend %p-additional-props;
