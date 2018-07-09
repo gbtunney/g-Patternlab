@@ -17,6 +17,12 @@ $type-size-list: -1, 0,1, 2,3,4,5!default;
         #{ $prefix }-#{ $key }-#{ $size } {
             @include setType($size,$key);
         }
+
+        @if ($size == 0 ){
+        #{ $prefix }-#{ $key } {
+            @include setType($size,$key);
+        }
+    }
     }
 }
 

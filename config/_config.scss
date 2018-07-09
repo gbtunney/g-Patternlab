@@ -11,10 +11,10 @@
 @import "typography";
 
 //TODO:move
-$generate-grid-placeholders: true;
-$generate-swatch-placeholders: true;
-$generate-type-placeholders: true;
-$generate-scheme-placeholders:true;
+$generate-grid-placeholders: false;
+$generate-swatch-placeholders: false;
+$generate-type-placeholders: false;
+$generate-scheme-placeholders:false ;
 
 //actually generate them
 

@@ -34,3 +34,9 @@
 .u-trailer2{
     @include trailer(2);
 }
+.u-indent {
+    padding-left: rhythm(1);
+}
+.u-indent-2 {
+    padding-left: rhythm(2);
+}
