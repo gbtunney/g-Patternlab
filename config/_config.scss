@@ -11,11 +11,26 @@
 @import "typography";
 
 //TODO:move
-$generate-grid-placeholders: false;
-$generate-swatch-placeholders: false;
-$generate-type-placeholders: false;
-$generate-scheme-placeholders:false ;
+$debug: true;
+$generate-grid-placeholders: true!default;
+$generate-swatch-placeholders: true!default;
+$generate-type-placeholders: true!default;
+$generate-scheme-placeholders:true!default;
 
+$include-helper-classes:true!default;
+$include-base-classes:true!default;
+$include-styleguide-classes:true!default;
+
+
+@if($debug ) {
+    $generate-grid-placeholders: false ;
+    $generate-swatch-placeholders: false ;
+    $generate-type-placeholders: false ;
+    $generate-scheme-placeholders: false ;
+    $include-helper-classes: false;
+    $include-base-classes: false;
+    $include-styleguide-classes: false;
+}
 //actually generate them
 
 @if ($generate-swatch-placeholders) {
