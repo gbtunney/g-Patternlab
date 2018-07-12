@@ -21,5 +21,14 @@ $paths : (
 	image-path: 'assets/images/',
 	icon-path:  'assets/images/icons/',
 	pattern-path:  'assets/images/patterns/',
+	font-path: '../fonts'
 );
+
+
+
+
 @include setting-set-multiple($paths);
+
+
+$fa-font-path :setting(font-path);
+@import "node_modules/@fortawesome/fontawesome-free/scss/fa-regular.scss";
