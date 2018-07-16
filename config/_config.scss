@@ -23,6 +23,13 @@ $include-base-classes:true!default;
 $include-styleguide-classes:true!default;
 
 
+$bem-block-namespaces: (
+    'object': 'obj',     // defaults to 'o'
+    'component': 'g_', // defaults to 'c'
+    'utility': 'helper', // defaults to 'u'
+);
+
+
 @if($debug ) {
     $generate-grid-placeholders: false ;
     $generate-swatch-placeholders: false ;
