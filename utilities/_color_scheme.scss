@@ -4,6 +4,7 @@
         color: color($color-scheme, foreground);
 
         @if ($background) {
+            @debug 'calling background';@debug $color-scheme;
             @if ($background-color-only) {
                 background-color: color($color-scheme, background);
 
@@ -17,13 +18,26 @@
             border-radius: 0px;
         }
         @if ($accent) {
+
+            @debug 'including accent';
             h1, h2, h3, h4, h5, h6 {
                 color: color($color-scheme, accent);
             }
             a {
                 color: color($color-scheme, link);
                 &:hover { //get rid of underlines
-                    color: lighten(color($color-scheme, link), 20%);
+                    color: lighten(color($color-scheme, link), 10%);
+                    text-decoration: none;
+                }
+            }
+        }@else {
+            h1, h2, h3, h4, h5, h6 {
+                color: color($color-scheme, foreground);
+            }
+            a {
+                color: color($color-scheme, foreground);
+                &:hover { //get rid of underlines
+                    color: lighten(color($color-scheme, foreground), 10%);
                     text-decoration: none;
                 }
             }

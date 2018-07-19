@@ -1,59 +1,90 @@
-$component-name: '.g_Button';
+$component-name: 'Button';
 @mixin c-button($color-scheme: $chroma-active-scheme ) {
-	@include color-scheme($color-scheme, true, false);
-	@include container-padding;
-	transition: all 0.2s;
-	cursor: hand;
-	width: auto;
-	//this is for type primarily.
-	@content;
+    @include color-scheme($color-scheme, true, false);
+    @include container-padding;
+    transition: all 0.2s;
+    cursor: hand;
 
-	&:hover {
-		background: lighten(color($color-scheme, background), 10%);
-	}
-	&__link {
-		color: inherit;
-		text-decoration: none;
-	}
+    width: auto;
+    //this is for type primarily.
+    @content;
+    &:hover {
+        background: lighten(color($color-scheme, background), 8%);
+    }
+    &__link, a {
+        text-decoration: none;
+    }
+    svg * {
+        fill: color($color-scheme, foreground);
+    }
 
+    &__left {
+
+        .-includeIcon.-iconRight & {
+            margin-left: rhythm(1);
+        }
+        .-includeIcon.-iconLeft & {
+            margin-right: rhythm(1);
+        }
+    }
+
+    &__inner {
+
+        .-includeIcon & {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: auto;
+        }
+        .-includeIcon.-iconRight & {
+
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+    }
+    &__icon {
+        width: 20px;
+    }
+    .__left {
+        margin-left: rhythm(1);
+        margin-right: rhythm(1);
+    }
+    .__right {
+        width: 100%;
+        margin-left: rhythm(1);
+        margin-right: rhythm(1);
+        a {
+            color: inherit;
+        }
+    }
+
+    &.-includeIcon {
+
+        &__inner {
+
+        }
+    }
 }
+
 ///CSS to generate.
 
 ///MAIN BLOCK CSS
- @include block('Button',component){
-	@include c-button();
-
-	 @include modifier('light') {
-background: purple;
-	 }
-}
-
-$bem-block-namespaces: (
-	'object': 'obj',     // defaults to 'o'
-	'component': 'comp', // defaults to 'c'
-	'utility': 'helper', // defaults to 'u'
-);
-
-/*** THEME MODIFIERS	*/
-@each $key, $name in $THEME_RENDER_KEYS {
-	//#{ modifier($component-name,$key) } {
-	//	@include c-button($key);
-	//}
-    /*
-
-	@include modifier('veggie') {
-
-	}
-    */
+@include block($component-name, component) {
+    @include c-button();
 
 
-	}
+    @include modifier(light) {
+        @include c-button(light);
+    }
 
-/***  OTHER MODIFIERS	*/
-//@include u-type-modifier($component-name, 0, font-small-caps);
+    @if ($generate-components) {
+        @each $key, $name in $THEME_RENDER_KEYS {
 
-@include block($component-name, component){
+            @include modifier($key) {
+                @include c-button($key);
+            }
+        }
+    }
 
-	background: blue;
 }
 
