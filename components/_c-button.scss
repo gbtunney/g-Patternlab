@@ -1,90 +1,98 @@
 $component-name: 'Button';
-@mixin c-button($color-scheme: $chroma-active-scheme ) {
-    @include color-scheme($color-scheme, true, false);
-    @include container-padding;
-    transition: all 0.2s;
-    cursor: hand;
 
-    width: auto;
-    //this is for type primarily.
-    @content;
-    &:hover {
-        background: lighten(color($color-scheme, background), 8%);
-    }
-    &__link, a {
-        text-decoration: none;
-    }
-    svg * {
-        fill: color($color-scheme, foreground);
-    }
+@mixin c-button($id:$component-name, $color-scheme: $chroma-active-scheme ) {
 
-    &__left {
+    @include base-component($id, $color-scheme) {
 
-        .-includeIcon.-iconRight & {
-            margin-left: rhythm(1);
-        }
-        .-includeIcon.-iconLeft & {
-            margin-right: rhythm(1);
-        }
-    }
-
-    &__inner {
-
-        .-includeIcon & {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+        //******** STATIC props here....
+        @include dry($id) {
+            transition: all 0.2s;
+            cursor: hand;
             width: auto;
-        }
-        .-includeIcon.-iconRight & {
 
-            flex-direction: row-reverse;
-            justify-content: flex-end;
-        }
-    }
-    &__icon {
-        width: 20px;
-    }
-    .__left {
-        margin-left: rhythm(1);
-        margin-right: rhythm(1);
-    }
-    .__right {
-        width: 100%;
-        margin-left: rhythm(1);
-        margin-right: rhythm(1);
-        a {
-            color: inherit;
-        }
-    }
+            &__icon {
+                width: 20px;
+            }
 
-    &.-includeIcon {
+            &__left {
 
-        &__inner {
+                .-includeIcon.-iconRight & {
+                    margin-left: rhythm(1);
+                }
+                .-includeIcon.-iconLeft & {
+                    margin-right: rhythm(1);
+                }
+            }
+
+            &__inner {
+
+                .-includeIcon & {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    width: auto;
+                }
+                .-includeIcon.-iconRight & {
+
+                    flex-direction: row-reverse;
+                    justify-content: flex-end;
+                }
+            }
+
+            &.-includeIcon {
+
+                &__inner {
+
+                }
+            }
 
         }
+
+        //*******NON STATIC props here....
+        &:hover {
+            background: lighten(color($color-scheme, background), 8%);
+        }
+        &__link, a {
+            text-decoration: none;
+        }
+        svg * {
+            fill: color($color-scheme, foreground);
+        }
+        @content;
     }
 }
 
-///CSS to generate.
+@mixin container-padding() {
 
+    padding: rhythm(1, ms(0))/2 rhythm(1, ms(0));
+}
+
+@mixin base-component($key,$color-scheme: $chroma-active-scheme){
+    @include dry(#{$key}-#{$color-scheme}) {
+
+        @include color-scheme($color-scheme, true, false);
+    }
+    @include dry(#{$key}-#{container-padding}) {
+
+        @include container-padding;
+    }
+    @content;
+}
+
+
+///********* ACTUAL CSS to generate.
 ///MAIN BLOCK CSS
 @include block($component-name, component) {
-    @include c-button();
-
-
-    @include modifier(light) {
-        @include c-button(light);
-    }
 
     @if ($generate-components) {
+
+        @include c-button($component-name);
+
         @each $key, $name in $THEME_RENDER_KEYS {
 
             @include modifier($key) {
-                @include c-button($key);
+                @include c-button($component-name, $key);
             }
         }
     }
-
 }
-

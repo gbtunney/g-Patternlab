@@ -1,10 +1,10 @@
 @mixin color-scheme($color-scheme: $chroma-active-scheme,$border: true, $accent:true, $background:true, $background-color-only:false ) {
-
+    $self: &;
+    @debug $self;
     @if ($color-scheme != false) {
         color: color($color-scheme, foreground);
 
         @if ($background) {
-            @debug 'calling background';@debug $color-scheme;
             @if ($background-color-only) {
                 background-color: color($color-scheme, background);
 
@@ -19,7 +19,7 @@
         }
         @if ($accent) {
 
-            @debug 'including accent';
+
             h1, h2, h3, h4, h5, h6 {
                 color: color($color-scheme, accent);
             }

@@ -89,6 +89,19 @@
 
 }
 
+@mixin base-component($key,$color-scheme: $chroma-active-scheme){
+	@include dry(#{$key}-#{$color-scheme}) {
+
+		@include color-scheme($color-scheme, true, false);
+	}
+	@include dry(#{$key}-#{container-padding}) {
+
+		@include container-padding;
+	}
+	@content;
+}
+
+
 //TODO fix this fussy path
 @mixin font-face($family, $path: '../fonts/icons' ){
 	@at-root {

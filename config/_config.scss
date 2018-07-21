@@ -12,7 +12,7 @@ $THEME_RENDER_KEYS: $render_component_themes;
 @import "typography";
 
 //TODO:move
-$debug: false;
+$debug: true;
 $generate-grid-placeholders: true!default;
 $generate-swatch-placeholders: true!default;
 $generate-type-placeholders: true!default;

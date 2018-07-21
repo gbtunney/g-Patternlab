@@ -1,4 +1,4 @@
-$component-name: '.g_Card';
+$component-name: 'Card';
 
 // ----------------------------------------
 // !!CARD
@@ -74,16 +74,21 @@ $component-name: '.g_Card';
 ///styles to generate.
 
 ///MAIN BLOCK CSS
-#{ block($component-name) } {
-	@include c-card();
+
+@include block($component-name, component) {
+	@if ($generate-components) {
+		@include c-card();
+
+		@each $key, $name in $THEME_RENDER_KEYS {
+			@include modifier($key) {
+				@include c-card($key);
+			}
+		}
+	}
 }
 
 /*** THEME MODIFIERS	*/
-@each $key, $name in $THEME_RENDER_KEYS {
-	#{ modifier($component-name,$key) } {
-		@include c-card($key);
-	}
-}
+
 
 /*
 
