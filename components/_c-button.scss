@@ -1,90 +1,84 @@
 $component-name: 'Button';
-@mixin c-button($color-scheme: $chroma-active-scheme ) {
-    @include color-scheme($color-scheme, true, false);
-    @include container-padding;
-    transition: all 0.2s;
-    cursor: hand;
 
-    width: auto;
-    //this is for type primarily.
-    @content;
-    &:hover {
-        background: lighten(color($color-scheme, background), 8%);
-    }
-    &__link, a {
-        text-decoration: none;
-    }
-    svg * {
-        fill: color($color-scheme, foreground);
-    }
+@mixin c-button($id:$component-name, $color-scheme: $chroma-active-scheme ) {
 
-    &__left {
+    $self: &;
 
-        .-includeIcon.-iconRight & {
-            margin-left: rhythm(1);
+    ///******** INCLUDE THEME (COLOR!) PROPERTIES HERE.
+    @include u-component-theme($id, $color-scheme){
+        @include color-scheme($color-scheme, true, false);
+
+        &:hover {
+            background: lighten(color($color-scheme, background), 8%);
         }
-        .-includeIcon.-iconLeft & {
-            margin-right: rhythm(1);
+
+        svg * {
+            fill: color($color-scheme, foreground);
         }
     }
+    @include u-component-properties($id){
 
-    &__inner {
-
-        .-includeIcon & {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: auto;
+        #{$self}__link, a {
+            text-decoration: none;
         }
-        .-includeIcon.-iconRight & {
 
-            flex-direction: row-reverse;
-            justify-content: flex-end;
-        }
-    }
-    &__icon {
-        width: 20px;
-    }
-    .__left {
-        margin-left: rhythm(1);
-        margin-right: rhythm(1);
-    }
-    .__right {
-        width: 100%;
-        margin-left: rhythm(1);
-        margin-right: rhythm(1);
-        a {
-            color: inherit;
-        }
-    }
+        transition: all 0.2s;
+        cursor: hand;
+        width: auto;
 
-    &.-includeIcon {
+        #{$self}__icon {
+            width: 20px;
+        }
+
+        #{$self}__left {
+
+            .-includeIcon.-iconRight #{$self} {
+                margin-left: rhythm(1);
+            }
+            .-includeIcon.-iconLeft #{$self} {
+                margin-right: rhythm(1);
+            }
+
+        }
 
         &__inner {
 
+            .-includeIcon & {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: auto;
+                background:sienna;
+            }
+            .-includeIcon.-iconRight #{$self} {
+
+                flex-direction: row-reverse;
+                justify-content: flex-end;
+            }
         }
-    }
-}
 
-///CSS to generate.
+        #{$self}.-includeIcon {
 
-///MAIN BLOCK CSS
-@include block($component-name, component) {
-    @include c-button();
+            #{$self}__inner {
 
-
-    @include modifier(light) {
-        @include c-button(light);
-    }
-
-    @if ($generate-components) {
-        @each $key, $name in $THEME_RENDER_KEYS {
-
-            @include modifier($key) {
-                @include c-button($key);
             }
         }
     }
-
 }
 
+///********* ACTUAL CSS to generate.
+///MAIN BLOCK CSS
+@include block($component-name, component) {
+
+    @if ($generate-components) {
+
+        @include c-button($component-name);
+
+        @each $key, $name in $THEME_RENDER_KEYS {
+
+            @include modifier($key) {
+                @include c-button($component-name, $key);
+            }
+        }
+    }
+}

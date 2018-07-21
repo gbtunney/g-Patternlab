@@ -2,71 +2,67 @@ $component-name: 'Card';
 
 @mixin c-card($id:$component-name, $color-scheme: $chroma-active-scheme ) {
 
-			$self: &;
-	@include base-component($id, $color-scheme) {
+	$self: &;
 
-		//******** STATIC props here....
-		@include dry( $self) {
-			display: inline-block;
-			cursor: pointer;
-			transition: all 0.3s ease;
-			text-align: left;
-			box-shadow: 0 6px 10px -5px rgba(0, 0, 0, 0.2);
+	///******** INCLUDE THEME (COLOR!) PROPERTIES HERE.
+	@include u-component-theme($id, $color-scheme) {
+		@include color-scheme($color-scheme, true, false);
+	}
 
+	//******** STATIC props here....
+	@include u-component-properties($id) {
+		display: inline-block;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		text-align: left;
+		box-shadow: 0 6px 10px -5px rgba(0, 0, 0, 0.2);
 
+		#{$self}:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 20px 20px -15px rgba(0, 0, 0, 0.3);
+		}
+		#{$self}__header {
+			background: purple;
+		}
 
-			#{$self}:hover {
-				transform: translateY(-5px);
-				box-shadow: 0 20px 20px -15px rgba(0, 0, 0, 0.3);
-			}
-			#{$self}__header {
-				background: purple;
-				@debug 'gillian';
-				@debug $self ;
-			}
-
-			#{$self}__image {
-				max-width: 100%;
-				height: auto;
-			}
-			#{$self}__content {
-
-			}
-			//*******NON STATIC props here....
-			#{$self}__title {
-				@extend %u-reset-rhythm;
-				@include setType(2, font-san-serif);
-				@include trailing-border();
-				@include leader(1);
-				@include trailer(1);
-			}
-			#{$self}__subtitle {
-				@extend %u-reset-rhythm;
-
-				@include setType(0, font-serif);
-
-				@include leader(1);
-				@include trailer(1);
-			}
-			#{$self}__body {
-				margin-bottom: 0;
-				background: orange;
-			}
-			#{$self}__footer {
-				@include leading-border();
-				@include u-stick-to(top right) {
-					@include leader();
-				}
-			}
-
-				#{u-header-selector()},a {
-				color: inherit;
-				background: inherit;
-			}
+		#{$self}__image {
+			max-width: 100%;
+			height: auto;
+		}
+		#{$self}__content {
 
 		}
-		@content;
+		//*******NON STATIC props here....
+		#{$self}__title {
+			@extend %u-reset-rhythm;
+			@include setType(2, font-san-serif);
+			@include trailing-border();
+			@include leader(1);
+			@include trailer(1);
+		}
+		#{$self}__subtitle {
+			@extend %u-reset-rhythm;
+			@include setType(0, font-serif);
+			@include leader(1);
+			@include trailer(1);
+		}
+		#{$self}__body {
+			margin-bottom: 0;
+			background: orange;
+		}
+		#{$self}__footer {
+			@include leading-border();
+			@include u-stick-to(top right) {
+				@include leader();
+			}
+		}
+
+		#{u-header-selector()}, a {
+			color: inherit;
+			background: inherit;
+		}
 	}
+	@content;
 }
 
 

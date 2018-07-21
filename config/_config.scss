@@ -7,12 +7,15 @@
 @include setting-set-multiple($typography);
 $THEME_RENDER_KEYS: $render_component_themes;
 
+
+$DRY_ENABLED:false!default;
+
 @import "colors";
 @import "structure";
 @import "typography";
 
 //TODO:move
-$debug: true;
+$debug: false;
 $generate-grid-placeholders: true!default;
 $generate-swatch-placeholders: true!default;
 $generate-type-placeholders: true!default;
