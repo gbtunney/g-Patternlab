@@ -5,10 +5,10 @@ $component-name: 'Card';
 	$self: &;
 
 	///******** INCLUDE THEME (COLOR!) PROPERTIES HERE.
-	@include u-component-theme($id, $color-scheme) {
+	//@include u-component-theme($id, $color-scheme) {
 		@include color-scheme($color-scheme, true, false);
-	}
-
+	//}
+@include container-padding;
 	//******** STATIC props here....
 	@include u-component-properties($id) {
 		display: inline-block;

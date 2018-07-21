@@ -31,9 +31,27 @@
 %a-row-2x1{
     //2  objects next to eaxh other
 
+
 }
 %a-grid{
     //grid layout
+
+    /*display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, 1fr);*/
+
+
+}
+
+.abs-grid-2 {
+    @debug 'gilliantttt';
+    @include dry(grid-2) {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
 }
 %a-grid{
     //flex grid layout

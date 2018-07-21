@@ -1,4 +1,5 @@
 $component-name: 'Gallery';
+$child-component-name: 'Gallery-Card';
 @mixin c-gallery($color-scheme: $chroma-active-scheme ) {
 
 
@@ -88,7 +89,12 @@ $component-name: 'Gallery';
 
 ///MAIN BLOCK CSS
 @include block($component-name, component) {
-   @include c-gallery(){
+    @include dry(grid-2) ;
+
+}
+
+
+ /*  @include c-gallery(){
 
        .-has-frame    &{
 
@@ -108,10 +114,6 @@ $component-name: 'Gallery';
     @include modifier(frame) {
   @include c-gallery(light);
         background: orange;
-    }
-
-}
-
-
+    }*/
 
 

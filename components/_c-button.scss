@@ -1,6 +1,6 @@
 $component-name: 'Button';
 @mixin c-button($color-scheme: $chroma-active-scheme ) {
-    @include color-scheme($color-scheme, true, false);
+    @include color-scheme($color-scheme, true, true);
     @include container-padding;
     transition: all 0.2s;
     cursor: hand;
@@ -76,7 +76,7 @@ $component-name: 'Button';
     @include modifier(light) {
         @include c-button(light);
     }
-
+/*
     @if ($generate-components) {
         @each $key, $name in $THEME_RENDER_KEYS {
 
@@ -84,7 +84,7 @@ $component-name: 'Button';
                 @include c-button($key);
             }
         }
-    }
+    }*/
 
 }
 

@@ -1,13 +1,9 @@
 
 @mixin u-component-properties($property-group-id,$self:&){
     //wrapper on ugly "dry " method
-    @if ($DRY_ENABLED) {
-        @include dry($property-group-id) {
-            @content;
-        }
-    } @else {
+
         @content;
-    }
+
 }
 @mixin u-component-theme($id, $color-scheme:$chroma-active-scheme) {
 

@@ -78,15 +78,14 @@
 	$required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight);
 	$font-map: setting($font);
 
-	@include adjust-font-size-to(ms($size-unit));
-
-	@include dry($font) {
+	@include dry(#{$font}-#{$size-unit},$DRY_ENABLED) {
+		@include adjust-font-size-to(ms($size-unit));
+	}
+	@include dry($font,$DRY_ENABLED) {
 		@for $i from 1 through length($required-font-props) {
 			#{nth($required-font-props, $i)}: map-get($font-map, nth($required-font-props, $i));
 		}
 	}
-
-
 }
 
 @mixin base-component($key,$color-scheme: $chroma-active-scheme){

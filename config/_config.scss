@@ -8,7 +8,7 @@
 $THEME_RENDER_KEYS: $render_component_themes;
 
 
-$DRY_ENABLED:false!default;
+$DRY_ENABLED:true!default;
 
 @import "colors";
 @import "structure";
