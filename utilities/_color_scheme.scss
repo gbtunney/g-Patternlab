@@ -1,56 +1,44 @@
 @mixin color-scheme($color-scheme: $chroma-active-scheme,$border: true, $accent:true, $background:true, $background-color-only:false ) {
     $self: &;
-
-    $placeholder-prefix: 'cs';
-
+    @debug $self;
     @if ($color-scheme != false) {
+        color: color($color-scheme, foreground);
 
-        @debug #{$placeholder-prefix}-#{$color-scheme};
-        @include dry(#{$placeholder-prefix}-#{$color-scheme}, $DRY_ENABLED) {
-
-            color: color($color-scheme, foreground);
-            background: color($color-scheme, background);
-
-        }
         @if ($background) {
-            @debug 'settingbackgrond';
-            //@include dry(#{$placeholder-prefix}-#{$color-scheme}-background, $DRY_ENABLED) {
-              //  background: color($color-scheme, background);
-            //}
-        }
-        @if ($border) {
-            @include dry(#{$placeholder-prefix}-#{$color-scheme}-border, $DRY_ENABLED) {
-                border: 1px solid color($color-scheme, border);
-                border-radius: 0px;
+            @if ($background-color-only) {
+                background-color: color($color-scheme, background);
+
+            } @else {
+                background: color($color-scheme, background);
             }
+        }
+
+        @if ($border) {
+            border: 1px solid color($color-scheme, border);
+            border-radius: 0px;
         }
         @if ($accent) {
 
-            @include dry(#{$placeholder-prefix}-#{$color-scheme}-accent, $DRY_ENABLED) {
 
-                h1, h2, h3, h4, h5, h6 {
-                    color: color($color-scheme, accent);
-                }
-                a {
-                    color: color($color-scheme, link);
-                    &:hover { //get rid of underlines
-                        color: lighten(color($color-scheme, link), 10%);
-                        text-decoration: none;
-                    }
+            h1, h2, h3, h4, h5, h6 {
+                color: color($color-scheme, accent);
+            }
+            a {
+                color: color($color-scheme, link);
+                &:hover { //get rid of underlines
+                    color: lighten(color($color-scheme, link), 10%);
+                    text-decoration: none;
                 }
             }
         }@else {
-            @include dry(#{$placeholder-prefix}-#{$color-scheme}-noaccent, $DRY_ENABLED) {
-
-                h1, h2, h3, h4, h5, h6 {
-                    color: color($color-scheme, foreground);
-                }
-                a {
-                    color: color($color-scheme, foreground);
-                    &:hover { //get rid of underlines
-                        color: lighten(color($color-scheme, foreground), 10%);
-                        text-decoration: none;
-                    }
+            h1, h2, h3, h4, h5, h6 {
+                color: color($color-scheme, foreground);
+            }
+            a {
+                color: color($color-scheme, foreground);
+                &:hover { //get rid of underlines
+                    color: lighten(color($color-scheme, foreground), 10%);
+                    text-decoration: none;
                 }
             }
         }
