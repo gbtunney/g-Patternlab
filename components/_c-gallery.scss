@@ -90,7 +90,7 @@ $child-component-name: 'Gallery-Card';
 ///MAIN BLOCK CSS
 @include block($component-name, component) {
     @include dry(grid-2) ;
-
+@debug "DOING IT";
 }
 
 

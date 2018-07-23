@@ -16,6 +16,7 @@ $component-name: 'Button-Group';
         } @else {
         }
 
+
         background: $inactive-color;
 
         border-right: 0px solid red;
@@ -32,9 +33,10 @@ $component-name: 'Button-Group';
     @include c-button-group(tabs);
 
     @if ($generate-components) {
-        @debug 'gillian';
+        ///@debug 'gillian';
 
         @each $key, $name in $THEME_RENDER_KEYS {
+          //  @include c-button-group($key);
 
         }
     }

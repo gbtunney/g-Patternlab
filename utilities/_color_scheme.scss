@@ -1,6 +1,8 @@
 @mixin color-scheme($color-scheme: $chroma-active-scheme,$border: true, $accent:true, $background:true, $background-color-only:false ) {
     $self: &;
-    @debug $self;
+    //@debug $self;
+
+
     @if ($color-scheme != false) {
         color: color($color-scheme, foreground);
 

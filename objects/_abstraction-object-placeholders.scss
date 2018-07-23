@@ -53,6 +53,25 @@
     }
 
 }
+
+
+
+
+.gilliantest{
+    @include dry(cs-test-1-dark) {
+        outline: 5px;
+        @include color-scheme(dark);
+    }
+}
+
+.gilliantest2{
+
+
+    @include dry(cs-test-1-light) {
+outline: 5px;
+        @include color-scheme(light);
+    }
+        }
 %a-grid{
     //flex grid layout
 }
