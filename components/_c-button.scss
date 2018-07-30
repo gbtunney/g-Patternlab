@@ -1,24 +1,10 @@
 $component-name: 'Button';
+
 @mixin c-button($color-scheme: $chroma-active-scheme ) {
 
-   //@debug $-dry-placeholders;
-//@debug $color-scheme;
-  //  @include color-scheme($color-scheme, true, true);
 
    @include dry(grid-2);
-//@debug $color-scheme;
 
-   @if (-dry-placeholders-get(g-scheme-#{$color-scheme})){
-    @include dry(g-scheme-#{$color-scheme}){
-        @include color-scheme($color-scheme, true, true);
-    }
-}@else {
-   @debug 'placeholdr not found' #{$color-scheme};
-      //  @include color-scheme($color-scheme, true, true);
-
-       @include color-scheme($color-scheme, true, true);
-   }
-   // @include dry(g-scheme-#{$color-scheme});
 
 @include dry($component-name){
     @include container-padding;
@@ -27,16 +13,16 @@ $component-name: 'Button';
     outline: 5px;
     width: auto;
 }
-
+@content;
     //this is for type primarily.
     &:hover {
         background: lighten(color($color-scheme, background), 8%);
     }
-    &__link, a {
-        text-decoration: none;
-    }
     svg * {
         fill: color($color-scheme, foreground);
+    }
+    &__link, a {
+        text-decoration: none;
     }
 
     &__left {
@@ -66,11 +52,11 @@ $component-name: 'Button';
     &__icon {
         width: 20px;
     }
-    .__left {
+    &.__left {
         margin-left: rhythm(1);
         margin-right: rhythm(1);
     }
-    .__right {
+    &.__right {
         width: 100%;
         margin-left: rhythm(1);
         margin-right: rhythm(1);
@@ -78,7 +64,6 @@ $component-name: 'Button';
             color: inherit;
         }
     }
-
     &.-includeIcon {
 
         &__inner {
@@ -86,6 +71,8 @@ $component-name: 'Button';
         }
     }
 }
+
+
 
 ///CSS to generate.
 
@@ -101,7 +88,18 @@ $component-name: 'Button';
         @each $key, $name in $THEME_RENDER_KEYS {
 
             @include modifier($key) {
-                @include c-button($key);
+                @include c-button($key){
+                    @if (-dry-placeholders-get(g-scheme-#{$key})){
+                        @include dry(g-scheme-#{$key}){
+                            @include color-scheme($key, true, false);
+                        }
+                    }@else {
+                        @debug 'placeholdr not found' #{$color-scheme};
+                        //  @include color-scheme($color-scheme, true, true);
+
+                        @include color-scheme($key, true, false);
+                    }
+                }
             }
         }
 
