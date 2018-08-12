@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://use.typekit.net/gwv5prb.css");
+@import url($typekit);
 
 //init type maps
 $font-map: map-get($typography, "fonts");

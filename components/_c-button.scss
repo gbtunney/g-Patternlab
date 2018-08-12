@@ -3,8 +3,10 @@ $component-name: 'Button';
 @mixin c-button($color-scheme: $chroma-active-scheme ) {
 
 
-   @include dry(grid-2);
-
+  // @include dry(grid-2);
+  //  @include dry(g-scheme-#{$color-scheme}){
+        @include color-scheme($color-scheme);
+  //  }
 
 @include dry($component-name){
     @include container-padding;
@@ -90,14 +92,12 @@ $component-name: 'Button';
             @include modifier($key) {
                 @include c-button($key){
                     @if (-dry-placeholders-get(g-scheme-#{$key})){
-                        @include dry(g-scheme-#{$key}){
-                            @include color-scheme($key, true, false);
-                        }
+
                     }@else {
-                        @debug 'placeholdr not found' #{$color-scheme};
+                       // @debug 'placeholdr not found' #{$color-scheme};
                         //  @include color-scheme($color-scheme, true, true);
 
-                        @include color-scheme($key, true, false);
+                       // @include color-scheme($key, false, true);
                     }
                 }
             }

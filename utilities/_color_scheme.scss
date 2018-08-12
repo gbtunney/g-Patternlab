@@ -1,4 +1,4 @@
-@mixin color-scheme($color-scheme: $chroma-active-scheme,$border: true, $accent:true, $background:true, $background-color-only:false ) {
+@mixin color-scheme($color-scheme: $chroma-active-scheme,$border: true, $accent:false, $background:true, $background-color-only:false ) {
     $self: &;
     //@debug $self;
 
