@@ -1,7 +1,11 @@
+@import "utilities";
+
 ///MAP JSON CONFIG TO THE SETTINGS/VARIABLES.
 
 //structure vars.
 //@include setting-set-multiple($slicer);
+
+
 
 //type vars
 @include setting-set-multiple($typography);
@@ -15,7 +19,7 @@ $DRY_ENABLED:true!default;
 @import "typography";
 
 //TODO:move
-$debug: false;
+$debug: true;
 $generate-grid-placeholders: true!default;
 $generate-swatch-placeholders: true!default;
 $generate-type-placeholders: true!default;
