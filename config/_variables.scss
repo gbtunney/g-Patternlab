@@ -1,0 +1,46 @@
+////GENERATOR VARIABLES
+$generate-swatch-classes: true!default;
+$generate-type-classes: true!default;
+$generate-scheme-classes:true!default;
+
+$utility-seperator: '-';
+
+$utility-prefixes: (
+    swatch: "swatch-color",
+    schemes: "scheme",
+    type: "type");
+
+
+//TODO:move
+$THEME_RENDER_KEYS: $render_component_themes;
+$DRY_ENABLED:true!default;
+
+
+$type-size-list: -1, 0,1, 2,3,4,5!default;
+
+
+$debug: true;
+//$generate-grid-placeholders: true!default;
+$generate-swatch-placeholders: true!default;
+$generate-type-placeholders: true!default;
+$generate-scheme-placeholders:true!default;
+
+$include-helper-classes:true!default;
+$include-base-classes:true!default;
+$include-styleguide-classes:true!default;
+$include-font-icons:true!default;
+
+$generate-components:true!default;
+
+@if($debug ) {
+    $generate-grid-placeholders: false ;
+    $generate-swatch-placeholders: false ;
+    $generate-type-placeholders: false ;
+    $generate-scheme-placeholders: false ;
+    $generate-components:false;
+
+    $include-helper-classes: false;
+    $include-base-classes: false;
+    $include-styleguide-classes: false;
+    $include-font-icons:false;
+}

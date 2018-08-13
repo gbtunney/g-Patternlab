@@ -1,0 +1,38 @@
+//** CONFIG GENERATOR DOES ONLY 3 THINGS:
+
+@if ($generate-swatch-classes) {
+    @include u-generate-swatches();
+}
+
+@if ($generate-scheme-classes){
+    @include u-generate-scheme-utility-classes;
+}
+
+
+/*
+@if ($generate-type-classes) {
+    @each $key, $prop in $font-map {
+        @if ($key != 'default') {
+            @include generate-type-utility-classes($key);
+        }
+    }
+}
+
+//@if ($generate-grid-placeholders){
+   // @include  generate-grid-classes();
+//}
+*/
+
+$test-scheme: (
+    'foreground': 'kittens',
+    'background': 'textbg',
+    'accent':sdsds);
+
+
+.test2 {
+   @include g-color-scheme(dark);
+   //@debug invert(black);
+}
+.test {
+    // @include g-color-scheme(false, $test-scheme...);
+}

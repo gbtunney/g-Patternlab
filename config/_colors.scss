@@ -16,7 +16,7 @@ $chroma: add-colors($baseColors); //variable from config file.
         $chroma: define-color-scheme(map-get($scheme, key), $parent: map-get($scheme, parent));
         @if (map-has-key($scheme, colors) ==false) {
             @if (map-has-key($scheme, invert)) {
-                $scheme: map-merge($scheme, (colors: u-inverted-colormap(map-get($scheme, key))));
+                $scheme: map-merge($scheme, (colors: get-inverted-colormap(map-get($scheme, key))));
             }
         }
     }

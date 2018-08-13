@@ -1,6 +1,6 @@
 //*****utilities for colors module.
 
-@function u-inverted-colormap( $base-scheme: $chroma-active-scheme ){
+@function get-inverted-colormap( $base-scheme: $chroma-active-scheme ){
 
     $new-colors: (
         foreground: color($base-scheme, background),
@@ -10,3 +10,53 @@
     );
     @return $new-colors;
 }
+
+///**** generator classes
+
+//mixins to geenrate each of the utility classes
+
+@function get-utility-prefix($utility-type-key, $key ){
+      @return #{map-get($utility-prefixes,$key)}#{$utility-seperator}#{$key};
+}
+
+@mixin u-generate-swatches($colors: $baseColors) {
+    @each $key, $color in $colors {
+        @include utility(get-utility-prefix(swatch, $key)){
+
+            ///outputs background color with contrasting text.
+            @include u-background-with-contrast-text($color);
+        }
+    }
+}
+
+@mixin u-generate-scheme-utility-classes( $prefix: 'g-scheme') {
+    @for $i from 1 through length($schemes) {
+
+
+        $scheme: nth($schemes, $i);
+        $key: map-get($scheme, key);
+        .#{ $prefix }-#{ $key } {
+            @include dry(#{ $prefix }-#{ $key }){
+                @include color-scheme($key);
+
+            }
+        }
+    }
+}
+
+@mixin u-generate-type-utility-classes( $key: font-san-serif, $prefix: '.g-type') {
+    @for $i from 1 through length($type-size-list) {
+        $size: nth($type-size-list, $i);
+
+        #{ $prefix }-#{ $key }-#{ $size } {
+            @include setType($size,$key);
+        }
+
+        @if ($size == 0 ){
+            #{ $prefix }-#{ $key } {
+                @include setType($size,$key);
+            }
+        }
+    }
+}
+

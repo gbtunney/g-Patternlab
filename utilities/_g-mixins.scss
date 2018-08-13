@@ -114,3 +114,43 @@
 		}
 	}
 }
+
+// A Sass walk function,
+// Calling a given function to each member of a list
+// ---
+// @param [list] $list: list to walk through
+// @param [string] $function: function to apply to all members
+// @param [argList] $args: extra arguments to pass to the function
+// ---
+// @return [list] $list: updated list
+@function walk($list, $function, $args...) {
+	@if not function-exists($function) {
+		@warn "There is no `#{$function}` function.";
+		@return false;
+	}
+
+	@for $i from 1 through length($list) {
+		$list: set-nth($list, $i, call(get-function($function), nth($list, $i), $args...));
+	}
+
+	@return $list;
+}
+
+@function add($a, $b) {
+	@return $a + $b;
+}
+
+sass {
+	// Applying color functions to a list of colors
+	test: walk(red green blue, complement);
+	test: walk(red green blue, darken, 20%);
+
+	// Applying string functions to a list of strings
+	test: walk(one two three, to-upper-case);
+
+	// Chaining two walk functions
+	//test: walk(walk(3 6 9, add, 10), sqrt);
+
+	// Unknown function
+	//test: walk(test, 'gloubiboulga');
+}
