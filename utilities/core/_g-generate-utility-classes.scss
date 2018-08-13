@@ -1,0 +1,79 @@
+//*** THESE GENERATE CORE UTILITY CLASSES FOR COLOR SWATCHES, SCHEMES, and TYPE.
+//*** Dependancies: Chroma Sass
+
+$utility-seperator: '-' !default;
+
+$utility-prefixes: (
+    swatch: "swatch-color",
+    schemes: "scheme",
+    type: "type") !default;
+
+$type-size-list: -1, 0, 1, 2, 3, 4, 5 !default;
+
+@function get-utility-prefix($utility-type-key, $key ) {
+    @return #{map-get($utility-prefixes,$key)}#{$utility-seperator}#{$key};
+}
+
+//*****GENERATES SWATCH (background with inverted text)
+@mixin g-generate-swatches($colors: $baseColors) {
+    @each $key, $color in $colors {
+        @include utility(get-utility-prefix(swatch, $key)) {
+
+            $props: (
+                background: $color,
+                foreground: invert($color)
+            );
+            @include g-color-scheme($props...);
+        }
+    }
+}
+
+//*****GENERATES SCHEME (with flags for accent and borders.)
+@mixin g-generate-scheme-utility-classes() {
+
+    //todo: only render list?
+    @for $i from 1 through length($schemes) {
+        $scheme: nth($schemes, $i);
+        $key: map-get($scheme, key);
+
+        @include utility(get-utility-prefix(scheme, $key)) {
+
+            @include g-color-scheme($key, true, true);
+
+            &.--accent {
+                @include g-color-scheme($key, false, false, true, false);
+            }
+            &.--border {
+                @include g-color-scheme($key, false, false, false, true);
+            }
+        }
+    }
+}
+
+///**** GENERATE TYPE CLASSES.
+
+//single font
+@mixin g-generate-font-utility-classes( $key: font-san-serif ) {
+    @for $i from 1 through length($type-size-list) {
+        $size: nth($type-size-list, $i);
+
+        ///TODO: reimplement dry?
+        @include utility(get-utility-prefix(type, #{$key}#{$utility-seperator}#{$size})) {
+            @include setType($size, $key);
+        }
+
+        @if ($size == 0) {
+            @include utility(get-utility-prefix(type, #{$key})) {
+                @include setType($size, $key);
+            }
+        }
+    }
+}
+
+@mixin g-generate-all-font-utility-classes($font-render: $font-map ) {
+    @each $key, $prop in $font-map {
+        @if ($key != 'default') {
+            @include g-generate-font-utility-classes($key);
+        }
+    }
+}

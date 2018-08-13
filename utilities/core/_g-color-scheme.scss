@@ -1,0 +1,111 @@
+//*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
+//*** Dependancies: Chroma Sass
+
+$default-accent-selector: 'h1, h2, h3, h4, h5, h6,a ' !default;
+
+$property-lookup-map: (
+    foreground: color,
+    background: background-color,
+    accent: color,
+    border: border-color,
+    link: color,
+    hover-background: background-color
+);
+
+%border-defaults {
+    border-style: solid;
+    border-size: 1px;
+}
+
+@function get-lookup-property($key) {
+    @return map-get($property-lookup-map, $key);
+}
+
+@function get-inverted-colormap( $base-scheme: $chroma-active-scheme ) {
+
+    $new-colors: (
+        foreground: color($base-scheme, background),
+        background: color($base-scheme, foreground),
+        accent: color($base-scheme, accent),
+        border: color($base-scheme, foreground),
+    );
+    @return $new-colors;
+}
+
+@mixin write-scheme-property($property: foreground, $value: red,  $selector: false, $colorfunc: false, $colorfuncArgs:false ) {
+
+    $property-to-write: get-lookup-property($property);
+
+    $value-to-write: false;
+
+    @if (type-of($value) == color) {
+
+        $value-to-write: $value;
+
+    } @else if (type-of($value)== string  and chroma-has-scheme($value)) {
+
+        $color-scheme: $value;
+
+        @if (chroma-has-color($property, $color-scheme)) {
+            $value-to-write: color($color-scheme, $property);
+        } @else {
+            @debug "*****ALERT ! SCHEME #{$color-scheme} does not have a value for #{$property}";
+            $value-to-write: false;
+        }
+    }
+
+    @if (type-of($colorfunc)== string  and function-exists($colorfunc) and $colorfuncArgs != false) {
+        $value-to-write: call(get-function($colorfunc), $value-to-write, $colorfuncArgs);
+    }
+    @if ($selector  and $value-to-write and $property-to-write) {
+        #{$selector} {
+            #{$property-to-write} : #{$value-to-write};
+            @content;
+        }
+    } @else if ($value-to-write and $property-to-write) {
+        #{$property-to-write} : #{$value-to-write};
+        @content;
+    }
+}
+
+@mixin g-color-scheme($color-scheme:$chroma-active-scheme, $background:true, $foreground:true,$accent:false, $border:false,$hover-background:false, $accent-selector:$default-accent-selector, $border-size: 1px ) {
+
+    @if ($background == true) {
+        @include write-scheme-property(background, $color-scheme);
+    } @else if ($background != false) {
+        @include write-scheme-property(background, $background);
+    }
+    @if ($foreground == true) {
+        @include write-scheme-property(foreground, $color-scheme);
+    } @else if ($foreground != false) {
+        @include write-scheme-property(foreground, $foreground);
+    }
+
+    @if ($accent == true) {
+        @include write-scheme-property(accent, $color-scheme, $accent-selector);
+    } @else if ($accent != false) {
+        @include write-scheme-property(accent, $accent, $accent-selector);
+    }
+
+    @if ($border == true) {
+        @include write-scheme-property(border, $color-scheme) {
+            @extend %border-defaults;
+            //todo:add bordersize.
+        }
+    } @else if ($foreground != false) {
+        //todo: replace with foreground if no border.
+    }
+
+    @if ($hover-background != false) {
+        @if (chroma-has-color(hover-background, $color-scheme)) {
+            //these &:hover selectors have to be done in this scope or they will be nested.
+            &:hover {
+                @include write-scheme-property(hover-background, color($color-scheme, hover-background), ':hover', lighten, 20%);
+            }
+        } @else {
+            &:hover {
+                @include write-scheme-property(hover-background, color($color-scheme, background), false, darken, 20%);
+            }
+        }
+    }
+}

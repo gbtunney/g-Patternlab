@@ -1,36 +1,32 @@
 //** CONFIG GENERATOR DOES ONLY 3 THINGS:
 
 @if ($generate-swatch-classes) {
-    @include u-generate-swatches();
+    @include g-generate-swatches();
 }
 
 @if ($generate-scheme-classes){
-    @include u-generate-scheme-utility-classes;
+    @include g-generate-scheme-utility-classes;
 }
 
 
-/*
+
 @if ($generate-type-classes) {
-    @each $key, $prop in $font-map {
-        @if ($key != 'default') {
-            @include generate-type-utility-classes($key);
-        }
-    }
+  @include g-generate-all-font-utility-classes;
 }
 
 //@if ($generate-grid-placeholders){
    // @include  generate-grid-classes();
 //}
-*/
+
 
 $test-scheme: (
-    'foreground': 'kittens',
-    'background': 'textbg',
-    'accent':sdsds);
+    'accent': red,
+    'border': blue,
+    hover-background: orange);
 
 
 .test2 {
-   @include g-color-scheme(dark);
+ //  @include g-color-scheme-new(light,$test-scheme...);
    //@debug invert(black);
 }
 .test {

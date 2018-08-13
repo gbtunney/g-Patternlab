@@ -3,20 +3,10 @@ $generate-swatch-classes: true!default;
 $generate-type-classes: true!default;
 $generate-scheme-classes:true!default;
 
-$utility-seperator: '-';
-
-$utility-prefixes: (
-    swatch: "swatch-color",
-    schemes: "scheme",
-    type: "type");
-
 
 //TODO:move
 $THEME_RENDER_KEYS: $render_component_themes;
 $DRY_ENABLED:true!default;
-
-
-$type-size-list: -1, 0,1, 2,3,4,5!default;
 
 
 $debug: true;

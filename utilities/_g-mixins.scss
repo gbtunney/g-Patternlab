@@ -73,34 +73,6 @@
 	}
 }
 
-@mixin setType($size-unit: 0,$font: font-san-serif ) {
-//TODO : fix
-	$required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight);
-	$font-map: setting($font);
-
-	@include dry(#{$font}-#{$size-unit},$DRY_ENABLED) {
-		@include adjust-font-size-to(ms($size-unit));
-	}
-	@include dry($font,$DRY_ENABLED) {
-		@for $i from 1 through length($required-font-props) {
-			#{nth($required-font-props, $i)}: map-get($font-map, nth($required-font-props, $i));
-		}
-	}
-}
-
-@mixin base-component($key,$color-scheme: $chroma-active-scheme){
-	@include dry(#{$key}-#{$color-scheme}) {
-
-		@include color-scheme($color-scheme, true, false);
-	}
-	@include dry(#{$key}-#{container-padding}) {
-
-		@include container-padding;
-	}
-	@content;
-}
-
-
 //TODO fix this fussy path
 @mixin font-face($family, $path: '../fonts/icons' ){
 	@at-root {

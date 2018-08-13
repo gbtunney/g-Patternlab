@@ -1,0 +1,18 @@
+//built on top of modular scale, compass vertical rhythm.
+//*** THESE ARE THE CORE BREAKPOINT WRAPPER
+//*** Dependencies: Modular Scale  | Compass Vertical Rhythm. | Sass DRY | Sass Toolkit
+
+@mixin setType($size-unit: 0,$font: font-san-serif ) {
+    //TODO : fix
+    $required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight);
+    $font-map: setting($font); //this is the only real place setting is used
+
+    @include dry(#{$font}-#{$size-unit},$DRY_ENABLED) {
+        @include adjust-font-size-to(ms($size-unit));
+    }
+    @include dry($font,$DRY_ENABLED) {
+        @for $i from 1 through length($required-font-props) {
+            #{nth($required-font-props, $i)}: map-get($font-map, nth($required-font-props, $i));
+        }
+    }
+}

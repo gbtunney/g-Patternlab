@@ -1,10 +1,13 @@
-$slicer-breakpoints:        0        480px       768px      992px        1200px ;
+//*** THESE ARE THE CORE BREAKPOINT WRAPPER
+//*** Dependencies: Breakpoint Sass  | Breakpoint Slicer
+
+$slicer-breakpoints:        0        480px       768px      992px        1200px !default;
 
 /*
 //                          └────┬────┘ └────┬────┘ └────┬────┘ └────┬────>
 // Slice numbers:                xs          sm           md          lg     */
 
-$slicer-breakpoint-names:xs sm md lg ;
+$slicer-breakpoint-names:xs sm md lg!default ;
 
 //using a wrapper mixin for breakpoint sliders vague/wierd function names to(sm), from(md), between(sm,md) , at(sm)
 /* EXAMPLES:
@@ -37,5 +40,21 @@ $slicer-breakpoint-names:xs sm md lg ;
             @content;
         }
 
+    }
+}
+
+@mixin debug-breakpoints(){
+
+    @include breakpoint-range(xs){
+        background: red;
+    }
+    @include breakpoint-range(sm){
+        background: orange;
+    }
+    @include breakpoint-range(md){
+        background: yellow;
+    }
+    @include breakpoint-range(lg){
+        background: green;
     }
 }
