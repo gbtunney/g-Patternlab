@@ -1,24 +1,14 @@
+@import "variables";
 @import "utilities";
-
-///MAP JSON CONFIG TO THE SETTINGS/VARIABLES.
-
-//structure vars.
-//@include setting-set-multiple($slicer);
-
-
-
 //type vars
-@include setting-set-multiple($typography);
-$THEME_RENDER_KEYS: $render_component_themes;
-
-
-$DRY_ENABLED:true!default;
-
 @import "colors";
 @import "structure";
 @import "typography";
 
 //TODO:move
+$THEME_RENDER_KEYS: $render_component_themes;
+$DRY_ENABLED:true!default;
+
 $debug: true;
 $generate-grid-placeholders: true!default;
 $generate-swatch-placeholders: true!default;
@@ -31,13 +21,6 @@ $include-styleguide-classes:true!default;
 $include-font-icons:true!default;
 
 $generate-components:true!default;
-
-$bem-block-namespaces: (
-    'object': 'o',     // defaults to 'o'
-    'component': 'g', // defaults to 'c'
-    'utility': 'u', // defaults to 'u'
-);
-
 
 @if($debug ) {
     $generate-grid-placeholders: false ;

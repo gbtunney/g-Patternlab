@@ -9,35 +9,23 @@ $default-font-map: map-get($font-map, default);
     @include setting-set($key, $font-map-merged);
 }
 
-//modular scale and comppass props
-$modularscale: setting(modularscale);
+//**** modular scale
+$modularscale: map-get($typography, "modularscale");
 
+//*** COMPASS PROPS
 //$base-font-size: 20px; // Sets the base font size
 //$base-line-height: 16px; // Sets the base line height
-//$base-font-size: map-get(setting(modularscale), base);
 
+$BASE_LINE_HEIGHT: map-get($typography, line-height);
+$BASE_FONT_SIZE: map-get($modularscale, base);
 
-$BASE_LINE_HEIGHT: map-get($typography, line-height) ;
-$BASE_FONT_SIZE: map-get(setting(modularscale), base);
-
-@if( has-unit($BASE_LINE_HEIGHT) ){
-    @debug 'has unit';
-}@else {
-    @debug 'no unit';
-    $BASE_LINE_HEIGHT : $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
+//convert unitless lineheight
+@if (has-unit($BASE_LINE_HEIGHT)) {
+} @else {
+    $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
 }
 
-
-//compass vars
+//***** SET compass vars
 $base-font-size: $BASE_FONT_SIZE;
-//$font-unit: $BASE_FONT_SIZE;
-$base-line-height:$BASE_LINE_HEIGHT;
+$base-line-height: $BASE_LINE_HEIGHT;
 $relative-font-sizing: false;
-
-
-@import "node_modules/compass-mixins/lib/compass/typography/vertical_rhythm";
-
-
-///BASELINE
- @include establish-baseline;
-

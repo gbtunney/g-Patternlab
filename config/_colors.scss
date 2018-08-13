@@ -1,12 +1,9 @@
 ///******SETUP CHROMA-SASS
 
-///get variable from config flie
-@include setting-set-multiple($baseColors);
-
 // Define the default color scheme.
 $chroma: define-default-color-scheme('Branding color names for use by "functional" color names below.');
 // Add colors to the default color scheme.
-$chroma: add-colors($baseColors);
+$chroma: add-colors($baseColors); //variable from config file.
 
 ///IMPORT COLORS FROM CONFIG FILE
 @for $i from 1 through length($schemes) {
@@ -31,4 +28,4 @@ $chroma: add-colors($baseColors);
 }
 
 //set the active scheme for chroma.
-$chroma-active-scheme: $active-scheme;
+$chroma-active-scheme: $active-scheme; //variable from config file.
