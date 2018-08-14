@@ -1,4 +1,4 @@
-//** CONFIG GENERATOR DOES ONLY 3 THINGS:
+//** CONFIG GENERATOR .
 
 @if ($generate-swatch-classes) {
     @include g-generate-swatches();
@@ -8,27 +8,6 @@
     @include g-generate-scheme-utility-classes;
 }
 
-
-
 @if ($generate-type-classes) {
   @include g-generate-all-font-utility-classes;
-}
-
-//@if ($generate-grid-placeholders){
-   // @include  generate-grid-classes();
-//}
-
-
-$test-scheme: (
-    'accent': red,
-    'border': blue,
-    hover-background: orange);
-
-
-.test2 {
- //  @include g-color-scheme-new(light,$test-scheme...);
-   //@debug invert(black);
-}
-.test {
-    // @include g-color-scheme(false, $test-scheme...);
 }

@@ -2,6 +2,7 @@
 //*** Dependancies: Chroma Sass
 
 $default-accent-selector: 'h1, h2, h3, h4, h5, h6,a ' !default;
+$default-svg-selector: 'path, g'!default;
 
 $property-lookup-map: (
     foreground: color,
@@ -9,7 +10,8 @@ $property-lookup-map: (
     accent: color,
     border: border-color,
     link: color,
-    hover-background: background-color
+    hover-background: background-color,
+    fill: fill
 );
 
 %border-defaults {
@@ -68,7 +70,7 @@ $property-lookup-map: (
     }
 }
 
-@mixin g-color-scheme($color-scheme:$chroma-active-scheme, $background:true, $foreground:true,$accent:false, $border:false,$hover-background:false, $accent-selector:$default-accent-selector, $border-size: 1px ) {
+@mixin g-color-scheme($color-scheme:$chroma-active-scheme, $background:true, $foreground:true,$accent:false, $border:false,$hover-background:false, $fill:false, $stroke:false,$accent-selector:$default-accent-selector, $border-size: 1px ) {
 
     @if ($background == true) {
         @include write-scheme-property(background, $color-scheme);
@@ -95,7 +97,18 @@ $property-lookup-map: (
     } @else if ($foreground != false) {
         //todo: replace with foreground if no border.
     }
+    //***FILL
+    @if ($fill == true ){
+        @if (type-of($fill) == color ){
+            @include write-scheme-property(fill, $fill, $default-svg-selector);
+        }@else if ( type-of($fill) == string and chroma-has-color(fill,$color-scheme ) ){
+            @include write-scheme-property(fill, $color-scheme, $default-svg-selector);
+        }@else if( type-of($fill) == string and chroma-has-color(background,$color-scheme )  ){
+            //todo: figure out how to do a fallback color?
+            @include write-scheme-property(fill, color($color-scheme, background), $default-svg-selector);
+        }
 
+    }
     @if ($hover-background != false) {
         @if (chroma-has-color(hover-background, $color-scheme)) {
             //these &:hover selectors have to be done in this scope or they will be nested.
