@@ -15,9 +15,16 @@
     );
     @include g-color-scheme($color-scheme,$props...);
 
+    @extend %u-reset-link-color;
+
+   // @include setType(2,font-san-serif);
+    font-size: ms(0);
+    text-align: center;
     &.--no-background, &.--no-background:hover {
         background-color: transparent;
     }
+
+
 
     //todo: if scheme has special hover
     &:hover {
@@ -26,23 +33,29 @@
         box-shadow: 0 20px 20px -15px rgba(0, 0, 0, 0.3);
     }
 
-    border: 1px solid color($color-scheme, border);
-
     &.--no-border {
         border: none;
     }
 
+    padding: rhythm(.5) rhythm(1);
+
+
     //the default is square button
     border-radius: 0;
-
     &.--rounded {
         padding: rhythm(1);
         border-radius: rhythm(1);
     }
 
     &.--circle {
-        padding: #{rhythm(1) / 2};
+        padding: #{rhythm(1) / 8};
         border-radius: 100%;
+        line-height: 0;
+
+    }
+
+    &__icon{
+        @include u-icon-svg(color($color-scheme,foreground), ms(get-scale-units()));
     }
 
     //  @include c-kabob($id, $color-scheme, true, $width, false,$units) {

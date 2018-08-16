@@ -28,21 +28,10 @@ $component-name: 'Kabob';
         @include u-icon-svg(color($color-scheme, foreground), ms($unit));
     }
 
-    .--xs &__left, .--xs &__right {
-        @include set-multiple($scale-unit-xs, width height);
-    }
-    .--sm &__left, .--sm &__right {
-        @include set-multiple($scale-unit-sm, width height);
-    }
-    .--md &__left, .--md &__right {
-        @include set-multiple($scale-unit-md, width height);
-    }
-    .--lg &__left, .--lg &__right {
-        @include set-multiple($scale-unit-lg, width height);
-    }
-    .--xl &__left, .--xl &__right {
-        @include set-multiple($scale-unit-xl, width height);
-    }
+    /// .--xs &__left, .--xs &__right adds size flags
+    @include g-generate-scale-sizes(  #{&}__right); //#{&}__left
+    @include g-generate-scale-sizes(  #{&}__left); //#{&}__left
+
 
     &__inner {
         //float center text
@@ -68,45 +57,6 @@ $component-name: 'Kabob';
 
     @if ($divider){
 
-        &__center {
-            position: relative;
-            display: grid;
-            //  align-items: center;
-            height: 100%;
-            width: 100%;
-            grid-template-columns: 100% 1fr 100%;
-
-            &:after {
-                display: block;
-                width: 100%;
-                height: rhythm($unit) * .1;
-                background: color($color-scheme, foreground);
-                content: " ";
-
-                $multiplier: .1; ///size the line
-
-                .--xs & {
-                    height: rhythm($scale-unit-xs)  * $multiplier;
-                }
-                .--sm & {
-                    height: rhythm($scale-unit-sm)  * $multiplier;
-                }
-                .--md & {
-                    height: rhythm($scale-unit-md)  * $multiplier;
-                }
-                .--lg & {
-                    height: rhythm($scale-unit-lg)  * $multiplier;
-                }
-                .--xl & {
-                    height: rhythm($scale-unit-xl) * $multiplier;
-                }
-                .--no-divider & {
-                    content: " ";
-                    height: 0;
-                    display: none;
-                }
-            }
-        }
     }
 
     @content;

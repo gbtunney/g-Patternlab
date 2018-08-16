@@ -19,38 +19,36 @@ $scale-units: (
     @return map-get($component-id-lookup, $key);
 }
 
-@mixin g-generate-scale-sizes($selector : false, $scale-map: $scale-units){
+@mixin g-generate-scale-sizes($selector : false, $scale-map: $scale-units) {
     @each $key, $unit in $scale-map {
-            @debug '--#{$key} : #{$unit}';
+        @debug '--#{$key} : #{$unit}';
 
-        @if ($selector){
+        @if ($selector) {
             &.--#{$key} #{$selector} {
-                @include set-multiple($unit, width height);
+                @include set-multiple(rhythm($unit), width height);
             }
-        }@else {
+        } @else {
             &.--#{$key} {
                 @include set-multiple($unit, width height);
 
             }
         }
-
-
     }
-    }
+}
 @mixin g-generate-component($component-key){
 
     @include block(get-component-id($component-key), component) {
 
         @if ( $component-key == button ){
             @include c-button();
-            @include g-generate-scale-sizes(  #{&}__right); //#{&}__left
+
 
         }
         @each $key, $name in $THEME_RENDER_KEYS {
             @include modifier($key) {
                 //  @include c-button($component-name, $key);
                 @if ( $component-key == button ){
-                    //@include c-button($key);
+                    @include c-button($key);
                 }
 
             }

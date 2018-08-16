@@ -1,5 +1,5 @@
 //@import "abstraction-object-placeholders";
-
+@import "wrappers";
 ///ABSTRATION OBJECTS.
 
 //********CONTAINERS///
@@ -24,18 +24,7 @@
     }
 }
 
-@mixin u-horizontal-list( $margin:rhythm(.5) ,$justify-content: space-between) {
-    display: flex;
-    justify-content: $justify-content;
 
-    > * {
-        margin-right: $margin;
-
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-}
 
 //********VISUAL OBJECTS ///
 @mixin u-icon-svg($color:red,$width: 100%,$height:$width) {
@@ -53,6 +42,7 @@
             foreground:false,
             fill: $color
         );
+     //   @debug $props;
         @include g-color-scheme($props...);
     }
 }

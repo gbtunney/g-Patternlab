@@ -16,7 +16,7 @@ $property-lookup-map: (
 
 %border-defaults {
     border-style: solid;
-    border-size: 1px;
+    border-width: 1px;
 }
 
 @function get-lookup-property($key) {
@@ -98,7 +98,7 @@ $property-lookup-map: (
         //todo: replace with foreground if no border.
     }
     //***FILL
-    @if ($fill == true ){
+    @if ($fill  ){
         @if (type-of($fill) == color ){
             @include write-scheme-property(fill, $fill, $default-svg-selector);
         }@else if ( type-of($fill) == string and chroma-has-color(fill,$color-scheme ) ){

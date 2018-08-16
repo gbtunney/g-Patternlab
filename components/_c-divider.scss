@@ -1,0 +1,45 @@
+@mixin c-divider(){
+
+
+        position: relative;
+        display: grid;
+        //  align-items: center;
+        height: 100%;
+        width: 100%;
+        grid-template-columns: 100% 1fr 100%;
+
+        &:after {
+            display: block;
+            width: 100%;
+            height: rhythm($unit) * .1;
+            background: color($color-scheme, foreground);
+            content: " ";
+
+            $multiplier: .1; ///size the line
+
+            .--xs & {
+                height: rhythm($scale-unit-xs)  * $multiplier;
+            }
+            .--sm & {
+                height: rhythm($scale-unit-sm)  * $multiplier;
+            }
+            .--md & {
+                height: rhythm($scale-unit-md)  * $multiplier;
+            }
+            .--lg & {
+                height: rhythm($scale-unit-lg)  * $multiplier;
+            }
+            .--xl & {
+                height: rhythm($scale-unit-xl) * $multiplier;
+            }
+            .--no-divider & {
+                content: " ";
+                height: 0;
+                display: none;
+            }
+        }
+
+
+
+
+}
