@@ -1,21 +1,31 @@
 $component-name: 'Card';
 
-@mixin c-card($id:$component-name, $color-scheme: $chroma-active-scheme ) {
+@mixin c-card( $color-scheme: $chroma-active-scheme ) {
 
 	$self: &;
 
+
 	///******** INCLUDE THEME (COLOR!) PROPERTIES HERE.
-	//@include u-component-theme($id, $color-scheme) {
-		@include color-scheme($color-scheme, true, false);
-	//}
-@include container-padding;
+
+//@include container-padding;
+
+	$props: (
+		background: true,
+		foreground: true,
+		border: true,
+		accent:true
+	);
+	@include g-color-scheme($color-scheme,$props...);
+
 	//******** STATIC props here....
-	@include u-component-properties($id) {
+	//@include u-component-properties($id) {
+	padding: rhythm(1);
 		display: inline-block;
 		cursor: pointer;
 		transition: all 0.3s ease;
 		text-align: left;
 		box-shadow: 0 6px 10px -5px rgba(0, 0, 0, 0.2);
+
 
 		#{$self}:hover {
 			transform: translateY(-5px);
@@ -47,8 +57,9 @@ $component-name: 'Card';
 			@include trailer(1);
 		}
 		#{$self}__body {
-			margin-bottom: 0;
-			background: orange;
+			@include trailer(1);
+			@include setType(0, font-san-serif);
+
 		}
 		#{$self}__footer {
 			@include leading-border();
@@ -58,10 +69,15 @@ $component-name: 'Card';
 		}
 
 		#{u-header-selector()}, a {
-			color: inherit;
+			//color: inherit;
 			background: inherit;
+			text-decoration: none;
+			&:hover{
+				text-decoration: inherit;
+
+			}
 		}
-	}
+	//}
 	@content;
 }
 
@@ -80,18 +96,7 @@ $component-name: 'Card';
 
 ///MAIN BLOCK CSS
 
-@include block($component-name, component) {
-//	@if ($generate-components) {
 
-	@include c-card($component-name);
-
-		@each $key, $name in $THEME_RENDER_KEYS {
-			@include modifier($key) {
-				@include c-card($component-name,$key);
-			}
-		}
-	//}
-}
 
 /*** THEME MODIFIERS	*/
 

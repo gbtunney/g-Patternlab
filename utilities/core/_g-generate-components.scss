@@ -1,8 +1,10 @@
-$component-id-lookup:(
-button: 'Button'
+$component-id-lookup: (
+    button: 'Button',
+    card: 'Card',
+    kabob: 'Kabob'
 );
 
-$default-scale-unit: md!default;
+$default-scale-unit: md !default;
 
 $scale-units: (
     xs: -2,
@@ -10,14 +12,16 @@ $scale-units: (
     md: 0,
     lg: 1,
     xl: 2
-)!default;
+) !default;
 
-@function get-scale-units($key: $default-scale-unit){
+@function get-scale-units($key: $default-scale-unit) {
     @return map-get($scale-units, $key);
 }
-@function get-component-id($key){
+
+@function get-component-id($key) {
     @return map-get($component-id-lookup, $key);
 }
+
 
 @mixin g-generate-scale-sizes($selector : false, $scale-map: $scale-units) {
     @each $key, $unit in $scale-map {
@@ -35,33 +39,35 @@ $scale-units: (
         }
     }
 }
-@mixin g-generate-component($component-key){
+
+@mixin g-generate-component($component-key) {
 
     @include block(get-component-id($component-key), component) {
 
-        @if ( $component-key == button ){
+        @if ($component-key == button) {
             @include c-button();
-
-
+        } @else if ($component-key== card) {
+            @include c-card();
+        } @else if ($component-key== kabob) {
+            @include c-kabob();
         }
         @each $key, $name in $THEME_RENDER_KEYS {
             @include modifier($key) {
                 //  @include c-button($component-name, $key);
-                @if ( $component-key == button ){
+                @if ($component-key == button) {
                     @include c-button($key);
+                } @else if ($component-key== card) {
+                    @include c-card($key);
+                }@else if ($component-key== kabob) {
+                    @include c-kabob($key);
                 }
-
             }
         }
     }
+}
 
-
-
-      /*  @each $key, $name in $THEME_RENDER_KEYS {
-            @include modifier($key) {
-              //  @include c-button($component-name, $key);
-            }
-        }
-*/
+@mixin g-generate-all-components($component-ids:$component-id-lookup){
+    @each $key, $name in $component-ids {
+        @include g-generate-component($key);
     }
-
+}

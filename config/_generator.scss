@@ -1,13 +1,23 @@
 //** CONFIG GENERATOR .
 
 @if ($generate-swatch-classes) {
+    @debug "generating swatches";
     @include g-generate-swatches();
 }
 
 @if ($generate-scheme-classes){
+    @debug "generating scheme";
+
     @include g-generate-scheme-utility-classes;
 }
 
 @if ($generate-type-classes) {
-  @include g-generate-all-font-utility-classes;
+    @debug "generating typpe";
+    @include g-generate-all-font-utility-classes;
+}
+
+@if ($generate-components){
+    @debug "generating components";
+
+    @include g-generate-all-components;
 }

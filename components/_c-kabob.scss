@@ -1,8 +1,5 @@
-$component-name: 'Kabob';
 
-
-
-@mixin c-kabob($id:$component-name, $color-scheme: $chroma-active-scheme,$reflect: false, $width: 100%,$divider:true, $unit: $default-scale-unit ) {
+@mixin c-kabob( $color-scheme: $chroma-active-scheme,$reflect: false, $width: 100%,$divider:true, $unit: get-scale-units() ) {
 
     $self: &;
     width: $width;
@@ -22,15 +19,15 @@ $component-name: 'Kabob';
     }
 
     &__left, &__right {
-        @include u-icon-svg(color($color-scheme, accent), ms($unit));
+        @include u-icon-svg(color($color-scheme, accent), ms(0));
     }
     .--monochrome &__left, .--monochrome &__right {
-        @include u-icon-svg(color($color-scheme, foreground), ms($unit));
+        @include u-icon-svg(color($color-scheme, foreground), ms(0));
     }
 
     /// .--xs &__left, .--xs &__right adds size flags
-    @include g-generate-scale-sizes(  #{&}__right); //#{&}__left
-    @include g-generate-scale-sizes(  #{&}__left); //#{&}__left
+   // @include g-generate-scale-sizes(  #{&}__right); //#{&}__left
+  //  @include g-generate-scale-sizes(  #{&}__left); //#{&}__left
 
 
     &__inner {
@@ -62,13 +59,3 @@ $component-name: 'Kabob';
     @content;
 }
 
-@include block($component-name, component) {
-    @if ($generate-components) {
-        @include c-kabob($component-name);
-        @each $key, $name in $THEME_RENDER_KEYS {
-            @include modifier($key) {
-                @include c-kabob($component-name, $key);
-            }
-        }
-    }
-}

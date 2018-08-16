@@ -20,6 +20,7 @@
    // @include setType(2,font-san-serif);
     font-size: ms(0);
     text-align: center;
+
     &.--no-background, &.--no-background:hover {
         background-color: transparent;
     }
@@ -58,7 +59,5 @@
         @include u-icon-svg(color($color-scheme,foreground), ms(get-scale-units()));
     }
 
-    //  @include c-kabob($id, $color-scheme, true, $width, false,$units) {
-    //@content;
-    //  }
+
 }

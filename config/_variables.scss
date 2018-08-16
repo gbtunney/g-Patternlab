@@ -1,7 +1,8 @@
 ////GENERATOR VARIABLES
 $generate-swatch-classes: false!default;
 $generate-type-classes: false!default;
-$generate-scheme-classes:false!default;
+$generate-scheme-classes:true!default;
+$generate-components:true!default;
 
 
 //TODO:move
@@ -9,24 +10,20 @@ $THEME_RENDER_KEYS: $render_component_themes;
 $DRY_ENABLED:true!default;
 
 
-$debug: true;
+$debug: false;
 //$generate-grid-placeholders: true!default;
-$generate-swatch-placeholders: true!default;
-$generate-type-placeholders: true!default;
-$generate-scheme-placeholders:true!default;
 
 $include-helper-classes:true!default;
 $include-base-classes:true!default;
 $include-styleguide-classes:true!default;
 $include-font-icons:true!default;
 
-$generate-components:true!default;
 
 @if($debug ) {
-    $generate-grid-placeholders: false ;
-    $generate-swatch-placeholders: false ;
-    $generate-type-placeholders: false ;
-    $generate-scheme-placeholders: false ;
+    @debug "setting false";
+    $generate-swatch-classes: false ;
+    $generate-type-classes: false ;
+    $generate-scheme-classes: false ;
     $generate-components:false;
 
     $include-helper-classes: false;
@@ -34,3 +31,5 @@ $generate-components:true!default;
     $include-styleguide-classes: false;
     $include-font-icons:false;
 }
+@debug "hi" #{$generate-scheme-classes};
+

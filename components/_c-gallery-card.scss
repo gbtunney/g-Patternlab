@@ -14,8 +14,15 @@ $component-name: 'Gallery-Card';
 	transition: all 0.3s ease;
 	text-align: left;
 
-	@include color-scheme($color-scheme, $border, false);
 	padding: rhythm(2) rhythm(2);
+
+	$props: (
+		background: true,
+		foreground: true,
+		border: true,
+		accent:true
+	);
+	@include g-color-scheme($color-scheme,$props...);
 
 	//TODO: fix/move this
 	@extend %p-additional-props;
@@ -81,7 +88,6 @@ $component-name: 'Gallery-Card';
 
 		@each $key, $name in $THEME_RENDER_KEYS {
 			@include modifier($key) {
-				@include c-card($key);
 			}
 		}
 	}
