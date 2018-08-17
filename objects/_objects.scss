@@ -43,6 +43,16 @@
             fill: $color
         );
      //   @debug $props;
-        @include g-color-scheme($props...);
+        @if ($color!=false){
+            @include g-color-scheme($props...);
+        }
     }
+}
+
+
+@mixin o-icon-svg($color:red, $scale-unit: $default-scale-unit) {
+
+   @include dry('icon-inline-svg-#{$scale-unit}'){
+       @include u-icon-svg(false, ms(get-scale-units($scale-unit)));
+   }
 }

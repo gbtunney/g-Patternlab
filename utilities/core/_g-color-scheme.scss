@@ -103,9 +103,9 @@ $property-lookup-map: (
             @include write-scheme-property(fill, $fill, $default-svg-selector);
         }@else if ( type-of($fill) == string and chroma-has-color(fill,$color-scheme ) ){
             @include write-scheme-property(fill, $color-scheme, $default-svg-selector);
-        }@else if( type-of($fill) == string and chroma-has-color(background,$color-scheme )  ){
+        }@else if( type-of($fill) == string and chroma-has-color($fill,$color-scheme )  ){
             //todo: figure out how to do a fallback color?
-            @include write-scheme-property(fill, color($color-scheme, background), $default-svg-selector);
+            @include write-scheme-property(fill, color($color-scheme, $fill), $default-svg-selector);
         }
 
     }

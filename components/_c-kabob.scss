@@ -9,6 +9,24 @@
     cursor: pointer;
     transition: all 0.3s ease;
 
+    $props: (
+        background: true,
+        foreground: true,
+        border: true,
+        fill:accent
+    );
+    @include g-color-scheme($color-scheme,$props...);
+
+    &.--monochrome{
+        $props: (
+            background: true,
+            foreground: true,
+            border: true,
+            fill:foreground
+        );
+        @include g-color-scheme($color-scheme,$props...);
+    }
+
     @if ($reflect) {
         &__right {
             @include u-reflect-X();
@@ -19,21 +37,31 @@
     }
 
     &__left, &__right {
-        @include u-icon-svg(color($color-scheme, accent), ms(0));
+     //   @include u-icon-svg(color($color-scheme, accent), ms(0));
+    //    @include o-icon-svg(color($color-scheme, accent));
     }
     .--monochrome &__left, .--monochrome &__right {
-        @include u-icon-svg(color($color-scheme, foreground), ms(0));
+      //  @include u-icon-svg(color($color-scheme, foreground), ms(0));
+    //    @include o-icon-svg(color($color-scheme, foreground));
+
     }
 
-    /// .--xs &__left, .--xs &__right adds size flags
-   // @include g-generate-scale-sizes(  #{&}__right); //#{&}__left
-  //  @include g-generate-scale-sizes(  #{&}__left); //#{&}__left
+    @each $key, $unit in $scale-units {
+        @debug 'kabob scale-sizes-#{$key}';
+
+        &.--#{$key} &__right,&.--#{$key} &__left{
+           @include o-icon-svg(color($color-scheme, accent), $key);
+        }
+        &.--monochrome.--#{$key} &__right,&.--monochrome.--#{$key} &__left{
+           @include o-icon-svg(color($color-scheme, foreground), $key);
+        }
+    }
 
 
     &__inner {
         //float center text
         position: absolute;
-        width: 100%;
+        width: auto;
         margin: 0 auto;
 
         .--no-divider & {
@@ -54,7 +82,47 @@
 
     @if ($divider){
 
+        &__center {
+            position: relative;
+            display: flex;
+             align-items: center;
+            height: 100%;
+            width: 100%;
+
+            &:after {
+                display: block;
+                width: 100%;
+                height: ms(get-scale-units()) * .1;
+                background: color($color-scheme, foreground);
+                content: " ";
+
+                $multiplier: .1; ///size the line
+
+                .--xs & {
+                    height: ms(get-scale-units(xs))  * $multiplier;
+                }
+                .--sm & {
+                    height: ms(get-scale-units(sm))  * $multiplier;
+                }
+                .--md & {
+                    height: ms(get-scale-units(md))  * $multiplier;
+                }
+                .--lg & {
+                    height: ms(get-scale-units(lg))  * $multiplier;
+                }
+                .--xl & {
+                    height: ms(get-scale-units(xl)) * $multiplier;
+                }
+                .--no-divider & {
+                    content: " ";
+                    height: 0;
+                    display: none;
+                }
+            }
+        }
     }
+
+
 
     @content;
 }

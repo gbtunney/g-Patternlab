@@ -4,14 +4,14 @@ $component-id-lookup: (
     kabob: 'Kabob'
 );
 
-$default-scale-unit: md !default;
+$default-scale-unit: xs!default;
 
 $scale-units: (
-    xs: -2,
-    sm: -1,
-    md: 0,
-    lg: 1,
-    xl: 2
+    xs: -1,
+    sm: 0,
+    md: 1,
+    lg: 2,
+    xl: 3
 ) !default;
 
 @function get-scale-units($key: $default-scale-unit) {
@@ -22,6 +22,15 @@ $scale-units: (
     @return map-get($component-id-lookup, $key);
 }
 
+@mixin g-generate-scale-sizes-dry($scale-map: $scale-units) {
+    @each $key, $unit in $scale-map {
+        @debug 'scale-sizes-#{$key}';
+
+       @include dry('scale-sizes-#{$key}',$DRY_ENABLED){
+           @include set-multiple(rhythm($unit), width height);
+       }
+    }
+}
 
 @mixin g-generate-scale-sizes($selector : false, $scale-map: $scale-units) {
     @each $key, $unit in $scale-map {
@@ -29,7 +38,7 @@ $scale-units: (
 
         @if ($selector) {
             &.--#{$key} #{$selector} {
-                @include set-multiple(rhythm($unit), width height);
+                @include set-multiple(ms($unit), width height);
             }
         } @else {
             &.--#{$key} {
