@@ -1,7 +1,8 @@
 $component-id-lookup: (
     button: 'Button',
     card: 'Card',
-    kabob: 'Kabob'
+    kabob: 'Kabob',
+    divider: 'Divider'
 );
 
 $default-scale-unit: xs!default;
@@ -34,8 +35,6 @@ $scale-units: (
 
 @mixin g-generate-scale-sizes($selector : false, $scale-map: $scale-units) {
     @each $key, $unit in $scale-map {
-        @debug '--#{$key} : #{$unit}';
-
         @if ($selector) {
             &.--#{$key} #{$selector} {
                 @include set-multiple(ms($unit), width height);
@@ -59,6 +58,8 @@ $scale-units: (
             @include c-card();
         } @else if ($component-key== kabob) {
             @include c-kabob();
+        }@else if ($component-key== divider) {
+            @include c-divider();
         }
         @each $key, $name in $THEME_RENDER_KEYS {
             @include modifier($key) {
@@ -69,6 +70,8 @@ $scale-units: (
                     @include c-card($key);
                 }@else if ($component-key== kabob) {
                     @include c-kabob($key);
+                }@else if ($component-key== divider) {
+                    @include c-divider($key);
                 }
             }
         }
