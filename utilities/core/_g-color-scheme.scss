@@ -97,6 +97,10 @@ $property-lookup-map: (
 
     @if ($accent == true) {
         @include write-scheme-property(accent, $color-scheme, $accent-selector);
+    } @else if (type-of($accent) == string and chroma-has-color($accent,$color-scheme )) {
+        //todo: figure out how to do a fallback color?
+        @debug 'it has this accent';
+        @include write-scheme-property(accent, color($color-scheme, $accent), $accent-selector);
     } @else if ($accent != false) {
         @include write-scheme-property(accent, $accent, $accent-selector);
     }
@@ -106,8 +110,17 @@ $property-lookup-map: (
             @extend %border-defaults;
             //todo:add bordersize.
         }
-    } @else if ($foreground != false) {
+    }@else if( type-of($border)==string and chroma-has-color($border,$color-scheme )){
+        @include write-scheme-property(border, color($color-scheme,$border)) {
+            @extend %border-defaults;
+            //todo:add bordersize.
+        }
+    } @else if ($border != false) {
         //todo: replace with foreground if no border.
+        @include write-scheme-property(border, $border) {
+            @extend %border-defaults;
+            //todo:add bordersize.
+        }
     }
     //***FILL
     @if ($fill) {

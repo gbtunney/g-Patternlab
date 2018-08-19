@@ -1,6 +1,6 @@
 @mixin c-divider($color-scheme: $chroma-active-scheme, $width: 100%, $unit: get-scale-units()){
 
-    @include c-kabob( $color-scheme,true,  100%){
+    @include c-kabob( $color-scheme,false,true,  100%){
         &__center {
             position: relative;
             display: flex;

@@ -1,5 +1,5 @@
 
-@mixin c-kabob( $color-scheme: $chroma-active-scheme,$reflect: false, $width: auto, $unit: sm, $font: font-san-serif ) {
+@mixin c-kabob( $color-scheme: $chroma-active-scheme,$schemeProps:false,$reflect: false, $width: auto, $unit: sm, $font: font-san-serif) {
     $self: &;
 
     @include dry(c-kabob, $DRY_ENABLED){
@@ -11,16 +11,20 @@
 
     width: $width;
 
-    $props: (
-        background: false,
-        foreground: true,
-        border: false,
-        fill:accent,
-        hover-foreground:rgba( color($color-scheme,foreground), .8 ),
-    hover-fill: adjust-hue(color($color-scheme,accent),-10%),
+    @if ($schemeProps and type-of($schemeProps) == map){
+        @include g-color-scheme($color-scheme,$schemeProps...);
+    }@else{
+        $props: (
+            background: false,
+            foreground: true,
+            border: false,
+            fill:accent,
+            hover-foreground:rgba( color($color-scheme,foreground), .8 ),
+            hover-fill: adjust-hue(color($color-scheme,accent),-10%),
 
-    );
-    @include g-color-scheme($color-scheme,$props...);
+        );
+        @include g-color-scheme($color-scheme,$props...);
+    }
 
     &.--monochrome{
         $props: (
