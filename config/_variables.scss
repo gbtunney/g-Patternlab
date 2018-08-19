@@ -1,13 +1,13 @@
 ////GENERATOR VARIABLES
 $generate-swatch-classes: false!default;
 $generate-type-classes: false!default;
-$generate-scheme-classes:true!default;
+$generate-scheme-classes:false!default;
 $generate-components:true!default;
 
 
 //TODO:move
 $THEME_RENDER_KEYS: $render_component_themes;
-$DRY_ENABLED:true!default;
+$DRY_ENABLED:false!default;
 
 
 $debug: false;
@@ -31,5 +31,3 @@ $include-font-icons:true!default;
     $include-styleguide-classes: false;
     $include-font-icons:false;
 }
-@debug "hi" #{$generate-scheme-classes};
-

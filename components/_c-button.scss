@@ -1,45 +1,87 @@
 
-@mixin c-button( $color-scheme: $chroma-active-scheme,$units:1,$width:auto ) {
+@mixin c-button( $color-scheme: $chroma-active-scheme,$units:2,$width:auto,$font:font-san-serif ) {
 
     //this is basically a wrapper for a kabob.
 
     $self: &;
-    //width: 100%;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    width: $width;
+
+    @include dry(c-button, $DRY_ENABLED){
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
 
     $props: (
         background: true,
         foreground: true,
-        border: true
+        border: true,
+        fill:foreground,
+        hover-background:rgba( color($color-scheme,background), .7 ),
+        hover-foreground:rgba( color($color-scheme,foreground), .7 )
     );
     @include g-color-scheme($color-scheme,$props...);
 
+    &.--hover-invert{
+        $props: (
+            background: true,
+            foreground: true,
+            border: true,
+            fill:foreground,
+            hover-background: invert,
+            hover-foreground:invert
+        );
+        @include g-color-scheme($color-scheme,$props...);
+
+    }
+
+
+
+    &.--accent{
+        $props: (
+            background: true,
+            foreground: true,
+            border: true,
+            fill:accent,
+            hover-background:true ,
+            hover-foreground:true
+        );
+        @include g-color-scheme($color-scheme,$props...);
+    }
+
     @extend %u-reset-link-color;
 
-   // @include setType(2,font-san-serif);
-    font-size: ms(0);
-    line-height: 0;
+
+    &__center{
+        @include setType($units,$font,0);
+       // @include adjust-font-size-to(ms($units),1);
+
+    }
+
+    &.--italic {
+        &__center{
+            @include setType($units,font-serif-italic,1);
+            // @include adjust-font-size-to(ms($units),1);
+        }
+    }
+
     text-align: center;
 
     &.--no-background, &.--no-background:hover {
         background-color: transparent;
     }
 
-
-
-    //todo: if scheme has special hover
-    &:hover {
-        background-color: lighten(color($color-scheme, background), 10%);
-        transform: translateY(-5px);
-        box-shadow: 0 20px 20px -15px rgba(0, 0, 0, 0.3);
-    }
-
     &.--no-border {
         border: none;
     }
+    padding: rhythm(.5) rhythm(1);
 
-    padding: rhythm(.2) rhythm(.2);
+    &.--sm-padding{
+        padding: rhythm(.25) rhythm(.25);
+
+    }
+
 
     &.--no-padding{
         padding: 0;
@@ -58,18 +100,34 @@
         height: 100%;
     }
 
-    &__icon{
+    &__icon, &__left, &__right{
 
-        @debug "colorschee :  #{$color-scheme} foregrounf: #{color($color-scheme,foreground)}";
-        @include u-icon-svg(color($color-scheme,foreground), ms(get-scale-units()));
+       // @debug "colorschee :  #{$color-scheme} foregrounf: #{color($color-scheme,foreground)}";
+       @include o-icon-svg(false, $units - 1 );
     }
 
     @each $key, $unit in $scale-units {
         // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
 
-        &.--#{$key} &__icon{
-            @include o-icon-svg(color($color-scheme, foreground), $key);
+        &.--#{$key} &__icon,&.--#{$key} &__left, &.--#{$key} &__right {
+            @include o-icon-svg(false, $unit - 2 );
+        }
+    }
+    @each $key, $unit in $scale-units {
+
+        &.--#{$key} &__center{
+          @include setType( $unit,$font,1)
+        }
+        &.--italic#{&}.--#{$key} &__center{
+            @include setType( $unit,font-serif-italic,1)
         }
     }
 
+
+    &__left + &__center{
+        padding-left: rhythm(.5);
+    }
+    &__center + &__right{
+        padding-left: rhythm(.5);
+    }
 }

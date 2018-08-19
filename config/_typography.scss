@@ -27,6 +27,9 @@ $BASE_FONT_SIZE: map-get($modularscale, base);
 } @else {
     $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
 }
+@debug $BASE_FONT_SIZE;
+
+@debug ms(0);
 
 //***** SET compass vars
 $base-font-size: $BASE_FONT_SIZE;

@@ -1,5 +1,5 @@
 
-@mixin c-kabob( $color-scheme: $chroma-active-scheme,$reflect: false, $width: 100%, $unit: sm, $font: font-san-serif ) {
+@mixin c-kabob( $color-scheme: $chroma-active-scheme,$reflect: false, $width: auto, $unit: sm, $font: font-san-serif ) {
     $self: &;
 
     @include dry(c-kabob, $DRY_ENABLED){
@@ -12,25 +12,30 @@
     width: $width;
 
     $props: (
-        background: true,
+        background: false,
         foreground: true,
         border: false,
-        fill:accent
+        fill:accent,
+        hover-foreground:rgba( color($color-scheme,foreground), .8 ),
+    hover-fill: adjust-hue(color($color-scheme,accent),-10%),
+
     );
     @include g-color-scheme($color-scheme,$props...);
 
     &.--monochrome{
         $props: (
-            background: true,
+            background: false,
             foreground: true,
             border: false,
-            fill:foreground
+            fill:foreground,
+            hover-foreground:rgba( color($color-scheme,foreground), .7 )
         );
         @include g-color-scheme($color-scheme,$props...);
     }
 
+
+
     &__center{
-        @debug $unit;
         @include setType(get-scale-units($unit), $font);
     }
 
@@ -44,20 +49,20 @@
     }
 
     &__left, &__right {
-       @include o-icon-svg(color($color-scheme, accent),$unit);
+        @include o-icon-svg(false,$unit);
     }
     .--monochrome &__left, .--monochrome &__right {
-       @include o-icon-svg(color($color-scheme, foreground), $unit);
+       //@include o-icon-svg(color($color-scheme, foreground), $unit);
     }
 
     @each $key, $unit in $scale-units {
        // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
 
         &.--#{$key} &__right,&.--#{$key} &__left{
-           @include o-icon-svg(color($color-scheme, accent), $key);
+           @include o-icon-svg(false, $key);
         }
         &.--monochrome.--#{$key} &__right,&.--monochrome.--#{$key} &__left{
-          @include o-icon-svg(color($color-scheme, foreground), $key);
+         // @include o-icon-svg(color($color-scheme, foreground), $key);
         }
     }
     @each $key, $unit in $scale-units {

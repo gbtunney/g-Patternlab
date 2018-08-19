@@ -8,6 +8,13 @@
             height: 100%;
             width: 100%;
 
+            .--monochrome & {
+                &:after {
+                   // background: red;
+                    background: color($color-scheme, foreground);
+                }
+            }
+
             &:after {
                 display: block;
                 width: 100%;

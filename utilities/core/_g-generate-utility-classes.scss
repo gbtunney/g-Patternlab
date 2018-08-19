@@ -5,13 +5,13 @@ $utility-seperator: '-' !default;
 
 $utility-prefixes: (
     swatch: "swatch-color",
-    schemes: "scheme",
+    scheme: "scheme",
     type: "type") !default;
 
 $type-size-list: -1, 0, 1, 2, 3, 4, 5 !default;
 
-@function get-utility-prefix($utility-type-key, $key ) {
-    @return #{map-get($utility-prefixes,$key)}#{$utility-seperator}#{$key};
+@function get-utility-prefix($utility-type-key, $key:'' ) {
+    @return #{map-get($utility-prefixes,$utility-type-key)}#{$utility-seperator}#{$key};
 }
 
 //*****GENERATES SWATCH (background with inverted text)
@@ -37,6 +37,7 @@ $type-size-list: -1, 0, 1, 2, 3, 4, 5 !default;
         $key: map-get($scheme, key);
 
         @include utility(get-utility-prefix(scheme, $key)) {
+            @debug 'doing utility class   #{get-utility-prefix(scheme)}   es#{get-utility-prefix(scheme, $key)}';
 
             @include g-color-scheme($key, true, true);
 

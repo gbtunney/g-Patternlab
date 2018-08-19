@@ -35,7 +35,6 @@
         width: 100%;
         height: 100%;
 
-        @debug "svg the color is #{$color}";
         $props: (
             background: false,
             foreground:false,
@@ -47,7 +46,7 @@
     }
 }
 
-@mixin o-icon-svg($color:red, $scale-unit: $default-scale-unit) {
+@mixin o-icon-svg($color:false, $scale-unit: $default-scale-unit) {
 
     @if (type-of($scale-unit) == number) {
         @include dry('icon-inline-svg-#{$scale-unit}', $DRY_ENABLED) {
