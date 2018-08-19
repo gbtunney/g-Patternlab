@@ -21,3 +21,12 @@
         }
     }
 }
+
+@mixin resetType( ) {
+    //TODO : fix
+    $required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight);
+    // $font-map: setting($font); //this is the only real place setting is used
+    @for $i from 1 through length($required-font-props) {
+        #{nth($required-font-props, $i)}: inherit;
+    }
+}
