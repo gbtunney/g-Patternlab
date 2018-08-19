@@ -19,6 +19,7 @@
 
    // @include setType(2,font-san-serif);
     font-size: ms(0);
+    line-height: 0;
     text-align: center;
 
     &.--no-background, &.--no-background:hover {
@@ -38,9 +39,11 @@
         border: none;
     }
 
-    padding: rhythm(.5) rhythm(1);
+    padding: rhythm(.2) rhythm(.2);
 
-
+    &.--no-padding{
+        padding: 0;
+    }
     //the default is square button
     border-radius: 0;
     &.--rounded {
@@ -49,15 +52,24 @@
     }
 
     &.--circle {
-        padding: #{rhythm(1) / 8};
+        padding: #{rhythm(1) / 6};
         border-radius: 100%;
         line-height: 0;
-
+        height: 100%;
     }
 
     &__icon{
+
+        @debug "colorschee :  #{$color-scheme} foregrounf: #{color($color-scheme,foreground)}";
         @include u-icon-svg(color($color-scheme,foreground), ms(get-scale-units()));
     }
 
+    @each $key, $unit in $scale-units {
+        // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
+
+        &.--#{$key} &__icon{
+            @include o-icon-svg(color($color-scheme, foreground), $key);
+        }
+    }
 
 }

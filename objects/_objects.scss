@@ -24,8 +24,6 @@
     }
 }
 
-
-
 //********VISUAL OBJECTS ///
 @mixin u-icon-svg($color:red,$width: 100%,$height:$width) {
     width: $width;
@@ -37,22 +35,30 @@
         width: 100%;
         height: 100%;
 
+        @debug "svg the color is #{$color}";
         $props: (
             background: false,
             foreground:false,
             fill: $color
         );
-     //   @debug $props;
-        @if ($color!=false){
+        @if ($color!=false) {
             @include g-color-scheme($props...);
         }
     }
 }
 
-
 @mixin o-icon-svg($color:red, $scale-unit: $default-scale-unit) {
 
-   @include dry('icon-inline-svg-#{$scale-unit}'){
-       @include u-icon-svg(false, ms(get-scale-units($scale-unit)));
-   }
+    @if (type-of($scale-unit) == number) {
+        @include dry('icon-inline-svg-#{$scale-unit}', $DRY_ENABLED) {
+            @include u-icon-svg($color, ms($scale-unit));
+        }
+    } @else if (type-of($scale-unit)== string) {
+
+        @include dry('icon-inline-svg-#{$scale-unit}', $DRY_ENABLED) {
+            @include u-icon-svg($color, ms(get-scale-units($scale-unit)));
+        }
+    } @else {
+        @debug '!!!! UNIT ERROR';
+    }
 }
