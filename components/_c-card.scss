@@ -1,6 +1,6 @@
 $component-name: 'Card';
 
-@mixin c-card( $color-scheme: $chroma-active-scheme ) {
+@mixin c-card( $color-scheme: $chroma-active-scheme,$schemeProps:false ) {
 
 	$self: &;
 
@@ -9,27 +9,59 @@ $component-name: 'Card';
 
 //@include container-padding;
 
-	$props: (
-		background: true,
-		foreground: true,
-		border: true,
-		accent:true
-	);
-	@include g-color-scheme($color-scheme,$props...);
+	@if ($schemeProps and type-of($schemeProps) == map){
+		@include g-color-scheme($color-scheme,$schemeProps...);
+	}@else{
+		$props: (
+			background: true,
+			foreground: true,
+			border: true,
+			accent:true
+		);
+		@include g-color-scheme($color-scheme,$props...);
+	}
 
+	&.--no-border{
+		$props: (
+			background: true,
+			foreground: true,
+			border: accent,
+			accent:true
+		);
+		@include g-color-scheme($color-scheme,$props...);
+
+		&:hover{
+			$props: (
+				background: true,
+				foreground: true,
+				border: accent,
+				accent:true
+			);
+			@include g-color-scheme($color-scheme,$props...);
+		}
+
+	}
+
+	&.--no-background, &.--no-background:hover {
+		background-color: transparent;
+	}
+
+	&.--no-border {
+		border: none;
+	}
 	//******** STATIC props here....
 	//@include u-component-properties($id) {
 	padding: rhythm(1);
-		display: inline-block;
+		display: block;
 		cursor: pointer;
 		transition: all 0.3s ease;
 		text-align: left;
-		box-shadow: 0 6px 10px -5px rgba(0, 0, 0, 0.2);
+		//box-shadow: 0 6px 10px -5px rgba(0, 0, 0, 0.2);
 
 
 		#{$self}:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 20px 20px -15px rgba(0, 0, 0, 0.3);
+			//transform: translateY(-5px);
+			//box-shadow: 0 20px 20px -15px rgba(0, 0, 0, 0.3);
 		}
 		#{$self}__header {
 			background: purple;
@@ -45,10 +77,10 @@ $component-name: 'Card';
 		//*******NON STATIC props here....
 		#{$self}__title {
 			@extend %u-reset-rhythm;
-			@include setType(2, font-san-serif);
-			@include trailing-border();
+			@include setType(2, font-san-serif,1);
+			//@include trailing-border();
 			@include leader(1);
-			@include trailer(1);
+			//@include trailer(1);
 		}
 		#{$self}__subtitle {
 			@extend %u-reset-rhythm;
@@ -67,7 +99,26 @@ $component-name: 'Card';
 				@include leader();
 			}
 		}
+	&__inner {
+		position: relative;
+		display: block;
+		&:hover {
+			&:before {
 
+				display: block;
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				content: " ";
+				background: rgba(color($color-scheme, background), .3);
+			}
+		}
+	}
+
+	&:hover {
+	//	transform: translateY(-5px);
+		//box-shadow: 0 20px 20px -15px rgba(0, 0, 0, 0.3);
+	}
 		#{u-header-selector()}, a {
 			//color: inherit;
 			background: inherit;

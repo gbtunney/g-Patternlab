@@ -10,8 +10,8 @@
     min-height: $min-height;
 }
 
-@mixin u-make-container($percent: $content-boxed-indent) {
-    max-width: $content-max-width;
+@mixin u-make-container($percent: $content-boxed-indent, $max: $content-max-width) {
+    max-width: $max;
     margin: 0 auto;
     width: $percent;
 }
