@@ -11,10 +11,27 @@ $property-lookup-map: (
     accent: color,
     border: border-color,
     link: color,
+    fill: fill,
     hover-background: background-color,
     hover-foreground: color,
-    fill: fill,
     hover-fill: fill
+);
+
+$fallback-lookup-map: (
+    border: foreground,
+    fill:foreground,
+    hover-background: background,
+    hover-foreground: foreground,
+    hover-fill: foreground
+);
+
+$inverted-key-lookup-map: (
+    foreground: background,
+    background: foreground,
+    accent: accent,
+    border: background,
+    link: accent,
+    fill: background
 );
 
 %border-defaults {
@@ -22,42 +39,34 @@ $property-lookup-map: (
     border-width: 1px;
 }
 
+@function get-fallback-property($key) {
+    @return map-get($fallback-lookup-map, $key);
+}
+
 @function get-lookup-property($key) {
     @return map-get($property-lookup-map, $key);
+}
+
+@function get-inverted-scheme-key($key) {
+    @return map-get($inverted-key-lookup-map, $key);
 }
 
 @function get-inverted-colormap( $base-scheme: $chroma-active-scheme ) {
 
     $new-colors: (
-        foreground: color($base-scheme, background),
-        background: color($base-scheme, foreground),
-        accent: color($base-scheme, accent),
-        border: color($base-scheme, foreground),
+        foreground: color($base-scheme, get-inverted-scheme-key(foreground)),
+        background: color($base-scheme, get-inverted-scheme-key(background)),
+        accent: color($base-scheme, get-inverted-scheme-key(accent)),
+        border: color($base-scheme, get-inverted-scheme-key(background))
     );
     @return $new-colors;
 }
 
-@mixin write-scheme-property($property: foreground, $value: red,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
+@mixin write-scheme-property($property: foreground, $value: false,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
 
     $property-to-write: get-lookup-property($property);
 
-    $value-to-write: false;
-
-    @if (type-of($value) == color) {
-
-        $value-to-write: $value;
-
-    } @else if (type-of($value)== string  and chroma-has-scheme($value)) {
-
-        $color-scheme: $value;
-
-        @if (chroma-has-color($property, $color-scheme)) {
-            $value-to-write: color($color-scheme, $property);
-        } @else {
-            @debug "*****ALERT ! SCHEME #{$color-scheme} does not have a value for #{$property}";
-            $value-to-write: false;
-        }
-    }
+    $value-to-write: $value;
 
     @if ($value-to-write and type-of($colorfunc)== string  and function-exists($colorfunc) and $colorfuncArgs != false) {
         $value-to-write: call(get-function($colorfunc), $value-to-write, $colorfuncArgs);
@@ -82,110 +91,88 @@ $property-lookup-map: (
     }
 }
 
+@function get-currentscheme-color-by-string($color-key, $value, $color-scheme:$chroma-active-scheme ) {
+
+    //check to see if string is the name of a color scheme OR a key to color in the current one...
+
+    //
+    @if (type-of($value) == string) {
+
+        @if (chroma-has-scheme($value)) {
+
+            //value is the name of a color scheme
+            @return color($value, $color-key);
+
+        } @else if (chroma-has-color($value, $color-scheme)) {
+
+            @return color($color-scheme, $value);
+
+        } @else {
+            @debug "ALERT! key: #{$color-key} value: #{$value} is not a valid colorscheme or a another color present in current scheme";
+        }
+
+    } @else {
+        @return false;
+    }
+
+}
+
+@function get-current-scheme-color($color-key, $value, $color-scheme:$chroma-active-scheme ) {
+    ///route through here based on variable datatypes
+
+    @if ($value == true) {
+
+        ///see if scheme has color value for key
+        @if (chroma-has-color($color-key, $color-scheme)) {
+            @return color($color-scheme, $color-key);
+        } @else {
+            $fallback-key: get-fallback-property($color-key);
+
+            @debug "****** ALERT!  key: #{$color-key} not valid in scheme: #{$color-scheme} , trying fallback key: #{$fallback-key}";
+
+            @if (chroma-has-color($fallback-key, $color-scheme)) {
+
+                @debug "----fallback for key #{$color-key} to #{$fallback-key} in scheme #{$color-scheme} was successful";
+                @return color($color-scheme, $fallback-key);
+
+            } @else {
+                @return false;
+            }
+        }
+
+    } @else if (type-of($value) == string) {
+
+        @if (chroma-has-color($value, $color-scheme)) {
+            @return get-current-scheme-color-by-string($color-key, $value, $color-scheme);
+        } @else {
+            @debug "ALERT!  value: #{$value} is not a valid color present in scheme: #{$color-scheme}";
+        }
+
+    } @else if (type-of($value) == color) {
+        @return $value;
+    } @else {
+        @return false;
+    }
+}
+
 @mixin g-color-scheme($color-scheme:$chroma-active-scheme, $background:true, $foreground:true,$accent:false, $border:false,$hover-background:false,$hover-foreground:false,$hover-fill:false, $fill:false, $stroke:false,$accent-selector:$default-accent-selector, $border-size: 1px ) {
 
-    @if ($background == true) {
-        @include write-scheme-property(background, $color-scheme);
-    } @else if ($background != false) {
-        @include write-scheme-property(background, $background);
-    }
-    @if ($foreground == true) {
-        @include write-scheme-property(foreground, $color-scheme);
-    } @else if ($foreground != false) {
-        @include write-scheme-property(foreground, $foreground);
-    }
+    @include write-scheme-property(background, get-current-scheme-color(background, $background, $color-scheme));
 
-    @if ($accent == true) {
-        @include write-scheme-property(accent, $color-scheme, $accent-selector);
-    } @else if (type-of($accent) == string and chroma-has-color($accent,$color-scheme )) {
-        //todo: figure out how to do a fallback color?
-        @debug 'it has this accent';
-        @include write-scheme-property(accent, color($color-scheme, $accent), $accent-selector);
-    } @else if ($accent != false) {
-        @include write-scheme-property(accent, $accent, $accent-selector);
+    @include write-scheme-property(foreground, get-current-scheme-color(foreground, $foreground, $color-scheme));
+
+    @include write-scheme-property(accent, get-current-scheme-color(accent, $accent, $color-scheme), $accent-selector);
+
+    @include write-scheme-property(border, get-current-scheme-color(border, $border, $color-scheme)) {
+        @extend %border-defaults;
     }
+    @include write-scheme-property(fill, get-current-scheme-color(fill, $fill, $color-scheme), $default-svg-selector);
 
-    @if ($border == true) {
-        @include write-scheme-property(border, $color-scheme) {
-            @extend %border-defaults;
-            //todo:add bordersize.
-        }
-    }@else if( type-of($border)==string and chroma-has-color($border,$color-scheme )){
-        @include write-scheme-property(border, color($color-scheme,$border)) {
-            @extend %border-defaults;
-            //todo:add bordersize.
-        }
-    } @else if ($border != false) {
-        //todo: replace with foreground if no border.
-        @include write-scheme-property(border, $border) {
-            @extend %border-defaults;
-            //todo:add bordersize.
-        }
-    }
-    //***FILL
-    @if ($fill) {
-        @if (type-of($fill) == color) {
-            @include write-scheme-property(fill, $fill, $default-svg-selector);
-        } @else if (type-of($fill) == string and chroma-has-color(fill,$color-scheme )) {
-            @include write-scheme-property(fill, $color-scheme, $default-svg-selector);
-        } @else if (type-of($fill) == string and chroma-has-color($fill,$color-scheme )) {
-            //todo: figure out how to do a fallback color?
-            @include write-scheme-property(fill, color($color-scheme, $fill), $default-svg-selector);
-        }
+    ///******HOVER FUNCTIONS>
+    @include write-scheme-property(hover-background, get-current-scheme-color(hover-background, $hover-background, $color-scheme), '#{&}:hover', false, false, true);
 
-    }
-    @if ($hover-background) {
-        @if (type-of($hover-background) == color) {
-           // @debug '#{&}:hover';
-            @include write-scheme-property(hover-background, $hover-background, '#{&}:hover', false, false, true);
-        }@else if ($hover-background=="invert") {
-            //todo: figure out how to do a fallback color?
+    @include write-scheme-property(hover-foreground, get-current-scheme-color(hover-foreground, $hover-foreground, $color-scheme), '#{&}:hover', false, false, true);
 
-            $inverted-colormap: get-inverted-colormap($color-scheme);
-            @include write-scheme-property(hover-background, map-get($inverted-colormap,background), '#{&}:hover', false, false, true);
-        } @else if (type-of($hover-background) == string and chroma-has-color($hover-background,$color-scheme )) {
-            //todo: figure out how to do a fallback color?
-            @include write-scheme-property(hover-background, color($color-scheme, $hover-background), '#{&}:hover', false, false, true);
-        } @else if (type-of($hover-background) == string) {
-            //todo: figure out how to do a fallback color?
-            @include write-scheme-property(hover-background, $hover-background, '#{&}:hover', lighten, 20%, true);
-        }
-    }
-    @if ($hover-foreground) {
-        @if (type-of($hover-foreground) == color) {
-            @include write-scheme-property(hover-foreground, $hover-foreground, '#{&}:hover', false, false, true);
-            @include write-scheme-property(hover-fill, $hover-foreground, '#{&}:hover #{$default-svg-selector}',false,false,true);
-
-        }@else if ($hover-foreground== invert) {
-            //todo: figure out how to do a fallback color?
-//@debug 'inverted';
-            $inverted-colormap: get-inverted-colormap($color-scheme);
-            @include write-scheme-property(hover-foreground, map-get($inverted-colormap,foreground), '#{&}:hover', false, false, true);
-            @include write-scheme-property(hover-fill, map-get($inverted-colormap,foreground), '#{&}:hover #{$default-svg-selector}', false,false,true);
-
-        } @else if (type-of($hover-foreground) == string and chroma-has-color($hover-foreground,$color-scheme )) {
-            //todo: figure out how to do a fallback color?
-            @include write-scheme-property(hover-foreground, color($color-scheme, $hover-foreground), '#{&}:hover', darken, 20%, true);
-            @include write-scheme-property(hover-fill, color($color-scheme, $hover-foreground), '#{&}:hover #{$default-svg-selector}', darken, 20%, true);
-        } @else if (type-of($hover-background) == string) {
-            //todo: figure out how to do a fallback color?
-            @include write-scheme-property(hover-foreground, $hover-foreground, '#{&}:hover', lighten, 20%, true);
-        }
-    }
-
-    @if ($hover-fill) {
-        @if (type-of($hover-fill) == color) {
-           // @include write-scheme-property(hover-foreground, $hover-foreground, '#{&}:hover', false, false, true);
-            @include write-scheme-property(hover-fill, $hover-fill, '#{&}:hover #{$default-svg-selector}',false,false,true);
-
-        } @else if (type-of($hover-foreground) == string and chroma-has-color($hover-foreground,$color-scheme )) {
-            //todo: figure out how to do a fallback color?
-           // @include write-scheme-property(hover-foreground, color($color-scheme, $hover-foreground), '#{&}:hover', darken, 20%, true);
-            @include write-scheme-property(hover-fill, color($color-scheme, $hover-foreground), '#{&}:hover #{$default-svg-selector}', darken, 20%, true);
-        } @else if (type-of($hover-background) == string) {
-            //todo: figure out how to do a fallback color?
-            @include write-scheme-property(hover-foreground, $hover-foreground, '#{&}:hover', lighten, 20%, true);
-        }
-    }
+    @include write-scheme-property(hover-fill, get-current-scheme-color(hover-fill, $hover-fill, $color-scheme), '#{&}:hover #{$default-svg-selector}', false, false, true);
 
 }
