@@ -104,6 +104,7 @@ $component-name: 'Card';
 		display: block;
 		&:hover {
 			&:before {
+pointer-events: none;
 
 				display: block;
 				position: absolute;

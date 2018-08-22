@@ -46,6 +46,47 @@
     }
 }
 
+
+//********VISUAL OBJECTS ///
+@mixin new-icon-svg($color:red,$width: 100%,$height:$width) {
+
+    //unit: except  number with absolute unit, number without ( scale ) , or size key ( string)
+    //color: except prop map, color, or false.
+
+    @if(type-of($color) == map){
+        //use props
+        $props: $color;
+    }@else if(type-of($color) == color){
+        $props: (
+            background: false,
+            foreground:false,
+            fill: $color
+        );
+    }
+
+    width: $width;
+    height: $height;
+    display: inline-block;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        $props: (
+            background: false,
+            foreground:false,
+            fill: $color
+        );
+        @if ($color!=false) {
+            @include g-color-scheme($props...);
+        }
+    }
+}
+
+
+
+
 @mixin o-icon-svg($color:false, $scale-unit: $default-scale-unit) {
 
     @if (type-of($scale-unit) == number) {

@@ -1,41 +1,89 @@
-$component-name: 'Content_box';
+@mixin c-content-box( $color-scheme: $chroma-active-scheme,$schemeProps:(background: true, foreground: true, accent: true, border: true, fill:accent),$units:0,$width:auto,$font:font-san-serif ) {
 
-//TODO: Break these up
 
-@mixin c-content-box($color-scheme: $chroma-active-scheme, $width: 35%,$border:true,$accent:false) {
-
-    @include color-scheme($color-scheme, $border, $accent);
-    padding: rhythm(1) rhythm(2);
+    $self: &;
     width: $width;
+   // max-width: fit-content;
 
-    @include breakpoint-range(sm, "<=") {
-        float: none;
-        @include center-align-horz;
-        margin: rhythm(1) 0;
+    @include dry(c-button, $DRY_ENABLED){
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
-}
 
-%p-additional-props {
-    background: yellow;
-    &__link {
-        color: inherit;
-        text-decoration: none;
+    @include g-color-scheme($color-scheme,$props...);
+
+    //scheme appearance modifiers.
+    &.--monochrome {
+        $props: (background: true, foreground: true, accent: false, border: true, fill:foreground);
     }
-}
+    &.--no-border {
+        border: none;
+    }
+    &.--no-background, &.--no-background:hover {
+          background-color: transparent;
+      }
 
-@include block($component-name, component) {
-    @include c-content-box();
-    @extend %p-additional-props;
+    @extend %u-reset-link-color;
 
-    @each $key, $name in $THEME_RENDER_KEYS {
 
-        @include modifier($key) {
-            @include c-content-box($key);
+    text-align: center;
 
-            @include dry($component-name) {
-                @extend %p-additional-props;
-            }
 
+
+    padding: rhythm(.5) rhythm(1);
+
+    &.--sm-padding{
+        padding: rhythm(.25) rhythm(1);
+
+    }
+
+    &.--no-padding{
+        padding: 0;
+    }
+
+    //the default is square button
+    border-radius: 0;
+    &.--rounded {
+        padding: rhythm(.5);
+        border-radius: rhythm(.5);
+    }
+
+    &__icon{
+        @include o-icon-svg(false, $units  );
+
+    }
+
+    &__left, &__right{
+        @include o-icon-svg(false, $units - 1 );
+    }
+
+    @each $key, $unit in $scale-units {
+        // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
+
+        &.--#{$key} &__left, &.--#{$key} &__right {
+            @include o-icon-svg(false, $unit - 2 );
         }
+        &.--#{$key} &__icon{
+            @include o-icon-svg(false, $unit + 2 );
+        }
+    }
+    @each $key, $unit in $scale-units {
+
+        &.--#{$key} &__center{
+            @include setType( $unit,$font,1)
+        }
+        &.--italic#{&}.--#{$key} &__center{
+            @include setType( $unit,font-serif-italic,1)
+        }
+    }
+
+
+    &__left + &__center{
+        padding-left: rhythm(.5);
+    }
+    &__center + &__right{
+        padding-left: rhythm(.5);
     }
 }
