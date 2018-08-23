@@ -108,7 +108,7 @@ $inverted-key-lookup-map: (
             @return color($color-scheme, $value);
 
         } @else {
-            @debug "ALERT! key: #{$color-key} value: #{$value} is not a valid colorscheme or a another color present in current scheme";
+            //@debug "ALERT! key: #{$color-key} value: #{$value} is not a valid colorscheme or a another color present in current scheme";
         }
 
     } @else {
@@ -128,11 +128,11 @@ $inverted-key-lookup-map: (
         } @else {
             $fallback-key: get-fallback-property($color-key);
 
-            @debug "****** ALERT!  key: #{$color-key} not valid in scheme: #{$color-scheme} , trying fallback key: #{$fallback-key}";
+            // @debug "****** ALERT!  key: #{$color-key} not valid in scheme: #{$color-scheme} , trying fallback key: #{$fallback-key}";
 
             @if (chroma-has-color($fallback-key, $color-scheme)) {
 
-                @debug "----fallback for key #{$color-key} to #{$fallback-key} in scheme #{$color-scheme} was successful";
+                // @debug "----fallback for key #{$color-key} to #{$fallback-key} in scheme #{$color-scheme} was successful";
                 @return color($color-scheme, $fallback-key);
 
             } @else {
@@ -145,7 +145,8 @@ $inverted-key-lookup-map: (
         @if (chroma-has-color($value, $color-scheme)) {
             @return get-current-scheme-color-by-string($color-key, $value, $color-scheme);
         } @else {
-            @debug "ALERT!  value: #{$value} is not a valid color present in scheme: #{$color-scheme}";
+            // @debug "ALERT!  value: #{$value} is not a valid color present in scheme: #{$color-scheme}";
+            @return false;
         }
 
     } @else if (type-of($value) == color) {

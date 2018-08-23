@@ -5,20 +5,6 @@ $component-id-lookup: (
     divider: 'Divider'
 );
 
-$default-scale-unit: xs!default;
-
-$scale-units: (
-    xs: -1,
-    sm: 0,
-    md: 1,
-    lg: 2,
-    xl: 3
-) !default;
-
-@function get-scale-units($key: $default-scale-unit) {
-    @return map-get($scale-units, $key);
-}
-
 @function get-component-id($key) {
     @return map-get($component-id-lookup, $key);
 }
@@ -27,9 +13,9 @@ $scale-units: (
     @each $key, $unit in $scale-map {
         @debug 'scale-sizes-#{$key}';
 
-       @include dry('scale-sizes-#{$key}',$DRY_ENABLED){
-           @include set-multiple(rhythm($unit), width height);
-       }
+        @include dry('scale-sizes-#{$key}', $DRY_ENABLED) {
+            @include set-multiple(rhythm($unit), width height);
+        }
     }
 }
 
@@ -58,7 +44,7 @@ $scale-units: (
             @include c-card();
         } @else if ($component-key== kabob) {
             @include c-kabob();
-        }@else if ($component-key== divider) {
+        } @else if ($component-key== divider) {
             @include c-divider();
         }
         @each $key, $name in $THEME_RENDER_KEYS {
@@ -68,9 +54,9 @@ $scale-units: (
                     @include c-button($key);
                 } @else if ($component-key== card) {
                     @include c-card($key);
-                }@else if ($component-key== kabob) {
+                } @else if ($component-key== kabob) {
                     @include c-kabob($key);
-                }@else if ($component-key== divider) {
+                } @else if ($component-key== divider) {
                     @include c-divider($key);
                 }
             }
@@ -78,7 +64,7 @@ $scale-units: (
     }
 }
 
-@mixin g-generate-all-components($component-ids:$component-id-lookup){
+@mixin g-generate-all-components($component-ids:$component-id-lookup) {
     @each $key, $name in $component-ids {
         @include g-generate-component($key);
     }

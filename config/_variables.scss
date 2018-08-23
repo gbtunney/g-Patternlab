@@ -1,9 +1,16 @@
+$bem-block-namespaces: (
+'object': 'obj',     // defaults to 'o'
+'component': 'comp', // defaults to 'c'
+'utility': 'helper', // defaults to 'u'
+)!default;
+
 ////GENERATOR VARIABLES
 $generate-swatch-classes: false!default;
-$generate-type-classes: false!default;
-$generate-scheme-classes:false!default;
-$generate-components:true!default;
-
+$generate-type-classes: true!default;
+$generate-scheme-classes:true!default;
+$generate-utility-padding: true!default;
+$generate-utility-static:true!default;
+$generate-components:false!default;
 
 //TODO:move
 $THEME_RENDER_KEYS: $render_component_themes;
@@ -20,7 +27,6 @@ $include-font-icons:true!default;
 
 
 @if($debug ) {
-    @debug "setting false";
     $generate-swatch-classes: false ;
     $generate-type-classes: false ;
     $generate-scheme-classes: false ;
@@ -31,3 +37,6 @@ $include-font-icons:true!default;
     $include-styleguide-classes: false;
     $include-font-icons:false;
 }
+
+
+

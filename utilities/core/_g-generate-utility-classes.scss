@@ -6,9 +6,32 @@ $utility-seperator: '-' !default;
 $utility-prefixes: (
     swatch: "swatch-color",
     scheme: "scheme",
+    padding: "rhythm-padding",
     type: "type") !default;
 
-$type-size-list: -1, 0, 1, 2, 3, 4, 5 !default;
+$default-scale-unit: sm !default;
+
+$scale-lookup-units: (
+    xxs: -2,
+    xs: -1,
+    sm: 0,
+    md: 1,
+    lg: 2,
+    xl: 3,
+    xxl: 4,
+    xxxl: 5
+) !default;
+
+@function get-scale-units($key: 0) {
+
+    @if (type-of($key)== number) {
+        @return $key;
+    } @else if (type-of(string)) {
+        @return map-get($scale-lookup-units, $key);
+    } @else {
+        @debug "ALERT !!! scale unit: #{$key} type error";
+    }
+}
 
 @function get-utility-prefix($utility-type-key, $key:'' ) {
     @return #{map-get($utility-prefixes,$utility-type-key)}#{$utility-seperator}#{$key};
@@ -50,20 +73,21 @@ Styleguide 2.1.3.
 
         @include utility(get-utility-prefix(scheme, $key)) {
 
-            @include g-color-scheme($key, true, true);
+            $props: (background: true, foreground: true, border: true, fill:foreground);
+            @include g-color-scheme($key, $props...);
 
             &.--accent {
                 @include g-color-scheme($key, false, false, true, false);
             }
-            &.--border {
-                @include g-color-scheme($key, false, false, false, true);
+            &.--no-border {
+                border: none;
             }
             &.--icon {
 
                 $props: (background: false, foreground: false, border: false, fill:true);
                 @include g-color-scheme($key, $props...);
 
-                &.--accent{
+                &.--accent {
                     $props: (background: false, foreground: false, border: false, fill:accent);
                     @include g-color-scheme($key, $props...);
                 }
@@ -75,21 +99,23 @@ Styleguide 2.1.3.
 ///**** GENERATE TYPE CLASSES.
 
 //single font
-@mixin g-generate-font-utility-classes( $key: font-san-serif ) {
-    @for $i from 1 through length($type-size-list) {
-        $size: nth($type-size-list, $i);
+@mixin g-generate-font-utility-classes( $font-key: font-san-serif ) {
 
+    @each $unit-key, $unit-value in $scale-lookup-units {
         ///TODO: reimplement dry?
-        @include utility(get-utility-prefix(type, #{$key}#{$utility-seperator}#{$size})) {
-            @include setType($size, $key);
+        @include utility(get-utility-prefix(type, #{$font-key}#{$utility-seperator}#{$unit-key})) {
+            @include setType($unit-value, $font-key);
         }
-
-        @if ($size == 0) {
-            @include utility(get-utility-prefix(type, #{$key})) {
-                @include setType($size, $key);
+        @if ($unit-key == $default-scale-unit) {
+            @include utility(get-utility-prefix(type, #{$font-key})) {
+                @include setType($unit-value, $font-key);
             }
         }
     }
+}
+
+@mixin g-reset-link-font() {
+
 }
 
 @mixin g-generate-all-font-utility-classes($font-render: $font-map ) {
@@ -99,3 +125,96 @@ Styleguide 2.1.3.
         }
     }
 }
+
+@mixin g-generate-utility-padding() {
+
+    @each $unit-key, $unit-value in $scale-lookup-units {
+        @include utility(get-utility-prefix(padding, "#{$unit-key}#{$utility-seperator}1_2")) {
+            padding: rhythm($unit-value) rhythm($unit-value);
+        }
+        @include utility(get-utility-prefix(padding, $unit-key)) {
+            padding: rhythm($unit-value * .5) rhythm($unit-value);
+        }
+    }
+}
+
+@mixin g-generate-static-utility-classes() {
+
+    $prefix: #{map-get($bem-block-namespaces,utility)}#{$utility-seperator};
+    //********* RESET *********//
+    .#{$prefix}reset-link-color {
+        @extend %u-reset-link-color;
+    }
+    .#{$prefix}reset-link-font {
+        a, a:hover {
+            @include resetType;
+        }
+    }
+    .#{$prefix}reset-children-color {
+        @extend %u-reset-children-color;
+    }
+    .#{$prefix}reset-header-color {
+        @extend %u-reset-header;
+    }
+    .#{$prefix}reset-rhythm {
+        @extend %u-reset-rhythm;
+    }
+
+    //********* BORDERS *********//
+    .#{$prefix}border-trailing, .#{$prefix}underline {
+        @include trailing-border();
+    }
+    .#{$prefix}border-left {
+        @include apply-side-rhythm-border(left);
+    }
+    .#{$prefix}-border-right {
+        @include apply-side-rhythm-border(right);
+    }
+
+    //********* RHYTHM FLOATS *********//
+    .#{$prefix}float-left {
+        @include u-float-rhythm(left);
+    }
+    //rhthm float right
+    .#{$prefix}float-right {
+        @include u-float-rhythm(right);
+    }
+
+    //********* LEADERS *********//
+    .#{$prefix}leader {
+        @include leader(1);
+    }
+    .#{$prefix}leader-lg {
+        @include leader(2);
+    }
+    .#{$prefix}leader-margin {
+        @include margin-leader(1);
+    }
+    .#{$prefix}leader-margin-lg {
+        @include margin-leader(2);
+    }
+
+    //********* TRAILERS *********//
+    .#{$prefix}trailer {
+        @include trailer(1);
+    }
+    .#{$prefix}trailer-lg {
+        @include trailer(2);
+    }
+    .#{$prefix}trailer-margin- {
+        @include margin-trailer(1);
+    }
+    .#{$prefix}trailer-margin-lg {
+        @include margin-trailer(2);
+    }
+
+    //********* INDENTS *********//
+    .#{$prefix}indent {
+        padding-left: rhythm(1);
+    }
+    .#{$prefix}indent-lg {
+        padding-left: rhythm(2);
+    }
+}
+
+

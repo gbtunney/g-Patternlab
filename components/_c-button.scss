@@ -115,25 +115,25 @@
        @include o-icon-svg(false, $units - 1 );
     }
 
-    @each $key, $unit in $scale-units {
-        // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
+   //@each $key, $unit in $scale-units {
+   //
+   //     &.--#{$key} &__left, &.--#{$key} &__right {
+   //         @include o-icon-svg(false, $unit - 2 );
+   //     }
+   //     &.--#{$key} &__icon{
+   //         @include o-icon-svg(false, $unit + 2 );
+   //     }
+   // }
 
-        &.--#{$key} &__left, &.--#{$key} &__right {
-            @include o-icon-svg(false, $unit - 2 );
-        }
-        &.--#{$key} &__icon{
-            @include o-icon-svg(false, $unit + 2 );
-        }
-    }
-    @each $key, $unit in $scale-units {
-
-        &.--#{$key} &__center{
-          @include setType( $unit,$font,1)
-        }
-        &.--italic#{&}.--#{$key} &__center{
-            @include setType( $unit,font-serif-italic,1)
-        }
-    }
+    //@each $key, $unit in $scale-units {
+    //
+    //    &.--#{$key} &__center{
+    //      @include setType( $unit,$font,1)
+    //    }
+    //    &.--italic#{&}.--#{$key} &__center{
+    //        @include setType( $unit,font-serif-italic,1)
+    //    }
+    //}
 
 
     &__left + &__center{

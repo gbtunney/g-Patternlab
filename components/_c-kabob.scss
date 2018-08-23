@@ -40,7 +40,7 @@
 
 
     &__center{
-        @include setType(get-scale-units($unit), $font);
+       // @include setType(get-scale-units($unit), $font);
     }
 
     @if ($reflect) {
@@ -59,22 +59,22 @@
        //@include o-icon-svg(color($color-scheme, foreground), $unit);
     }
 
-    @each $key, $unit in $scale-units {
-       // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
-
-        &.--#{$key} &__right,&.--#{$key} &__left{
-           @include o-icon-svg(false, $key);
-        }
-        &.--monochrome.--#{$key} &__right,&.--monochrome.--#{$key} &__left{
-         // @include o-icon-svg(color($color-scheme, foreground), $key);
-        }
-    }
-    @each $key, $unit in $scale-units {
-
-        &.--#{$key} &__center{
-            @include setType( $unit,$font)
-        }
-    }
+    //@each $key, $unit in $scale-units {
+    //   // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
+    //
+    //    &.--#{$key} &__right,&.--#{$key} &__left{
+    //       @include o-icon-svg(false, $key);
+    //    }
+    //    &.--monochrome.--#{$key} &__right,&.--monochrome.--#{$key} &__left{
+    //     // @include o-icon-svg(color($color-scheme, foreground), $key);
+    //    }
+    //}
+    //@each $key, $unit in $scale-units {
+    //
+    //    &.--#{$key} &__center{
+    //        @include setType( $unit,$font)
+    //    }
+    //}
 
     @content;
 }
