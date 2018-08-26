@@ -4,7 +4,6 @@
 
 //********CONTAINERS///
 @mixin u-full-width-container($height: 100%, $min-height: $height) {
-
     width: 100vw;
     height: $height;
     min-height: $min-height;

@@ -158,3 +158,17 @@ sass {
 	::-moz-placeholder          {@content}
 	:-ms-input-placeholder      {@content}
 }
+
+@mixin font-smoothing($bool: true) {
+	@if ($bool) {
+		font-smoothing: antialiased;
+
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+		text-rendering: geometricPrecision;
+	} @else {
+		-webkit-font-smoothing: subpixel-antialiased;
+		-moz-osx-font-smoothing: auto;
+	}
+}
