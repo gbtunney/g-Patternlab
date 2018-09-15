@@ -10,7 +10,7 @@ $generate-type-classes: true!default;
 $generate-scheme-classes:true!default;
 $generate-utility-padding: true!default;
 $generate-utility-static:true!default;
-$generate-components:false!default;
+$generate-components:FALSE!default;
 
 //TODO:move
 $THEME_RENDER_KEYS: $render_component_themes;
@@ -23,7 +23,7 @@ $debug: false;
 $include-helper-classes:true!default;
 $include-base-classes:true!default;
 $include-styleguide-classes:true!default;
-$include-fontzq-icons:true!default;
+$include-font-icons:true!default;
 
 
 @if($debug ) {

@@ -91,7 +91,7 @@ $inverted-key-lookup-map: (
     }
 }
 
-@function get-currentscheme-color-by-string($color-key, $value, $color-scheme:$chroma-active-scheme ) {
+@function get-current-scheme-color-by-string($color-key, $value, $color-scheme:$chroma-active-scheme ) {
 
     //check to see if string is the name of a color scheme OR a key to color in the current one...
 
@@ -108,7 +108,7 @@ $inverted-key-lookup-map: (
             @return color($color-scheme, $value);
 
         } @else {
-            //@debug "ALERT! key: #{$color-key} value: #{$value} is not a valid colorscheme or a another color present in current scheme";
+            @debug "ALERT! key: #{$color-key} value: #{$value} is not a valid colorscheme or a another color present in current scheme";
         }
 
     } @else {
