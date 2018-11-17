@@ -9,6 +9,7 @@ $utility-prefixes: (
     padding: "rhythm-padding",
     type: "type") !default;
 
+//this is for the padding utility
 $default-scale-unit: sm !default;
 
 $scale-lookup-units: (
@@ -21,3 +22,11 @@ $scale-lookup-units: (
     xxl: 4,
     xxxl: 5
 ) !default;
+
+
+$generate-scheme-classes:true!default;
+$generate-swatch-classes: true!default;
+$generate-type-classes: true!default;
+$generate-utility-padding: true!default;
+$generate-utility-static:false!default;
+$generate-components:false!default;

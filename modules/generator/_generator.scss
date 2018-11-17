@@ -1,6 +1,9 @@
 //*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
 //*** Dependancies: Chroma Sass, Bem constructor
 
+//*** swatch, colorscheme requires color module
+//*** utility padding requires type module
+
 @import "node_modules/sass-bem-constructor/stylesheets/_bem-constructor.scss";
 
 @import "variables";
@@ -13,4 +16,10 @@
 
 @if ($generate-scheme-classes) {
     @include g-generate-scheme-utility-classes;
+}
+@if ($generate-utility-padding) {
+    @include g-generate-utility-padding();
+}
+@if ($generate-type-classes) {
+    @include g-generate-all-font-utility-classes;
 }

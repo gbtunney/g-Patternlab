@@ -1,0 +1,28 @@
+///**** GENERATE TYPE CLASSES.
+
+//single font
+@mixin g-generate-font-utility-classes( $font-key: font-san-serif ) {
+    @each $unit-key, $unit-value in $scale-lookup-units {
+        ///TODO: reimplement dry?
+        @include utility(get-utility-prefix(type, #{$font-key}#{$utility-seperator}#{$unit-key})) {
+            @include setType($unit-value, $font-key);
+        }
+        @if ($unit-key == $default-scale-unit) {
+            @include utility(get-utility-prefix(type, #{$font-key})) {
+                @include setType($unit-value, $font-key);
+            }
+        }
+    }
+}
+
+@mixin g-reset-link-font() {
+
+}
+
+@mixin g-generate-all-font-utility-classes($font-render: $font-map ) {
+    @each $key, $prop in $font-map {
+        @if ($key != 'default') {
+            @include g-generate-font-utility-classes($key);
+        }
+    }
+}

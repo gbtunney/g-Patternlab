@@ -1,0 +1,47 @@
+//*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
+//*** Dependancies: Modular Scale, Compass Mixins
+@import "node_modules/sass-toolkit/stylesheets/toolkit/_settings.scss";
+@import "node_modules/modularscale-sass/stylesheets/_modularscale.scss";
+@import "node_modules/sass-dry/_dry.scss";
+
+@import "variables";
+
+@import "node_modules/compass-mixins/lib/compass/_typography.scss";
+@import "mixins";
+
+@charset "UTF-8";
+
+//@if ($typekit){
+@import url($typekit);
+//}
+
+//init type maps
+$font-map: map-get($typography, "fonts");
+
+$default-font-map: map-get($font-map, default);
+
+@each $key, $prop in $font-map {
+    $font-map-merged: map_merge($default-font-map, $prop);
+    @include setting-set($key, $font-map-merged);
+}
+
+//**** modular scale
+$modularscale: map-get($typography, modularscale);
+
+//*** COMPASS PROPS
+//$base-font-size: 20px; // Sets the base font size
+//$base-line-height: 16px; // Sets the base line height
+
+$BASE_LINE_HEIGHT: map-get($typography, line-height);
+$BASE_FONT_SIZE: map-get($modularscale, base);
+
+//convert unitless lineheight
+@if (has-unit($BASE_LINE_HEIGHT)) {
+} @else {
+    $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
+}
+
+//***** SET compass vars
+$base-font-size: $BASE_FONT_SIZE;
+$base-line-height: $BASE_LINE_HEIGHT;
+$relative-font-sizing: false;
