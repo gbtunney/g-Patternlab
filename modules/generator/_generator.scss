@@ -1,0 +1,16 @@
+//*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
+//*** Dependancies: Chroma Sass, Bem constructor
+
+@import "node_modules/sass-bem-constructor/stylesheets/_bem-constructor.scss";
+
+@import "variables";
+@import "functions";
+@import "types/types";
+
+@if ($generate-swatch-classes) {
+    @include g-generate-swatches();
+}
+
+@if ($generate-scheme-classes) {
+    @include g-generate-scheme-utility-classes;
+}

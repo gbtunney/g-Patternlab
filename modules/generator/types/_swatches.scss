@@ -1,0 +1,13 @@
+//*****GENERATES SWATCH (background with inverted text)
+@mixin g-generate-swatches($colors: $baseColors) {
+    @each $key, $color in $colors {
+        @include utility(get-utility-prefix(swatch, $key)) {
+
+            $props: (
+                background: $color,
+                foreground: invert($color)
+            );
+            @include g-color-scheme($props...);
+        }
+    }
+}

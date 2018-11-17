@@ -1,33 +1,41 @@
+$active-scheme : light!default;
+$generate-scheme-classes:true!default;
+$generate-swatch-classes: false!default;
+
+// Color scheme / theme module
+//
+// dependancies             - chroma sass
+
 $baseColors: (
-white: #fff,
-black: #000,
-dark-gray: "#585858",
-gum-leaf: #afd2c2,
-silver-chalice: #adadad,
-saffron: #edc433,
-light-gray: #d2d3d2,
-oslo-gray: #8d8f92,
-brown-bramble: #562d19,
-kournikova: #f5cd51,
-copper: #b97131,
-kilamanjaro: #3e3030,
-slugger: #432e2e,
-silverleaf: #71b799,
-fuscous_gray: #555,
-lightning_yellow: #eec517,
-tana: #bdba9c,
-khaki: #f0e68c,
-west-coast: #64551f,
-highball: #90813b,
-sandstone: #7b6d5c,
-schooner: #8b8378,
-spice: #66543e,
-madras: #4c3b25,
-onion: #33250d,
-woodrush: #332915,
-jacko-bean: #2e1c08,
-acadia: #1e1205,
-crowshead: #1a130a
+    white: #fff,
+    black: #000,
+    dark-gray: #585858,
+    gum-leaf: #afd2c2,
+    silver-chalice: #adadad,
+    saffron: #edc433,
+    light-gray: #d2d3d2,
+    oslo-gray: #8d8f92,
+    brown-bramble: #562d19,
+    kournikova: #f5cd51,
+    copper: #b97131,
+    kilamanjaro: #3e3030,
+    slugger: #432e2e,
+    silverleaf: #71b799,
+    fuscous_gray: #555,
+    lightning_yellow: #eec517,
+    tana: #bdba9c,
+    khaki: #f0e68c,
+    west-coast: #64551f,
+    highball: #90813b,
+    sandstone: #7b6d5c,
+    schooner: #8b8378,
+    spice: #66543e,
+    madras: #4c3b25,
+    onion: #33250d,
+    woodrush: #332915,
+    jacko-bean: #2e1c08,
+    acadia: #1e1205,
+    crowshead: #1a130a
 );
 
 $schemes: (
@@ -119,44 +127,37 @@ $schemes: (
 
 
 
-$bem-block-namespaces: (
-'object': 'obj',     // defaults to 'o'
-'component': 'comp', // defaults to 'c'
-'utility': 'helper', // defaults to 'u'
-)!default;
+/// COLOR SCHEME DEFAULTS - MAPPING (dont need to edit)
 
-////GENERATOR VARIABLES
-$generate-swatch-classes: false!default;
-$generate-type-classes: true!default;
-$generate-utility-padding: true!default;
-$generate-utility-static:true!default;
-$generate-components:FALSE!default;
+$default-accent-selector: 'h1, h2, h3, h4, h5, h6,a ' !default;
+$default-svg-selector: 'path, g,circle' !default;
+$default-svg-hover-selector: 'path:hover, g:hover' !default;
 
-//TODO:move
-$THEME_RENDER_KEYS: $render_component_themes;
-$DRY_ENABLED:false!default;
+$property-lookup-map: (
+    foreground: color,
+    background: background-color,
+    accent: color,
+    border: border-color,
+    link: color,
+    fill: fill,
+    hover-background: background-color,
+    hover-foreground: color,
+    hover-fill: fill
+);
 
+$fallback-lookup-map: (
+    border: foreground,
+    fill:foreground,
+    hover-background: background,
+    hover-foreground: foreground,
+    hover-fill: foreground
+);
 
-$debug: false;
-//$generate-grid-placeholders: true!default;
-
-$include-helper-classes:true!default;
-$include-base-classes:true!default;
-$include-styleguide-classes:true!default;
-$include-font-icons:true!default;
-
-
-@if($debug ) {
-    $generate-swatch-classes: false ;
-    $generate-type-classes: false ;
-    $generate-scheme-classes: false ;
-    $generate-components:false;
-
-    $include-helper-classes: false;
-    $include-base-classes: false;
-    $include-styleguide-classes: false;
-    $include-font-icons:false;
-}
-
-
-
+$inverted-key-lookup-map: (
+    foreground: background,
+    background: foreground,
+    accent: accent,
+    border: background,
+    link: accent,
+    fill: background
+);

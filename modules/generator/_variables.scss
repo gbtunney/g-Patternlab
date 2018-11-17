@@ -1,0 +1,23 @@
+//*** GENERATOR DEFAULTS
+//*** Dependancies: Chroma Sass
+
+$utility-seperator: '-' !default;
+
+$utility-prefixes: (
+    swatch: "swatch-color",
+    scheme: "scheme",
+    padding: "rhythm-padding",
+    type: "type") !default;
+
+$default-scale-unit: sm !default;
+
+$scale-lookup-units: (
+    xxs: -2,
+    xs: -1,
+    sm: 0,
+    md: 1,
+    lg: 2,
+    xl: 3,
+    xxl: 4,
+    xxxl: 5
+) !default;

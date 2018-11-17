@@ -1,0 +1,78 @@
+//*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
+//*** Dependancies: Chroma Sass
+
+@import "node_modules/chroma-sass/sass/_chroma.scss";
+
+@import "variables";
+@import "functions";
+@import "mixins";
+
+$testvar: "VARIABLE FROM COLORS"!default;
+@debug $testvar;
+
+///******SETUP CHROMA-SASS
+
+// Define the default color scheme.
+
+$chroma: define-default-color-scheme('Branding color names for use by "functional" color names below.');
+// Add colors to the default color scheme.
+$chroma: add-colors($baseColors); //variable from config file.
+
+///IMPORT COLORS FROM CONFIG FILE
+@for $i from 1 through length($schemes) {
+
+    $scheme: nth($schemes, $i);
+
+    @if (map-get($scheme,'parent') ==false) {
+        $chroma: define-color-scheme(map-get($scheme, key));
+    } @else {
+        $chroma: define-color-scheme(map-get($scheme, key), $parent: map-get($scheme, parent));
+        @if (map-has-key($scheme, colors) ==false) {
+            @if (map-has-key($scheme, invert)) {
+               // @debug "it is inverted#{map-get($scheme, key)}";
+                $scheme: map-merge($scheme, (colors: get-inverted-colormap(map-get($scheme, key))));
+            }
+        }
+    }
+
+    // Add colors to the functional color scheme.
+    @if (map-has_key($scheme, colors)) {
+        $chroma: add-colors(map-get($scheme, key), map-get($scheme, colors));
+    }
+}
+
+//set the active scheme for chroma.
+$chroma-active-scheme: $active-scheme; //variable from config file.
+
+/* $chroma: add-colors((
+    white:       #fff,
+    black:       #000,
+    blue:        #0e71b8,
+    red:         #c00,
+
+    // Define a primary highlight color that has the value of our "blue" color.
+    // Note: if blue was specified without quotes, Chroma would interpret that as
+    // the color keyword blue and not a reference to the "blue" color name.
+    primary:     'blue',
+));
+
+// Create a "functional" color scheme that inherits from the default color scheme.
+$chroma: define-color-scheme('functional', 'Colors used by functional parts of the design.');
+
+// Add colors to the functional color scheme.
+$chroma: add-colors('functional', (
+    // Have the "text" color use the hex value given to the "black" color. Even
+    // though the "functional" color scheme doesn't define "black", it inherits
+    // from the "default" color scheme where "black" is defined.
+    text:        'black',
+
+    // You can use quoted or unquoted strings to reference other color names.
+    // Note: color keywords are not considered strings unless they are quoted.
+    heading:     text,
+
+    // Have the link color use the primary color.
+    link:        primary,
+    link-focus:  (link lighten 20%), // Set the link-focus color to the "link"
+    // color passed through the color
+    // function: lighten([color], 20%)
+));*/
