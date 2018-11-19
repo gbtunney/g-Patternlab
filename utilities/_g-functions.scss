@@ -21,6 +21,27 @@
 	@return setting-get($key);
 }
 
+@function map-set($map, $key, $value) {
+	$new: ($key: $value);
+	@return map-merge($map, $new);
+}
+
+@function remove-list-duplicates($list, $recursive: false) {
+	$result: ();
+
+	@each $item in $list {
+		@if not index($result, $item) {
+			@if length($item) > 1 and $recursive {
+				$result: append($result, remove-duplicates($item, $recursive));
+			} @else {
+				$result: append($result, $item);
+			}
+		}
+	}
+
+	@return $result;
+}
+
 @function strip-unit($number) {
 	@if type-of($number) == 'number' and not unitless($number) {
 		@return $number / ($number * 0 + 1);

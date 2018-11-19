@@ -1,0 +1,12 @@
+@mixin g-simple-component($color-scheme:$chroma-active-scheme,$font:font-san-serif,$base-font-unit:1,$do-rhythm-spacing: true){
+    //component with no flags!!!
+
+    @include g-color-scheme($color-scheme);
+    @include setType($base-font-unit, $font, 0);
+
+    //todo : some sort of variable for this
+    @if ($do-rhythm-spacing){
+        @include rhythm-padding(1,2);
+    }
+    @content;
+}

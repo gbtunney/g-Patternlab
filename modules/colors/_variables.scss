@@ -84,7 +84,8 @@ $schemes: (
         parent: light,
         colors:(
             foreground: "lightning_yellow",
-            border: lightning_yellow
+            border: lightning_yellow,
+            random: lightning_yellow
         )
     ),
     (
@@ -116,6 +117,7 @@ $schemes: (
         description: 'DARK THEME!!',
         parent: light,
         colors: (
+            active:fuscous_gray,
             foreground: fuscous_gray,
             background: white,
             accent: lightning_yellow,
@@ -124,8 +126,6 @@ $schemes: (
         )
     )
 );
-
-
 
 /// COLOR SCHEME DEFAULTS - MAPPING (dont need to edit)
 

@@ -19,8 +19,77 @@
         border: color($base-scheme, get-inverted-scheme-key(background))
     );
     @return $new-colors;
+
 }
 
+@function add-all-color-keys($my-color-key-map,$colors, $scheme-name) {
+    @if (type-of($colors ) == map) {
+        @return map-merge($my-color-key-map, $colors);
+    }
+    @return false;
+}
+
+@function add-color-key($color-key) {
+    @if map-has-key($color-key-map, $color-key) {
+       // @return true;
+    } @else {
+
+     //   @return map-set(, $color-key, $color-key);
+
+    }
+
+}
+//helper function for chroma
+@function get-scheme-data($key :$chroma-active-scheme ){
+    @return map-get($schemes,$key);
+}
+@function  get-scheme-colors($scheme-key: $chroma-active-scheme){
+    //helps with inverted colors???
+    @if ((chroma-has-scheme($scheme-key)) and get-scheme-data($scheme-key)){
+        $scheme: get-scheme-data($scheme-key);
+        @return  map-get($scheme,colors);
+    }
+    //@return;
+}
+@function update-color-in-scheme($scheme-key: $chroma-active-scheme, $color-key:foreground, $value:red ){
+    ///extending - adding to
+    @if (chroma-has-scheme($scheme-key)){
+        @if ( chroma-has-color($color-key, $scheme-key) ) {
+            @debug "scheme #{$scheme-key} already has color #{$color-key}, updating";
+
+        }@else {
+
+        }
+        $scheme-colors : get-scheme-colors($scheme-key);
+        $color-to-add:($color-key:$value);
+        $scheme-colors:  map-merge($scheme-colors,$color-to-add);
+        $chroma: add-colors($scheme-key,$scheme-colors);
+        @return true;
+
+    }@else{
+        @debug "scheme #{$scheme-key} doesnt excist, cant add color #{$color-key}";
+    }
+}
+
+@function add-scheme($scheme-key: $chroma-active-scheme, $color-key:foreground, $value:red ){
+    ///extending - adding to
+    @if (chroma-has-scheme($scheme-key)){
+        @if ( chroma-has-color($color-key, $scheme-key) ) {
+            @debug "scheme #{$scheme-key} already has color #{$color-key}, updating";
+
+        }@else {
+
+        }
+        $scheme-colors : get-scheme-colors($scheme-key);
+        $color-to-add:($color-key:$value);
+        $scheme-colors:  map-merge($scheme-colors,$color-to-add);
+        $chroma: add-colors($scheme-key,$scheme-colors);
+        @return true;
+
+    }@else{
+        @debug "scheme #{$scheme-key} doesnt excist, cant add color #{$color-key}";
+    }
+}
 
 @function get-current-scheme-color-by-string($color-key, $value, $color-scheme:$chroma-active-scheme ) {
 

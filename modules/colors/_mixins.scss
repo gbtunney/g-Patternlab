@@ -5,6 +5,24 @@
     border-width: 1px;
 }
 
+@mixin add-scheme($scheme-key,$parent:$chroma-active-scheme,$colors:(), $invert:false,$description:$scheme-key ){
+
+    //get-scheme-colormap
+    $extend-scheme: false;
+
+    @if  ($parent == false) {
+        $chroma: define-color-scheme($scheme-key);
+    }@else{
+        $chroma: define-color-scheme($scheme-key,$parent,$description);
+
+        //todo: add invert function .
+       /* @if (($colors == false) and ($invert)) {
+            // @debug "it is inverted#{map-get($scheme, key)}";
+            $scheme: map-merge($scheme, (colors: get-inverted-colormap(map-get($scheme, key))));
+        }*/
+    }
+
+}
 @mixin write-scheme-property($property: foreground, $value: false,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
 
     $property-to-write: get-lookup-property($property);

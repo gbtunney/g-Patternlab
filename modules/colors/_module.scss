@@ -1,15 +1,14 @@
 //*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
 //*** Dependancies: Chroma Sass
-
+$color-key-map:();
 @import "chroma-sass/sass/_chroma.scss";
 
+ //this will store all possible color keys.
 
 @import "variables";
 @import "functions";
 @import "mixins";
 
-$testvar: "VARIABLE FROM COLORS"!default;
-@debug $testvar;
 
 ///******SETUP CHROMA-SASS
 
@@ -39,6 +38,7 @@ $chroma: add-colors($baseColors); //variable from config file.
     // Add colors to the functional color scheme.
     @if (map-has_key($scheme, colors)) {
         $chroma: add-colors(map-get($scheme, key), map-get($scheme, colors));
+        $color-key-map:  add-all-color-keys($color-key-map,map-get($scheme, colors), $scheme);
     }
 }
 
@@ -77,3 +77,5 @@ $chroma: add-colors('functional', (
     // color passed through the color
     // function: lighten([color], 20%)
 ));*/
+$testvar: "VARIABLE FROM COLORS"!default;
+@debug $testvar;

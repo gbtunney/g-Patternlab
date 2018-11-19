@@ -49,7 +49,8 @@
         &.--accent {
             $props: (
                 background: true,
-                foreground: true, x border: true,
+                foreground: true,
+                border: true,
                 fill:accent,
                 hover-background:true,
                 hover-foreground:true
@@ -64,14 +65,15 @@
     @if function-exists(get-g-placeholders-utility) {
         @extend %u-reset-link-color;
     } @else {
-        @debug "PLEASE IMPORT utilities/gplaceholder";
+        @debug "PLEASE IMPORT utilities/gplaceholder to use u-reset-link-color";
     }
 
     @if (function-exists(get-module-typography)) {
-        text-align: center;
+    @include setType($units, $font, 0);
 
         &__center {
-            @include setType($units, $font, 0);
+        text-align: center;
+        @include setType($units, $font, 0);
         }
 
         &.--italic {
