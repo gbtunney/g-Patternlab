@@ -1,0 +1,78 @@
+@mixin g-generate-utility-padding() {
+
+    @each $unit-key, $unit-value in $scale-lookup-units {
+        @include utility(get-utility-prefix(padding, "#{$unit-key}#{$utility-seperator}1_2")) {
+          //  padding: rhythm-padding($unit-value) rhythm($unit-value);
+            @include rhythm-padding(1,1,$unit-value);
+        }
+        @include utility(get-utility-prefix(padding, $unit-key)) {
+            //padding: rhythm($unit-value * .5) rhythm($unit-value);
+            @include rhythm-padding(.5,1,$unit-value);
+        }
+    }
+}
+
+@mixin static-utilities-spacing(){
+
+    @if ($use-typography-rhythm){
+     @include static-utilities-spacing-compass;
+    }
+}
+
+@mixin static-utilities-spacing-compass(){
+    //********* BORDERS *********//
+    .#{$prefix}border-trailing, .#{$prefix}underline {
+        @include trailing-border();
+    }
+    .#{$prefix}border-left {
+        @include apply-side-rhythm-border(left);
+    }
+    .#{$prefix}-border-right {
+        @include apply-side-rhythm-border(right);
+    }
+
+    //********* RHYTHM FLOATS *********//
+    .#{$prefix}float-left {
+        @include u-float-rhythm(left);
+    }
+    //rhthm float right
+    .#{$prefix}float-right {
+        @include u-float-rhythm(right);
+    }
+
+    //********* LEADERS *********//
+    .#{$prefix}leader {
+        @include leader(1);
+    }
+    .#{$prefix}leader-lg {
+        @include leader(2);
+    }
+    .#{$prefix}leader-margin {
+        @include margin-leader(1);
+    }
+    .#{$prefix}leader-margin-lg {
+        @include margin-leader(2);
+    }
+
+    //********* TRAILERS *********//
+    .#{$prefix}trailer {
+        @include trailer(1);
+    }
+    .#{$prefix}trailer-lg {
+        @include trailer(2);
+    }
+    .#{$prefix}trailer-margin- {
+        @include margin-trailer(1);
+    }
+    .#{$prefix}trailer-margin-lg {
+        @include margin-trailer(2);
+    }
+
+    //********* INDENTS *********//
+    .#{$prefix}indent {
+        padding-left: rhythm(1);
+    }
+    .#{$prefix}indent-lg {
+        padding-left: rhythm(2);
+    }
+}

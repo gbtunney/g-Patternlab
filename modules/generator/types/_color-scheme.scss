@@ -43,3 +43,23 @@ Styleguide 2.1.3.
         }
     }
 }
+
+@mixin static-utilities-scheme(){
+
+    $prefix: #{map-get($bem-block-namespaces,utility)}#{$utility-seperator};
+    //********* RESET *********//
+    .#{$prefix}reset-link-color {
+        @extend %u-reset-link-color;
+    }
+    .#{$prefix}reset-link-font {
+        a, a:hover {
+            @include resetType;
+        }
+    }
+    .#{$prefix}reset-children-color {
+        @extend %u-reset-children-color;
+    }
+    .#{$prefix}reset-header-color {
+        @extend %u-reset-header;
+    }
+}

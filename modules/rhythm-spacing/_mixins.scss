@@ -1,0 +1,6 @@
+@mixin rhythm-padding ($horizontal-proportion: 1,$vertical-proportion: 1, $unit: $base-spacing-unit){
+            padding: rhythm-spacing($horizontal-proportion, $unit) rhythm-spacing($vertical-proportion, $unit);
+}
+@mixin rhythm-margin ($horizontal-proportion: 1,$vertical-proportion: 1, $unit: $base-spacing-unit){
+    margin: rhythm-spacing($horizontal-proportion, $unit) rhythm-spacing($vertical-proportion, $unit);
+}

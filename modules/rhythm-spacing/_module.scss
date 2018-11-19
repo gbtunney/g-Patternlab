@@ -1,0 +1,14 @@
+//dependancies
+
+//imports
+@import "variables";
+@import "mixins";
+
+@if ( $use-typography-rhythm ){
+    @if function-exists(rhythm) {
+        $base-spacing-unit: rhythm(1);
+        $alt-spacing-unit: rhythm(1) * .5;
+    }@else {
+        @debug "Error: to use typography rhytm please import typography module";
+    }
+}

@@ -1,12 +1,12 @@
 //*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
 //*** Dependancies: Modular Scale, Compass Mixins
-@import "node_modules/sass-toolkit/stylesheets/toolkit/_settings.scss";
-@import "node_modules/modularscale-sass/stylesheets/_modularscale.scss";
-@import "node_modules/sass-dry/_dry.scss";
+@import "sass-toolkit/stylesheets/toolkit/_settings.scss"; //TODO: get rid of this
+@import "modularscale-sass/stylesheets/_modularscale.scss";
+@import "sass-dry/_dry.scss";
 
 @import "variables";
 
-@import "node_modules/compass-mixins/lib/compass/_typography.scss";
+@import "compass-mixins/lib/compass/_typography.scss";
 @import "mixins";
 
 @charset "UTF-8";
@@ -45,3 +45,6 @@ $BASE_FONT_SIZE: map-get($modularscale, base);
 $base-font-size: $BASE_FONT_SIZE;
 $base-line-height: $BASE_LINE_HEIGHT;
 $relative-font-sizing: false;
+
+@debug $base-rhythm-unit;
+@debug rhythm(1);
