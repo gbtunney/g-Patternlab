@@ -1,3 +1,7 @@
 @function rhythm-spacing($multiplier: 1, $unit:$base-spacing-unit){
     @return $multiplier * $unit;
 }
+
+@function get-module-rhythm-spacing(){
+    @return true;
+}

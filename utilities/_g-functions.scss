@@ -21,7 +21,6 @@
 	@return setting-get($key);
 }
 
-
 @function strip-unit($number) {
 	@if type-of($number) == 'number' and not unitless($number) {
 		@return $number / ($number * 0 + 1);
@@ -61,4 +60,8 @@
 	} @else {
 		@return true;
 	}
+}
+
+@function is-module-enabled(){
+//function-exists(get-module-rhythm-spacing)
 }

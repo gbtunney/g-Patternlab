@@ -1,13 +1,17 @@
 @mixin g-generate-utility-padding() {
 
-    @each $unit-key, $unit-value in $scale-lookup-units {
-        @include utility(get-utility-prefix(padding, "#{$unit-key}#{$utility-seperator}1_2")) {
-          //  padding: rhythm-padding($unit-value) rhythm($unit-value);
-            @include rhythm-padding(1,1,$unit-value);
-        }
-        @include utility(get-utility-prefix(padding, $unit-key)) {
-            //padding: rhythm($unit-value * .5) rhythm($unit-value);
-            @include rhythm-padding(.5,1,$unit-value);
+    @debug "rhythm spacing:: #{function-exists(get-module-rhythm-spacing)}";
+
+    @if function_exists(get-module-rhythm-spacing){
+        @each $unit-key, $unit-value in $scale-lookup-units {
+            @include utility(get-utility-prefix(padding, "#{$unit-key}#{$utility-seperator}1_2")) {
+                //  padding: rhythm-padding($unit-value) rhythm($unit-value);
+                @include rhythm-padding(1,1,$unit-value);
+            }
+            @include utility(get-utility-prefix(padding, $unit-key)) {
+                //padding: rhythm($unit-value * .5) rhythm($unit-value);
+                @include rhythm-padding(.5,1,$unit-value);
+            }
         }
     }
 }

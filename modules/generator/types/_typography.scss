@@ -2,14 +2,16 @@
 
 //single font
 @mixin g-generate-font-utility-classes( $font-key: font-san-serif ) {
-    @each $unit-key, $unit-value in $scale-lookup-units {
-        ///TODO: reimplement dry?
-        @include utility(get-utility-prefix(type, #{$font-key}#{$utility-seperator}#{$unit-key})) {
-            @include setType($unit-value, $font-key);
-        }
-        @if ($unit-key == $default-scale-unit) {
-            @include utility(get-utility-prefix(type, #{$font-key})) {
+    @if(function-exists(get-module-typography)){
+        @each $unit-key, $unit-value in $scale-lookup-units {
+            ///TODO: reimplement dry?
+            @include utility(get-utility-prefix(type, #{$font-key}#{$utility-seperator}#{$unit-key})) {
                 @include setType($unit-value, $font-key);
+            }
+            @if ($unit-key == $default-scale-unit) {
+                @include utility(get-utility-prefix(type, #{$font-key})) {
+                    @include setType($unit-value, $font-key);
+                }
             }
         }
     }
@@ -19,10 +21,13 @@
 
 }
 
-@mixin g-generate-all-font-utility-classes($font-render: $font-map ) {
-    @each $key, $prop in $font-map {
-        @if ($key != 'default') {
-            @include g-generate-font-utility-classes($key);
+@mixin g-generate-all-font-utility-classes($font-render: false ) {
+    @if(function-exists(get-module-typography) and ($font-render == false) ) {
+        $font-render: $font-map;
+        @each $key, $prop in $font-map {
+            @if ($key != 'default') {
+                @include g-generate-font-utility-classes($key);
+            }
         }
     }
 }
