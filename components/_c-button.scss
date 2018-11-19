@@ -1,4 +1,3 @@
-
 @mixin c-button( $color-scheme: $chroma-active-scheme,$units:2,$width:auto,$font:font-san-serif ) {
 
     //this is basically a wrapper for a kabob.
@@ -7,67 +6,85 @@
     width: $width;
     max-width: fit-content;
 
-    @include dry(c-button, $DRY_ENABLED){
+    //TODO: this is kind of messy, fix maybe?
+    @if mixin-exists(dry) {
+        @include dry(c-button, $DRY_ENABLED) {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+    } @else {
         display: flex;
         align-items: center;
         cursor: pointer;
         transition: all 0.3s ease;
+        border-radius: 0;
     }
 
-    $props: (
-        background: true,
-        foreground: true,
-        border: true,
-        fill:foreground,
-        hover-background:rgba( color($color-scheme,background), .7 ),
-        hover-foreground:rgba( color($color-scheme,foreground), .7 )
-    );
-    @include g-color-scheme($color-scheme,$props...);
-
-    &.--hover-invert{
+    @if (function-exists(get-module-color) and function-exists(color)) {
         $props: (
             background: true,
             foreground: true,
             border: true,
             fill:foreground,
-            hover-background: invert,
-            hover-foreground:invert
+            hover-background:rgba(color($color-scheme, background), .7),
+            hover-foreground:rgba(color($color-scheme, foreground), .7)
         );
-        @include g-color-scheme($color-scheme,$props...);
+        @include g-color-scheme($color-scheme, $props...);
 
-    }
+        &.--hover-invert {
+            $props: (
+                background: true,
+                foreground: true,
+                border: true,
+                fill:foreground,
+                hover-background: invert,
+                hover-foreground:invert
+            );
+            @include g-color-scheme($color-scheme, $props...);
 
-
-    &.--accent{
-        $props: (
-            background: true,
-            foreground: true,
-            border: true,
-            fill:accent,
-            hover-background:true ,
-            hover-foreground:true
-        );
-        @include g-color-scheme($color-scheme,$props...);
-    }
-
-    @extend %u-reset-link-color;
-
-
-    &__center{
-        @include setType($units,$font,0);
-       // @include adjust-font-size-to(ms($units),1);
-
-    }
-
-    &.--italic {
-        &__center{
-            @include setType($units,font-serif-italic,1);
-            // @include adjust-font-size-to(ms($units),1);
         }
+        &.--accent {
+            $props: (
+                background: true,
+                foreground: true, x border: true,
+                fill:accent,
+                hover-background:true,
+                hover-foreground:true
+            );
+            @include g-color-scheme($color-scheme, $props...);
+        }
+
+    } @else {
+        @debug "PLEASE ENABLE COLOR MODULE TO USE COLOR PART OF COMPONENT"
     }
 
-    text-align: center;
+    @if function-exists(get-g-placeholders-utility) {
+        @extend %u-reset-link-color;
+    } @else {
+        @debug "PLEASE IMPORT utilities/gplaceholder";
+    }
 
+    @if (function-exists(get-module-typography)) {
+        text-align: center;
+
+        &__center {
+            @include setType($units, $font, 0);
+        }
+
+        &.--italic {
+            &__center {
+                @include setType($units, font-serif-italic, 1);
+            }
+        }
+
+    } @else {
+        @debug "PLEASE ENABLE TYPOGRAPHY MODULE TO USE TYPE FUNCTIONS"
+    }
+
+    //selectors without dependencies
     &.--no-background, &.--no-background:hover {
         background-color: transparent;
     }
@@ -75,71 +92,64 @@
     &.--no-border {
         border: none;
     }
-    padding: rhythm(.5) rhythm(1);
 
-    &.--sm-padding{
-        padding: rhythm(.25) rhythm(1);
-
-    }
-
-
-    &.--no-padding{
+    &.--no-padding {
         padding: 0;
     }
-    //the default is square button
-    border-radius: 0;
-    &.--rounded {
-        padding: rhythm(.5);
-        border-radius: rhythm(.5);
+
+    @if (function-exists(get-module-rhythm-spacing)) {
+
+        padding: rhythm(.5) rhythm(1);
+
+        &.--sm-padding {
+            padding: rhythm(.25) rhythm(1);
+
+        }
+
+        ///BORDER RADIUS
+        //the default is square button
+        &.--rounded {
+            padding: rhythm(.5);
+            border-radius: rhythm(.5);
+        }
+
+        &.--circle {
+            padding: #{rhythm(1) / 6};
+            border-radius: 100%;
+            line-height: 0;
+            height: 100%;
+        }
+        &.--round-right {
+            border-top-right-radius: rhythm(.5);
+            border-bottom-right-radius: rhythm(.5);
+            padding-left: rhythm(.5);
+
+        }
+
+        &__left + &__center {
+            padding-left: rhythm(.5);
+        }
+        &__center + &__right {
+            padding-left: rhythm(.5);
+        }
+
+    } @else {
+        //TODO: switch to internal padding function.
+        @debug "PLEASE ENABLE TYPE MODULE TO USE PADDING PART OF COMPONENT"
     }
 
-    &.--circle {
-        padding: #{rhythm(1) / 6};
-        border-radius: 100%;
-        line-height: 0;
-        height: 100%;
-    }
-    &.--round-right{
-        border-top-right-radius: rhythm(.5);
-        border-bottom-right-radius: rhythm(.5);
-        padding-left: rhythm(.5);
+    @if mixin-exists(o-icon-svg) {
+        &__icon {
+            @include o-icon-svg(false, $units);
 
-    }
+        }
 
-    &__icon{
-        @include o-icon-svg(false, $units  );
-
+        &__left, &__right {
+            @include o-icon-svg(false, $units - 1);
+        }
+    } @else {
+        @debug "PLEASE ENABLE OBJECTS TO USE ICONS"
     }
 
-  &__left, &__right{
-       @include o-icon-svg(false, $units - 1 );
-    }
-
-   //@each $key, $unit in $scale-units {
-   //
-   //     &.--#{$key} &__left, &.--#{$key} &__right {
-   //         @include o-icon-svg(false, $unit - 2 );
-   //     }
-   //     &.--#{$key} &__icon{
-   //         @include o-icon-svg(false, $unit + 2 );
-   //     }
-   // }
-
-    //@each $key, $unit in $scale-units {
-    //
-    //    &.--#{$key} &__center{
-    //      @include setType( $unit,$font,1)
-    //    }
-    //    &.--italic#{&}.--#{$key} &__center{
-    //        @include setType( $unit,font-serif-italic,1)
-    //    }
-    //}
-
-
-    &__left + &__center{
-        padding-left: rhythm(.5);
-    }
-    &__center + &__right{
-        padding-left: rhythm(.5);
-    }
+    @content;
 }

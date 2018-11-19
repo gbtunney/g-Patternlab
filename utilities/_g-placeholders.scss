@@ -28,3 +28,7 @@
 		text-decoration: none;
 	}
 }
+
+@function get-g-placeholders-utility(){
+	@return true;
+}
