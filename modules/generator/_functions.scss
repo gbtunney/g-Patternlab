@@ -13,3 +13,7 @@
 @function get-utility-prefix($utility-type-key, $key:'' ) {
     @return #{map-get($utility-prefixes,$utility-type-key)}#{$utility-seperator}#{$key};
 }
+
+@function set-generate-map( $bool:true ,$map: $generate-map ){
+    @return map-set-all($map,$bool);
+}

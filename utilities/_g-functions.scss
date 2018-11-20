@@ -25,6 +25,13 @@
 	$new: ($key: $value);
 	@return map-merge($map, $new);
 }
+@function map-set-all($map,$-value) {
+	$newmap: ();
+	@each $key, $value in $map {
+		$newmap: map-set($newmap, $key, $-value);
+	}
+	@return $newmap;
+}
 
 @function remove-list-duplicates($list, $recursive: false) {
 	$result: ();

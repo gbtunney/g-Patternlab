@@ -72,3 +72,32 @@
     @include write-scheme-property(hover-fill, get-current-scheme-color(hover-fill, $hover-fill, $color-scheme), '#{&}:hover #{$default-svg-selector}', false, false, true);
 
 }
+
+@mixin g-simple-color-scheme($color-scheme:$chroma-active-scheme ) {
+
+    @if (type-of($color-scheme) == "map") {
+        //true "quick mode"
+        $quick-color-scheme-map: $color-scheme;
+        @each $key, $value in $quick-color-scheme-map {
+            @include write-scheme-property($key, get-color-value($value), false);
+        }
+    } @else {
+        @include g-color-scheme($color-scheme);
+    }
+}
+
+@mixin init-chroma($_baseColors,$_schemes,$additional-schemes:false){
+    $chroma: define-default-color-scheme('Branding color names for use by "functional" color names below.');
+    // Add colors to the default color scheme.
+    $chroma: add-colors($_baseColors); //variable from config file.
+
+    @each $key, $scheme in $_schemes {
+
+        $chroma: define-color-scheme($key, map-get($scheme,description));
+
+        @if (map-has_key($scheme, colors)) {
+           $chroma: add-colors(map-get($scheme, key), map-get($scheme, colors));
+            $color-key-map:  add-all-color-keys($color-key-map,map-get($scheme, colors), $scheme);
+        }
+    }
+}

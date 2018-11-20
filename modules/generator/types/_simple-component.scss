@@ -1,0 +1,6 @@
+@mixin g-generate-scheme-quick-component($name: simple-component, $scheme: $chroma-active-scheme, $color-props: () ) {
+    @each $key, $value in $schemes {
+        @include g-simple-component($scheme);
+        //TODO: merge additional color props for fake theme
+    }
+}

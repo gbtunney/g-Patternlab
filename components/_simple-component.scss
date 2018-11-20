@@ -1,12 +1,27 @@
-@mixin g-simple-component($color-scheme:$chroma-active-scheme,$font:font-san-serif,$base-font-unit:1,$do-rhythm-spacing: true){
-    //component with no flags!!!
+/* SIMPLE COMPONENT -component with no flags!!!
+ $props: (
+        background: true, foreground: true,
+        border: true,
+        fill:foreground,
+        hover-background:rgba(color($color-scheme, background), .7),
+        hover-foreground:rgba(color($color-scheme, foreground), .7)
+    );*/
 
-    @include g-color-scheme($color-scheme);
-    @include setType($base-font-unit, $font, 0);
+@mixin g-simple-component($scheme:$chroma-active-scheme,$props:( background: true, foreground: true),$font:font-san-serif,$base-font-unit:1,$do-rhythm-spacing: true,$name: simple-component) {
 
-    //todo : some sort of variable for this
-    @if ($do-rhythm-spacing){
-        @include rhythm-padding(1,2);
+    @include g-color-scheme($color-scheme, $props...);
+
+    //TODO: Finish this.
+    //  @include g-simple-color-scheme($scheme);
+    @if mixin-exists(dry) {
+        @include dry($name, $DRY_ENABLED) {
+            @include setType($base-font-unit, $font, 0);
+
+            //todo : some sort of variable for this
+            @if ($do-rhythm-spacing) {
+                @include rhythm-padding(1, 2);
+            }
+            @content;
+        }
     }
-    @content;
 }

@@ -7,19 +7,24 @@
 }
 
 @function get-inverted-scheme-key($key) {
-    @return map-get($inverted-key-lookup-map, $key);
+    @if (map-get($inverted-key-lookup-map, $key)==null) {
+        @return false
+    }
+;
+@return map-get($inverted-key-lookup-map, $key);
 }
 
-@function get-inverted-colormap( $base-scheme: $chroma-active-scheme ) {
-
-    $new-colors: (
-        foreground: color($base-scheme, get-inverted-scheme-key(foreground)),
-        background: color($base-scheme, get-inverted-scheme-key(background)),
-        accent: color($base-scheme, get-inverted-scheme-key(accent)),
-        border: color($base-scheme, get-inverted-scheme-key(background))
-    );
-    @return $new-colors;
-
+@function get-inverted-colormap( $sourcemap, $parent:false ) {
+    $-newmap: ();
+    @if (chroma-has-scheme($parent)) {
+        $sourcemap: get-scheme-colors($parent);
+    }
+    @each $key, $value in $sourcemap {
+        @if (get-inverted-scheme-key($key)) {
+            $-newmap: map-set($-newmap, $key, map-get($sourcemap, get-inverted-scheme-key($key)));
+        }
+    }
+    @return $-newmap;
 }
 
 @function add-all-color-keys($my-color-key-map,$colors, $scheme-name) {
@@ -29,27 +34,62 @@
     @return false;
 }
 
-@function add-color-key($color-key) {
-    @if map-has-key($color-key-map, $color-key) {
-       // @return true;
-    } @else {
+@function add-color-key($my-color-key-map,$color-key) {
+   @return map-merge($my-color-key-map,($color-key:$color-key));
+}
 
-     //   @return map-set(, $color-key, $color-key);
-
+@function get-chroma-hex-by-reference($chroma-color-ref) {
+//gets registered color by hex code
+       @if (chroma-has-color($chroma-color-ref,default)) {
+        @return color(default,$chroma-color-ref);
+    }@else {
+        @return false;
     }
+}
+
+@function get-registered-chroma-color($chroma-color) {
+//gets an array of themes associated with a refgistered color.
+    ///THIS IS A DRAFT.
+    $found-schemes: ();
+    $color: false;
+
+    @each $key, $value in $schemes {
+        @if (chroma-has-color($chroma-color,$key)){
+
+            $found-schemes : map-merge($found-schemes,( $key: $key ));
+           // $color: color()
+/*  @each $key, $value in $chroma-colors {
+        @debug "REF #{$chroma-color-ref} :    :  #{map-get($value,reference)}";
+        @if ($chroma-color-ref == map-get($value,reference)) {
+            @debug "found!!!";
+            @return map-get($value, value)
+        }
+    }
+    */
+        }
+    }
+    @if (length($new-map) < 1){
+        @return false;
+    }
+    @return $new-map;
 
 }
 //helper function for chroma
 @function get-scheme-data($key :$chroma-active-scheme ){
     @return map-get($schemes,$key);
 }
-@function  get-scheme-colors($scheme-key: $chroma-active-scheme){
-    //helps with inverted colors???
-    @if ((chroma-has-scheme($scheme-key)) and get-scheme-data($scheme-key)){
-        $scheme: get-scheme-data($scheme-key);
-        @return  map-get($scheme,colors);
+
+@function get-scheme-colors($scheme :$chroma-active-scheme, $my-color-key-map:$color-key-map ) {
+    @if (chroma-has-scheme($scheme)) {
+        $new-color-map: ();
+        @each $key, $value in $my-color-key-map {
+            @if (chroma-has-color($key, $scheme)) {
+                $new-color-map: map_merge($new-color-map, ($key: color($chroma-active-scheme, $key)));
+            }
+        }
+        @return $new-color-map;
     }
-    //@return;
+    @return false;
 }
 @function update-color-in-scheme($scheme-key: $chroma-active-scheme, $color-key:foreground, $value:red ){
     ///extending - adding to
@@ -71,6 +111,111 @@
     }
 }
 
+@function parse-data-scheme($_schemes){
+    $-new-schemes: ();
+    ///IMPORT COLORS FROM CONFIG FILE
+    @for $i from 1 through length($_schemes) {
+
+        $scheme: nth($_schemes, $i);
+       // @debug "SCHEME!!     #{$scheme}";
+
+        //this mostly does  inverted colormap, also , will automatically add unregistered colors
+        @if (map-get($scheme,'parent') !=false) and (map-has-key($scheme, colors) ==false) {
+            @if (map-has-key($scheme, invert) ) {
+                $parent-scheme: map-get($-new-schemes, map-get($scheme, parent));
+                $parent-colors: map-get($parent-scheme, colors);
+                @if ($parent-colors) {
+                    @debug "---INverted colors";
+                   // @debug $parent-colors;
+                    $scheme: map-merge($scheme, (colors: get-inverted-colormap($parent-colors)));
+                } @else {
+                    @debug "ERROR! Parent scheme #{map-get($scheme,parent)} should be defined first before inverting";
+                }
+            }
+        }
+
+        $-new-schemes: map-set($-new-schemes,map-get($scheme,key),$scheme);
+
+    }
+
+    @return if(length($-new-schemes) > 0, $-new-schemes, "HELLO!");
+}
+
+@function register-new-scheme($scheme-key, $color-key-map:(), $colors: (), $parent:false ){
+    ///extending - adding to
+    @if (chroma-has-scheme($scheme-key)){
+        @if ( chroma-has-color($color-key, $scheme-key) ) {
+            @debug "scheme #{$scheme-key} already has color #{$color-key}, updating";
+
+        }@else {
+
+        }
+        $scheme-colors : get-scheme-colors($scheme-key);
+        $color-to-add:($color-key:$value);
+        $scheme-colors:  map-merge($scheme-colors,$color-to-add);
+        $chroma: add-colors($scheme-key,$scheme-colors);
+        @return true;
+
+    }@else{
+        @debug "scheme #{$scheme-key} doesnt excist, cant add color #{$color-key}";
+    }
+}
+@function is-color-registered($color){
+    //converts to a hex if it is a reference to chromas colors
+    @if (type-of($color) == color) {
+        @return false;
+    } @else if ( type-of($color) == string) {
+        @if (get-chroma-hex-by-reference($color) != false ){
+            @return true;
+        }
+    }@else {
+        @return false;
+    }
+}
+
+@function get-color-reference($color){
+    ///if it is a hex, returns registered color keyword otherwise self.
+    //converts to a hex if it is a reference to chromas colors
+
+    @if (is-color-registered($color)){
+        $chroma-colors: map-get($chroma,names);
+
+        @if(is-color($color)){
+            @each $key, $value in $chroma-colors {
+                @debug "REF #{$color} :    :  #{map-get($value,reference)}";
+                @if ($color == map-get($value,value)) {
+                    @debug "!!!!!!!!!!!found!!!";
+                    @return map-get($value, reference);
+                }
+            }
+        }@else {
+            @return $color; //just return the reference
+        }
+
+        @return false;
+    }@else {
+        @return false;
+    }
+}
+
+@function is-color($color){
+    @if (type-of($color) == color) {
+@return true;
+    }@else {
+        @return false;
+    }
+    }
+@function quick-scheme-colors($color-key-map){
+ // finds out if it is a color or a reference, turns into a reference.
+
+    @each $key, $value in $color-key-map {
+            @if ( is-color-hex-registered($value) ){
+
+            }@else if (is-color($value)){
+                ///current unregitered color, register it.
+            }
+    }
+}
 @function add-scheme($scheme-key: $chroma-active-scheme, $color-key:foreground, $value:red ){
     ///extending - adding to
     @if (chroma-has-scheme($scheme-key)){
@@ -116,7 +261,16 @@
     }
 
 }
-
+@function get-color-value($color){
+    //converts to a hex if it is a reference to chromas colors
+    @if (type-of($color) == color) {
+        @return $color;
+    } @else if ( type-of($color) == string) {
+        @return get-chroma-hex-by-reference($color);
+    }@else {
+        @return false;
+    }
+}
 @function get-current-scheme-color($color-key, $value, $color-scheme:$chroma-active-scheme ) {
     ///route through here based on variable datatypes
 
@@ -159,3 +313,4 @@
 @function get-module-color(){
     @return true;
 }
+

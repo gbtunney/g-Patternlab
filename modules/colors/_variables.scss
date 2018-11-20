@@ -6,124 +6,37 @@ $active-scheme : light!default;
 //
 // dependancies             - chroma sass
 
-$baseColors: (
-    white: #fff,
-    black: #000,
-    dark-gray: #585858,
-    gum-leaf: #afd2c2,
-    silver-chalice: #adadad,
-    saffron: #edc433,
-    light-gray: #d2d3d2,
-    oslo-gray: #8d8f92,
-    brown-bramble: #562d19,
-    kournikova: #f5cd51,
-    copper: #b97131,
-    kilamanjaro: #3e3030,
-    slugger: #432e2e,
-    silverleaf: #71b799,
-    fuscous_gray: #555,
-    lightning_yellow: #eec517,
-    tana: #bdba9c,
-    khaki: #f0e68c,
-    west-coast: #64551f,
-    highball: #90813b,
-    sandstone: #7b6d5c,
-    schooner: #8b8378,
-    spice: #66543e,
-    madras: #4c3b25,
-    onion: #33250d,
-    woodrush: #332915,
-    jacko-bean: #2e1c08,
-    acadia: #1e1205,
-    crowshead: #1a130a
-);
+$baseColors:(
+    white:       #fff,
+    black:       #000,
+    blue:        #0e71b8,
+    light-blue: lighten(#0e71b8,20%),
+    red:         #c00,
+
+    // Define a primary highlight color that has the value of our "blue" color.
+    // Note: if blue was specified without quotes, Chroma would interpret that as
+    // the color keyword blue and not a reference to the "blue" color name.
+    primary:     'blue',
+)!default;
 
 $schemes: (
     (
-        key: light,
-        description: 'The main light on dark theme.',
+        key: functional,
+        description: 'Colors used by functional parts of the design.',
         parent: false,
         colors:(
-            foreground: fuscous_gray,
+            foreground: blue,
             background: white,
-            accent: gum-leaf,
-            border: fuscous_gray,
-            link: gum-leaf
+            accent: light-blue,
+            border: blue,
+            link: light-blue
         )
     ),
     (
-        key: light-alt,
-        description: 'The main light on dark theme, extended',
-        parent: light,
-        colors:(
-            accent: lightning_yellow,
-            link: lightning_yellow
-        )
-    ),
-    (
-        key: accent-default,
-        description: 'light grey foreground',
-        parent: light,
-        colors:(
-            foreground: oslo-gray,
-            border: oslo-gray
-        )
-    ),
-    (
-        key: accent-primary,
-        description: 'light mint foreground',
-        parent: light,
-        colors:(
-            foreground: gum-leaf,
-            border: gum-leaf
-        )
-    ),
-    (
-        key: accent-secondary,
-        description: 'light yellow foreground',
-        parent: light,
-        colors:(
-            foreground: "lightning_yellow",
-            border: lightning_yellow,
-            random: lightning_yellow
-        )
-    ),
-    (
-        key: dark,
-        description: 'inverted',
-        parent: light,
-        invert:true
-    ),
-    (
-        key: dark-accent-default,
-        description: 'light grey background',
-        parent: accent-default,
-        invert : true
-    ),
-    (
-        key: dark-accent-secondary,
-        description: 'inverted',
-        parent: accent-secondary,
-        invert : true
-    ),
-    (
-        key: dark-accent-primary,
-        description: 'inverted',
-        parent: accent-primary,
-        invert : true
-    ),
-    (
-        key: alt-light,
-        description: 'DARK THEME!!',
-        parent: light,
-        colors: (
-            active:fuscous_gray,
-            foreground: fuscous_gray,
-            background: white,
-            accent: lightning_yellow,
-            border: lightning_yellow,
-            link:lightning_yellow
-        )
+        key: invert-functional,
+        description: 'Inverted Colors used by functional parts of the design.',
+        parent: functional,
+       invert:true
     )
 );
 

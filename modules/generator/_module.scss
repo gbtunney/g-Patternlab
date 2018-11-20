@@ -6,9 +6,19 @@
 
 @import "node_modules/sass-bem-constructor/stylesheets/_bem-constructor.scss";
 
-@import "variables";
 @import "functions";
+@import "variables";
+
 @import "types/types";
+
+//various debug modes.
+@if ($GENERATOR_ON == force){
+    $generate-map:set-generate-map(true);
+}@else if ($GENERATOR_ON == false){
+    $generate-map:set-generate-map(false);
+}
+
+/*
 
 @if ($generate-swatch-classes) {
     @include g-generate-swatches();
@@ -23,3 +33,4 @@
 @if ($generate-type-classes) {
     @include g-generate-all-font-utility-classes;
 }
+*/

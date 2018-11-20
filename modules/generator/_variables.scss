@@ -1,6 +1,7 @@
 //*** GENERATOR DEFAULTS
 //*** Dependancies: Chroma Sass
 
+$GENERATOR_ON: true!default;
 $utility-seperator: '-' !default;
 
 $utility-prefixes: (
@@ -23,10 +24,12 @@ $scale-lookup-units: (
     xxxl: 5
 ) !default;
 
+$generate-map: (
+    scheme-classes: false,
+    swatch-classes: true,
+    type-classes:true,
+    rhythm-spacing:false,
+    utility-static:false,
+    components:false
+)!default;
 
-$generate-scheme-classes:true!default;
-$generate-swatch-classes: true!default;
-$generate-type-classes: true!default;
-$generate-utility-padding: true!default;
-$generate-utility-static:false!default;
-$generate-components:false!default;
