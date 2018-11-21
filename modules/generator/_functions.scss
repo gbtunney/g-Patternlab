@@ -17,3 +17,14 @@
 @function set-generate-map( $bool:true ,$map: $generate-map ){
     @return map-set-all($map,$bool);
 }
+
+@function get-module-generator(){
+    @return true;
+}
+@function get-dependancies-generator(){
+    @return (
+            (get-utility-prefix): true,
+            (utility):true,
+            (g-color-scheme):true
+    );
+}

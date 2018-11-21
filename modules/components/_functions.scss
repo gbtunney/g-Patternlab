@@ -1,0 +1,9 @@
+@function get-module-components(){
+    @return true;
+}
+///todo : update this
+@function get-dependancies-components(){
+    @return (
+            (rhythm): true
+    );
+}

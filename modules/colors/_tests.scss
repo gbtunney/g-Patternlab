@@ -1,0 +1,47 @@
+//TESTS!!!
+@import "sassytester/sass/_SassyTester.scss";
+
+$inverted-default-result: (key: invert-functional,
+    description: "Inverted Colors used by functional parts of the design.",
+    parent: functional,
+    invert: true,
+    colors: (
+        foreground: white,
+        background: blue,
+        accent: light-blue,
+        border: white,
+        link: light-blue
+    )
+);
+
+$testmap:();
+$tests-color: (
+        (blue) : #0e71b8
+);
+
+$tests-chroma: (
+        ( 'functional',foreground ) : true
+);
+
+$tests-add: (
+        (0, 1): 1,
+        (1, 4): 5,
+        (2, 3): 5,
+        (3, 1): 4,
+        (4, 0): 4,
+);
+@include   (test(get-chroma-hex-by-reference, $tests-color));
+
+
+
+
+@function test-get-chroma-color($scheme: $chroma-active-scheme, $key: background){
+    @if ( (  type-of(color($scheme,$key))== color)){
+        @return true;
+    }@else {
+        @return false;
+
+    }
+}
+
+//@include run(test(test-get-chroma-color, $tests-chroma));

@@ -26,8 +26,8 @@ $scale-lookup-units: (
 
 $generate-map: (
     scheme-classes: false,
-    swatch-classes: true,
-    type-classes:true,
+    swatch-classes: false,
+    type-classes:false,
     rhythm-spacing:false,
     utility-static:false,
     components:false

@@ -1,0 +1,52 @@
+// ----
+// Sass (v3.3.9)
+// Compass (v1.0.0.alpha.20)
+// ----
+
+// Dependency checker
+//
+// @param {ArgList} $functions - list of functions to check for
+//
+// @return {Bool} whether or not there are missing dependencies
+
+@function missing-dependencies ($functions...) {
+    $missing-dependencies: ();
+
+    @each $function in $functions {
+        @if not function-exists($function) {
+            $missing-dependencies: append($missing-dependencies, $function, comma);
+        }
+    }
+
+    @if length($missing-dependencies) > 0 {
+        @warn "Unmet dependencies! The following functions are required: #{$missing-dependencies}.";
+    }
+
+    @return $missing-dependencies != 0;
+}
+
+// @alias missing-dependencies
+
+@function dep($functions...) {
+    @return missing-dependencies($functions...);
+}
+
+@function existing-function() {
+    @return true;
+}
+
+// @requires inexisting-function
+// @requires existing-function
+
+@function dummy() {
+    @if missing-dependencies("existing-function", "inexisting-function") == true {
+        @return null;
+    }
+
+    // Function core
+    @return "dummy result";
+}
+
+test {
+    sass: dummy();
+}

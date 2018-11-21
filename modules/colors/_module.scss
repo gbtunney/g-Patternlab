@@ -2,32 +2,10 @@
 //*** Dependancies: Chroma Sass
 $color-key-map:();
 @import "chroma-sass/sass/_chroma.scss";
-
  //this will store all possible color keys.
 
 @import "variables";
 @import "functions";
 @import "mixins";
 
-
-///******SETUP CHROMA-SASS
-
-// Define the default color scheme.
-
-
-
-//set the active scheme for chroma.
-//$chroma-active-scheme: $active-scheme; //variable from config file.
-
-//scheme-of-reference: get-chroma-hex-by-reference(silverleaf);
-//map-get($value,reference)
-//debug "SCHEE#{color(default,silverleaf)}";
-//@debug     map-get($chroma, 'names');
-$testvar: "VARIABLE FROM COLORS"!default;
-//@debug get-scheme-colors(test-scheme);
-@debug "~!!!!!!!!!!!!!!!!!";
-@debug parse-data-scheme($schemes);
-
 @include init-chroma($baseColors,parse-data-scheme($schemes));
-
-@debug color(functional,background)

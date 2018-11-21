@@ -314,3 +314,8 @@
     @return true;
 }
 
+@function get-dependancies-color(){
+    @return (
+            (color): true,
+    );
+}

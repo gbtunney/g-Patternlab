@@ -1,0 +1,25 @@
+///has to be like this till dynamic mixins are allowed
+@mixin init-generator($-generate-map: $generate-map ) {
+    @if (($GENERATOR_ON == force) or ($GENERATOR_ON==true)) {
+        @each $key, $value in $-generate-map {
+            @if ($value == true) {
+                @if ($key == scheme-classes) {
+                    @include g-generate-scheme-utility-classes;
+                } @else if ($key== swatch-classes) {
+                    // @include g-generate-swatches();
+
+                } @else if ($key== type-classes) {
+                    @include g-generate-all-font-utility-classes;
+
+                } @else if ($key== rhythm-spacing) {
+                    @include g-generate-utility-padding();
+
+                } @else if ($key== utility-static) {
+
+                } @else if ($key== components) {
+
+                }
+            }
+        }
+    }
+}

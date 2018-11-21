@@ -1,3 +1,13 @@
 @function get-module-typography(){
     @return true;
 }
+@function get-dependancies-typography(){
+    @return (
+            (adjust-font-size-to): true,
+            ( setting ):true,
+            (dry):true, //dry
+            (ms):true, ///modular scale,
+            (get-enabled-g-functions):true
+    );
+}
+

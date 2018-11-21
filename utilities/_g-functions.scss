@@ -89,7 +89,21 @@
 		@return true;
 	}
 }
+@function dependancy-check($func/*function*/
+) {
+	@debug "DEPENDENCY CHECK FOR #{$func}";
+	$found: false;
+	@if mixin-exists($func) {
+		$found: true;
+	} @else if function-exists($func) {
+		$found: true;
+	}
+	@return $found;
+}
 
+@function get-enabled-g-functions(){
+	@return true;
+}
 @function is-module-enabled(){
 //function-exists(get-module-rhythm-spacing)
 }

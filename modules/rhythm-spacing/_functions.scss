@@ -5,3 +5,8 @@
 @function get-module-rhythm-spacing(){
     @return true;
 }
+@function get-dependancies-rhythm-spacing(){
+    @return (
+            (rhythm): true
+    );
+}

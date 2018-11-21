@@ -46,6 +46,3 @@ $BASE_FONT_SIZE: map-get($modularscale, base);
 $base-font-size: $BASE_FONT_SIZE;
 $base-line-height: $BASE_LINE_HEIGHT;
 $relative-font-sizing: false;
-
-@debug $base-rhythm-unit;
-@debug rhythm(1);

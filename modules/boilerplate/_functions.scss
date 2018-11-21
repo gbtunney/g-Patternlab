@@ -1,0 +1,9 @@
+///stub functions
+@function get-module-BOILERPLATE(){
+    @return true;
+}
+@function get-dependancies-BOILERPLATE(){
+    @return (
+            (rhythm): true
+    );
+}

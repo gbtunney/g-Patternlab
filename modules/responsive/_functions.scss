@@ -1,3 +1,9 @@
 @function get-module-responsive(){
     @return true;
 }
+@function get-dependancies-responsive(){
+    @return (
+            (breakpoint): true,
+            ( to ):true
+    );
+}

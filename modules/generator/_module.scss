@@ -8,7 +8,7 @@
 
 @import "functions";
 @import "variables";
-
+@import "mixins";
 @import "types/types";
 
 //various debug modes.
@@ -16,21 +16,6 @@
     $generate-map:set-generate-map(true);
 }@else if ($GENERATOR_ON == false){
     $generate-map:set-generate-map(false);
-}
+}@else if else($generate-map==true){
 
-/*
-
-@if ($generate-swatch-classes) {
-    @include g-generate-swatches();
 }
-
-@if ($generate-scheme-classes) {
-    @include g-generate-scheme-utility-classes;
-}
-@if ($generate-utility-padding) {
-    @include g-generate-utility-padding();
-}
-@if ($generate-type-classes) {
-    @include g-generate-all-font-utility-classes;
-}
-*/
