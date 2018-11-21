@@ -13,7 +13,6 @@
 
                 } @else if ($key== rhythm-spacing) {
                     @include g-generate-utility-padding();
-
                 } @else if ($key== utility-static) {
 
                 } @else if ($key== components) {
