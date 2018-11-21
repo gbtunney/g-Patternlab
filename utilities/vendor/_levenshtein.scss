@@ -1,0 +1,110 @@
+// ----
+// Sass (v3.3.0.rc.5)
+// Compass (v1.0.0.alpha.18)
+// ----
+
+/*! In information theory and computer science,
+    the Levenshtein distance is a string metric
+    for measuring the difference between two sequences.
+    Informally, the Levenshtein distance between two words
+    is the minimum number of single-character edits
+    (i.e. insertions, deletions or substitutions)
+    required to change one word into the other.  */
+
+// You can add tests here
+$levenshtein-tests: (
+    'sass' 'craziness',
+    'hugo' 'giraudel',
+    'levenshtein' 'distance',
+);
+
+// Helper to target an element in a matrix
+// @param $m: matrix
+// @param $x: x coord
+// @param $y: y coord
+// @return literal
+@function e($m, $coords) {
+    $x: nth($coords, 1);
+    $y: nth($coords, 2);
+    @return nth(nth($m, $x), $y);
+}
+
+// Helper instanciation a matrix of $x by $y
+// @param $x: number of cols
+// @param $y: number of lines
+// @return list
+@function matrix($x, $y) {
+    $matrix: ();
+    @for $i from 1 through $x {
+        $tmp: ();
+        @for $y from 1 through $y {
+            $tmp: append($tmp, 0)
+        }
+        $matrix: append($matrix, $tmp);
+    }
+    @return $matrix;
+}
+
+// Helper assigning $value at $matrix[$x, $y]
+// @param $matrix: matrix to update
+// @param $x: x coord
+// @param $y: y coord
+// @param $value: value to assign at $matrix[$x, $y]
+@function set-matrix($matrix, $coords, $value) {
+    $x: nth($coords, 1);
+    $y: nth($coords, 2);
+    @return set-nth($matrix, $x, set-nth(nth($matrix, $x), $y, $value));
+}
+
+// Calculating Levenshtein distance between two strings
+// http://en.wikipedia.org/wiki/Levenshtein_distance
+// @param $a: first string
+// @param $b: second string
+// @return number
+@function levenshtein($a, $b) {
+    // Making sure we are dealing with same case
+    $a: to-lower-case($a);
+    $b: to-lower-case($b);
+    // Storing string lengths
+    $n: str-length($a);
+    $m: str-length($b);
+    // Initializing matrices
+    $matrix: matrix($n + 1, $m + 1);
+    $cost  : matrix($n, $m);
+
+    // Just in case
+    @if $a == $b { @return 0; }
+    @if $n == 0 { @return $m; }
+    @if $m == 0 { @return $n; }
+
+    // Setting up matrices
+    @for $i from 0 through $n  {
+        @for $j from 0 through $m  {
+            $v: if($i == 0, $j, if($j == 0, $i, 0));
+            $w: if(str-slice($a, $i, $i) == str-slice($b, $j, $j), 0, 1);
+            @if $v != 0 {
+                $matrix: set-matrix($matrix, ($i + 1, $j + 1), $v);
+            }
+            @if $i != 0 and $j != 0 and $w != 0 {
+                $cost: set-matrix($cost, $i $j, $w);
+            }
+        }
+    }
+
+    // Updating $matrix
+    @for $i from 2 through length($matrix) {
+        @for $j from 2 through length(nth($matrix, $i)) {
+            $matrix: set-matrix($matrix, $i $j, min(e($matrix, ($i - 1, $j)) + 1, e($matrix, ($i, $j - 1)) + 1, e($matrix, ($i - 1, $j - 1)) + e($cost, ($i - 1, $j - 1))));
+        }
+    }
+    @return e($matrix, length($matrix) length(nth($matrix, 1)));
+}
+
+// Examples
+#{"Levenshtein distance between"} {
+    @each $test in $levenshtein-tests {
+        $first  : nth($test, 1);
+        $second : nth($test, 2);
+        #{'`#{$first}` and `#{$second}`'}: levenshtein($first, $second);
+    }
+}

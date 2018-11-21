@@ -1,15 +1,17 @@
 //*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
 //*** Dependancies: Chroma Sass
-$color-key-map:();
+
  //this will store all possible color keys.
 
 @import "variables";
 @import "functions";
 @import "mixins";
 @import "cm_color-manager/index";
+
 @include init-cm($baseColors,$schemes);
 
-@debug is-valid-color-reference(test-color); //color(test-color);
+//@debug "light #{color(light,border)}";
+//@debug "inverted #{color(dark,border)}";
+//@debug get-scheme-colors-list(alt-light);
 
-@debug "fucntional #{color(functional,foreground)}";
-@debug "inverted #{color(invert-functional,foreground)}";
+
