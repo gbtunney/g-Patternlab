@@ -1,4 +1,6 @@
 
+$TEST-DEPENDANCIES: true!default;
+
 $tests-dependencies: (
         (get-module-typography): true,
         (get-module-color): true,
@@ -37,13 +39,17 @@ $test-modules: (
 )!default;
 
 @mixin test-all-dependencies($-modules: $test-modules ) {
-    @each $key, $value in $test-modules {
-        @if (function-exists("get-dependancies-#{$key}")) {
-            $tests-var: call("get-dependancies-#{$key}");
 
-            @if ($tests-var) {
-                @include run(test(dependancy-check, $tests-var));
+    @if ( $TEST-DEPENDANCIES){
+        @each $key, $value in $test-modules {
+            @if (function-exists("get-dependancies-#{$key}")) {
+                $tests-var: call("get-dependancies-#{$key}");
+
+                @if ($tests-var) {
+                    @include run(test(dependancy-check, $tests-var));
+                }
             }
         }
     }
+
 }

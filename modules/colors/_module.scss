@@ -8,7 +8,7 @@
 @import "mixins";
 @import "cm_color-manager/index";
 
-@include init-cm($baseColors,$schemes);
+
 
 //@debug "light #{color(light,border)}";
 //@debug "inverted #{color(dark,border)}";

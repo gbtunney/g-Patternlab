@@ -3,7 +3,6 @@ $CM-schemes-hash: ();
 
 @mixin init-cm($_baseColors,$_schemes,$additional-schemes:false,$allow-unregistered:false) {
 
-   // @debug $_baseColors;
     $chroma: define-default-color-scheme('Branding color names for use by "functional" color names below.');
     // Add colors to the default color scheme.
     $chroma: add-colors((clean-palatte-strings($_baseColors))); //variable from config file.
@@ -16,7 +15,7 @@ $CM-schemes-hash: ();
             $transform-map: map-get($scheme, transform);
 
             @if (type-of(map-get($scheme, transform)) == string  and function-exists(map-get($scheme, transform))){
-                $transform-map: call(map-get($scheme, transform));
+                $transform-map: call(get-function(map-get($scheme, transform)));
             }
             $parent-colors: ();
             @if (map-get($scheme, parent)) {

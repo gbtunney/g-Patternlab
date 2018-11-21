@@ -514,7 +514,7 @@ $sc-constants: (
     }
 
     @if type-of($value) == 'color' {
-        @warn 'Beware! Sass does some color conversion. The resulting string may be different from the color input.';
+      //  @warn 'Beware! Sass does some color conversion. The resulting string may be different from the color input.';
     }
 
     @return inspect($value);

@@ -1,8 +1,3 @@
-@function inverted(){
-    @debug "calling inverted!";
-    @return $inverted-key-lookup-map;
-}
-
 $active-scheme : light!default;
 //$generate-scheme-classes:true;
 //$generate-swatch-classes: false;

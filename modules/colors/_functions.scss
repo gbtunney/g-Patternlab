@@ -317,5 +317,9 @@
 @function get-dependancies-color(){
     @return (
             (color): true,
+            (to-string):true
     );
+}
+@function inverted(){
+    @return $inverted-key-lookup-map;
 }
