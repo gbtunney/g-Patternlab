@@ -1,0 +1,62 @@
+//BASED OFF CHROMA BY GILLIAN
+$CM_ALLOW_UNREGISTERED_COLORS: true!default;
+
+
+// Variables module
+//
+// This module contains all the public and private variables needed for Chroma
+// to function. Only public variables are documented.
+//
+// Auto-imported by other modules.
+//
+// Weight: -2
+//
+// Style guide: variables
+
+//
+// Public variables.
+//
+
+// $chroma
+//
+// The colors and meta-data managed by Chroma.
+//
+// Chroma stores all of its colors, color schemes, skins etc. in the global
+// sass variable, `$chroma`. All of Chroma's configuration functions are
+// designed to save their changes to the system by changing the value of the
+// `$chroma` variable. For example: `$chroma: add-colors((kermit, #70af00));`
+//
+// Note: since the `$chroma` variable is a complex map of data structures, it
+// is highly recommended to only access `$chroma` through the functions and
+// mixins provided and not attempt to read data from `$chroma` with Sass'
+// `map-get()` and `map-set()` functions. (If you find you need more helper
+// functions, submit a feature request! We're happy to help.)
+//
+// Style guide: variables.chroma
+//$CM: () !default;
+
+$CM:(
+schemes: (),
+    palatte:true,
+    scheme-color-keys:true
+)!default;
+// $CHROMA_DEFAULT_SCHEME
+//
+// The name of the default color scheme; defaults to `default`. This variable
+// is READ ONLY; changing its value will break Chroma.
+//
+// If you want to change this variable's value, you must use the
+// `define-default-color-scheme()` function instead.
+//
+// Style guide: variables.CHROMA_DEFAULT_SCHEME
+$CM_DEFAULT_SCHEME: 'default';
+
+// $chroma-active-scheme
+//
+// The currently active color scheme. This is the default value used by the
+// $scheme parameter of most Chroma functions.
+//
+// By default, this variable is set to the 'default' color scheme.
+//
+// Style guide: variables.chroma-active-scheme
+$CM_active-scheme: $CM_DEFAULT_SCHEME !default;

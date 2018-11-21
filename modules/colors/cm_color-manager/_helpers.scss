@@ -1,0 +1,29 @@
+// chroma-has-scheme($scheme)
+//
+// Checks if the named color scheme exists.
+//
+// Style guide: internals.chroma-has-scheme
+@function chroma-has-scheme($scheme) {
+    @return map-has-key(map-get($CM, 'schemes'), $scheme);
+}
+
+// chroma-schemes()
+//
+// Returns a list of all color schemes in $chroma.
+//
+// Style guide: internals.chroma-schemes
+@function chroma-schemes() {
+    @return map-keys(map-get($CM, 'schemes'));
+}
+//takes of quotes and makes sure it is a string
+@function clean-string($str) {
+    @if ((type-of($str) == string)) {
+        @return unquote($str);
+    } @else if (type-of($str) == 'color') {
+        @warn 'Beware! Sass does some color conversion. The resulting string may be different from the color input.';
+        @return inspect($str);
+    } @else {
+        @warn "PROBLEM WITH STRING #{$str}  #{type-of($str) }";
+        @return false;
+    }
+}
