@@ -1,46 +1,13 @@
 @import "variables";
 @import "functions";
 @import "helpers";
+@import "mixins";
+@import "chroma-sass/sass/_chroma.scss";
 
-$baseColors:(
-    white:       #fff,
-    black:       #000,
-    blue:        #0e71b8,
 
-    light-blue: lighten(#0e71b8,20%),
-    red:         #c00,
-    tester: #cc6329,
-
-    // Define a primary highlight color that has the value of our "blue" color.
-    // Note: if blue was specified without quotes, Chroma would interpret that as
-    // the color keyword blue and not a reference to the "blue" color name.
-    primary:     'blue',
-)!default;
-
-$schemes: (
-    functional:(
-        key: functional,
-        description: 'Colors used by functional parts of the design.',
-        parent: false,
-        colors:(
-            foreground: blue,
-            background: white,
-            accent: light-blue,
-            border: blue,
-            link: light-blue
-        )
-    ),
-    invert-functional: (
-        key: invert-functional,
-        description: 'Inverted Colors used by functional parts of the design.',
-        parent: functional,
-        invert:true
-    )
-);
-
-@debug define-default-color-scheme('functional', 'default palatte');
+//@debug define-default-color-scheme('functional', 'default palatte');
 //@debug $CHROMA_DEFAULT_SCHEME;
-@debug add-colors($baseColors)
+//@debug add-colors($baseColors)
 //do add colors next
 ///@debug define-color-scheme('functional', 'Colors used by functional parts of the design.');
 
