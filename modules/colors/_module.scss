@@ -1,11 +1,108 @@
 //*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
 //*** Dependancies: Chroma Sass
-$color-key-map:();
+
 @import "chroma-sass/sass/_chroma.scss";
  //this will store all possible color keys.
 
 @import "variables";
 @import "functions";
 @import "mixins";
+//@debug "parsing #{$schemes} #{$baseColors}";
 
-@include init-chroma($baseColors,parse-data-scheme($schemes));
+//@include init-chroma($baseColors,parse-data-scheme($schemes));
+
+// Define the default color scheme.
+$chroma: define-default-color-scheme('Branding color names for use by "functional" color names below.');
+
+// Add colors to the default color scheme.
+$chroma: add-colors((
+    white:       #fff,
+    black:       #000,
+    blue:        #0e71b8,
+    red:         #c00,
+
+    // Define a primary highlight color that has the value of our "blue" color.
+    // Note: if blue was specified without quotes, Chroma would interpret that as
+    // the color keyword blue and not a reference to the "blue" color name.
+    primary:     'blue',
+));
+
+// Create a "functional" color scheme that inherits from the default color scheme.
+$chroma: define-color-scheme('functional', 'Colors used by functional parts of the design.');
+
+// Add colors to the functional color scheme.
+$chroma: add-colors('functional', (
+    // Have the "text" color use the hex value given to the "black" color. Even
+    // though the "functional" color scheme doesn't define "black", it inherits
+    // from the "default" color scheme where "black" is defined.
+    text:        'black',
+background: 'white',
+    foreground:'black',
+
+    // You can use quoted or unquoted strings to reference other color names.
+    // Note: color keywords are not considered strings unless they are quoted.
+
+    // Have the link color use the primary color.
+    link:        'primary'
+
+));
+
+
+
+
+// Set which color scheme should be used by default when calling the color()
+// function.
+$chroma-active-scheme: 'functional';
+
+//@debug color(alternate,foreground);
+@debug "HELLO!";
+
+
+
+
+$dark-schemes:(
+
+(
+    key: dark,
+    description: 'inverted',
+    parent: light,
+    invert:true
+),
+(
+    key: dark-accent-default,
+    description: 'light grey background',
+    parent: accent-default,
+    invert : true
+),
+(
+    key: dark-accent-secondary,
+    description: 'inverted',
+    parent: accent-secondary,
+    invert : true
+),
+(
+    key: dark-accent-primary,
+    description: 'inverted',
+    parent: accent-primary,
+    invert : true
+),
+(
+    key: alt-light,
+    description: 'DARK THEME!!',
+    parent: light,
+    colors: (
+        active:fuscous_gray,
+        foreground: fuscous_gray,
+        background: white,
+        accent: lightning-yellow,
+        border: lightning-yellow,
+        link:lightning-yellow
+    )
+)
+);
+
+//@include add-scheme-chroma($baseColors,parse-data-scheme($dark-schemes));
+//@debug parse-data-scheme($dark-schemes);
+//@debug map-get($chroma,names);
+
+//@debug hex-to-reference-color(#afd2c2);

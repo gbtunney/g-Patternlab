@@ -1,3 +1,4 @@
+$color-key-map:()!default;
 $active-scheme : light!default;
 //$generate-scheme-classes:true;
 //$generate-swatch-classes: false;
@@ -40,7 +41,7 @@ $schemes: (
         parent: functional,
        invert:true
     )
-);
+)!default;
 
 /// COLOR SCHEME DEFAULTS - MAPPING (dont need to edit)
 

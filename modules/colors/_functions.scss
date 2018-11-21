@@ -7,8 +7,16 @@
 }
 
 @function get-inverted-scheme-key($key) {
+
+    @if ($key){
+        @debug "SOURCEMAP #{map-get($inverted-key-lookup-map, $key)} #{$key}#{$inverted-key-lookup-map}";
+
+    }
     @if (map-get($inverted-key-lookup-map, $key)==null) {
-        @return false
+        @return foreground;
+    }@else {
+
+        @return map-get($inverted-key-lookup-map, $key);
     }
 ;
 @return map-get($inverted-key-lookup-map, $key);
@@ -19,7 +27,10 @@
     @if (chroma-has-scheme($parent)) {
         $sourcemap: get-scheme-colors($parent);
     }
+
+
     @each $key, $value in $sourcemap {
+        @debug "--SOURCEMAP#{$sourcemap}";
         @if (get-inverted-scheme-key($key)) {
             $-newmap: map-set($-newmap, $key, map-get($sourcemap, get-inverted-scheme-key($key)));
         }
@@ -28,16 +39,18 @@
 }
 
 @function add-all-color-keys($my-color-key-map,$colors, $scheme-name) {
+   @debug "Adding all colorkets #{$my-color-key-map}";
+
     @if (type-of($colors ) == map) {
         @return map-merge($my-color-key-map, $colors);
     }
-    @return false;
+   // @return false;
 }
 
 @function add-color-key($my-color-key-map,$color-key) {
    @return map-merge($my-color-key-map,($color-key:$color-key));
 }
-
+//TODO: REFACTOR THIS NAME
 @function get-chroma-hex-by-reference($chroma-color-ref) {
 //gets registered color by hex code
        @if (chroma-has-color($chroma-color-ref,default)) {
@@ -45,6 +58,20 @@
     }@else {
         @return false;
     }
+}
+@function hex-to-reference-color($chroma-color-hex) {
+
+    $found-color: false;
+    $chroma-colors: map-get($chroma,names);
+    @each $key, $value in $chroma-colors {
+       // @debug "REF #{$chroma-color-hex} :    :  #{map-get($value,reference)}";
+        @if ($chroma-color-hex == map-get($value,value) and (map-get($value,reference)!=false)) {
+            @debug "!!!!!!!!!!!!!!found!!!" #{$value};
+            $found-color: map-get($value, reference)
+
+        }
+    }
+    @return $found-color;
 }
 
 @function get-registered-chroma-color($chroma-color) {
@@ -81,10 +108,11 @@
 
 @function get-scheme-colors($scheme :$chroma-active-scheme, $my-color-key-map:$color-key-map ) {
     @if (chroma-has-scheme($scheme)) {
+
         $new-color-map: ();
         @each $key, $value in $my-color-key-map {
             @if (chroma-has-color($key, $scheme)) {
-                $new-color-map: map_merge($new-color-map, ($key: color($chroma-active-scheme, $key)));
+                $new-color-map: map-merge($new-color-map, ($key: color($scheme, $key)));
             }
         }
         @return $new-color-map;
@@ -111,7 +139,7 @@
     }
 }
 
-@function parse-data-scheme($_schemes){
+@function parse-data-scheme($_schemes, $-color-key-map: $color-key-map){
     $-new-schemes: ();
     ///IMPORT COLORS FROM CONFIG FILE
     @for $i from 1 through length($_schemes) {
@@ -122,15 +150,44 @@
         //this mostly does  inverted colormap, also , will automatically add unregistered colors
         @if (map-get($scheme,'parent') !=false) and (map-has-key($scheme, colors) ==false) {
             @if (map-has-key($scheme, invert) ) {
+
                 $parent-scheme: map-get($-new-schemes, map-get($scheme, parent));
-                $parent-colors: map-get($parent-scheme, colors);
-                @if ($parent-colors) {
-                    @debug "---INverted colors";
-                   // @debug $parent-colors;
-                    $scheme: map-merge($scheme, (colors: get-inverted-colormap($parent-colors)));
-                } @else {
-                    @debug "ERROR! Parent scheme #{map-get($scheme,parent)} should be defined first before inverting";
+
+                @if (type-of($parent-scheme)!=map){
+                    $newmap: get-scheme-colors(map-get($scheme, parent),$-color-key-map);
+
+                    @each $key, $value in $newmap {
+
+                        @debug "______________FOUND #{$value}";
+
+
+
+                        @if (type-of($value)==color) {
+                            @debug "FFFFFFFFFFFF#{hex-to-reference-color($value)}";
+
+                         $newmap:map-set($newmap,$key,hex-to-reference-color($value))
+                        } @else {
+                            @debug "NOT A COLOR, #{$value}";
+                        }
+
+                    }
+
+                    $scheme: map-merge($scheme, (colors: get-inverted-colormap($newmap)));
+                    @debug "--------------------------#{$newmap}";
+
+
+                }@else{
+                    $parent-colors: map-get($parent-scheme, colors);
+
+                    @if ($parent-colors) {
+                        @debug "---INverted colors";
+                        // @debug $parent-colors;
+                        $scheme: map-merge($scheme, (colors: get-inverted-colormap($parent-colors)));
+                    } @else {
+                        @debug "ERROR! Parent scheme #{map-get($scheme,parent)} should be defined first before inverting";
+                    }
                 }
+
             }
         }
 
