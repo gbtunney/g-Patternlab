@@ -6,8 +6,7 @@
                 @if ($key == scheme-classes) {
                     @include g-generate-scheme-utility-classes;
                 } @else if ($key== swatch-classes) {
-                    // @include g-generate-swatches();
-
+                     @include g-generate-swatches();
                 } @else if ($key== type-classes) {
                     @include g-generate-all-font-utility-classes;
 

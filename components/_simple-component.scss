@@ -7,9 +7,9 @@
         hover-foreground:rgba(color($color-scheme, foreground), .7)
     );*/
 
-@mixin g-simple-component($scheme:$chroma-active-scheme,$props:( background: true, foreground: true),$font:font-san-serif,$base-font-unit:1,$do-rhythm-spacing: true,$name: simple-component) {
+@mixin g-simple-component($scheme:$chroma-active-scheme,$font:font-san-serif,$base-font-unit:1,$props:( background: true, foreground: true),$do-rhythm-spacing: true,$name: simple-component) {
 
-    @include g-color-scheme($color-scheme, $props...);
+    @include g-color-scheme($scheme, $props...);
 
     //TODO: Finish this.
     //  @include g-simple-color-scheme($scheme);

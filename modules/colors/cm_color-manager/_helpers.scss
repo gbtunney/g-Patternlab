@@ -40,12 +40,21 @@
     $found: ();
 
     @each $key, $value in $ref-list {
-        @if (color($scheme-key, $key)) {
+
+        @debug "--------#{chroma-has-color($key, $scheme-key)}}";
+
+        //@debug "VALID#{is-valid-color-reference($key)}";
+        @if ( chroma-has-color($key, $scheme-key) ) {
             $found: map-set($found, $key, color($scheme-key, $key));
         }
+
+
+
+
     }
     @return $found;
 }
+
 
 
 @function is-valid-color-reference($-ref ) {
@@ -65,6 +74,7 @@
         ////TRANSFORMATION
         ///check to see if source map has both key and value in its keys
         @if (map-get($source-map,$value) and map-get($source-map,$key)) {
+
             $-newmap: map-set($-newmap, $key, map-get($source-map, $value));
         }
     }

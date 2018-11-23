@@ -7,6 +7,7 @@
 
 @mixin init-color-module(){
     @include init-cm($baseColors,$schemes);
+    $chroma-active-scheme: light;
 }
 @mixin write-scheme-property($property: foreground, $value: false,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
 
