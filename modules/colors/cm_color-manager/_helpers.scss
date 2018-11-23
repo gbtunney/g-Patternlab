@@ -15,14 +15,16 @@
 @function chroma-schemes() {
     @return map-keys(map-get($CM, 'schemes'));
 }
+
 //takes of quotes and makes sure it is a string
 @function clean-string($str) {
     $cleanStr: to-string($str);
-    $cleanStr: str-replace($cleanStr,"_","-");
-    $cleanStr: str-replace($cleanStr," ","-");
+    $cleanStr: str-replace($cleanStr, "_", "-");
+    $cleanStr: str-replace($cleanStr, " ", "-");
     $cleanStr: to-lower_case($cleanStr);
-   @return $cleanStr;
+    @return $cleanStr;
 }
+
 //returns a map of all possible scheme color keys
 @function get-scheme-reference-list($_schemes) {
     $ref-map: ();
@@ -38,24 +40,13 @@
 @function get-scheme-colors-list($scheme-key, $_schemes: $schemes) {
     $ref-list: get-scheme-reference-list($_schemes); //possible values
     $found: ();
-
     @each $key, $value in $ref-list {
-
-        @debug "--------#{chroma-has-color($key, $scheme-key)}}";
-
-        //@debug "VALID#{is-valid-color-reference($key)}";
-        @if ( chroma-has-color($key, $scheme-key) ) {
+        @if (chroma-has-color($key, $scheme-key)) {
             $found: map-set($found, $key, color($scheme-key, $key));
         }
-
-
-
-
     }
     @return $found;
 }
-
-
 
 @function is-valid-color-reference($-ref ) {
     //it must have color to have a valid reference
@@ -98,4 +89,14 @@
         }
     }
     @return $clean-color-map;
+}
+@function get-schemes-with-transforms($_schemes:$schemes) {
+    $schemes-with-transforms: ();
+    @each $key, $scheme in $_schemes {
+        @if (map-get($scheme, transform)) {
+            //  @debug "FOUND!";
+            $schemes-with-transforms: map-set($schemes-with-transforms, $key, $scheme);
+        }
+    }
+    @return $schemes-with-transforms;
 }

@@ -7,31 +7,9 @@ $CM-schemes-hash: ();
     // Add colors to the default color scheme.
     $chroma: add-colors((clean-palatte-strings($_baseColors))); //variable from config file.
     @each $key, $scheme in $_schemes {
-        @if ( type-of($scheme)== map){
-        }@else {
+        @if (type-of($scheme)== map) {
+        } @else {
             @debug "not found#{$scheme}";
-        }
-        @if (map-get($scheme, transform)) {
-            $transform-map: map-get($scheme, transform);
-
-            @if (type-of(map-get($scheme, transform)) == string  and function-exists(map-get($scheme, transform))){
-                $transform-map: call(get-function(map-get($scheme, transform)));
-            }
-            $parent-colors: ();
-            @if (map-get($scheme, parent)) {
-
-                @if (not map-get($scheme, colors)){
-                    $scheme: map-set($scheme, colors, ());
-                }
-                //merge parent with child schemes
-                $child-colors: map-get($scheme, colors);
-                $parent-colors: map-get(map-get($_schemes, map-get($scheme, parent)), colors);
-                $merged: map-merge($parent-colors, $child-colors);
-                $scheme: map-set($scheme, colors, $merged);
-            }
-            $source-map: map-get($scheme, colors);
-            $source-map: map-merge($source-map, get-transformed-colormap($source-map, $transform-map));
-            $scheme: map-set($scheme, colors, $source-map);
         }
 
         @if (map-get($scheme, parent)) {
@@ -47,4 +25,26 @@ $CM-schemes-hash: ();
             $chroma: add-colors(map-get($scheme, key), clean-palatte-strings(map-get($scheme, colors)));
         }
     }
+    @include do-transforms(get-schemes-with-transforms());
 }
+
+@mixin do-transforms($_schemes) {
+    @each $key, $scheme in $_schemes {
+
+        $transform-map: map-get($scheme, transform);
+
+        @if (type-of(map-get($scheme, transform)) == string  and function-exists(map-get($scheme, transform))) {
+            $transform-map: call(get-function(map-get($scheme, transform)));
+        }
+        @if (map-get($scheme, parent)) {
+
+            @if (not map-get($scheme, colors)) {
+                $scheme: map-set($scheme, colors, ());
+            }
+            $transformed-colormap: get-transformed-colormap(get-scheme-colors-list($key), $transform-map);
+            $chroma: add-colors($key, $transformed-colormap);
+        }
+    }
+}
+
+;
