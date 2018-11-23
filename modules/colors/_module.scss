@@ -8,10 +8,10 @@
 @import "mixins";
 @import "cm_color-manager/index";
 
-
+@mixin init-color-module(){
+    @include init-cm($baseColors,$schemes);
+}
 
 //@debug "light #{color(light,border)}";
 //@debug "inverted #{color(dark,border)}";
 //@debug get-scheme-colors-list(alt-light);
-
-
