@@ -16,6 +16,93 @@
     }
 }
 
+
+//takes of quotes and makes sure it is a string
+@function clean-string($str) {
+    $cleanStr: to-string($str);
+    $cleanStr: str-replace($cleanStr, "_", "-");
+    $cleanStr: str-replace($cleanStr, " ", "-");
+    $cleanStr: to-lower_case($cleanStr);
+    @return $cleanStr;
+}
+
+//returns a map of all possible scheme color keys
+@function get-scheme-reference-list($_schemes) {
+    $ref-map: ();
+    @each $key, $scheme in $_schemes {
+        @if (map-get($scheme,colors) and type-of(map-get($scheme,colors))==map) {
+            $ref-map: map_merge($ref-map, map-get($scheme, colors));
+        }
+    }
+    @return $ref-map;
+}
+
+//returns a map of all color keys and colors for $scheme-key   ie light
+@function get-scheme-colors-list($scheme-key, $_schemes: $schemes) {
+    $ref-list: get-scheme-reference-list($_schemes); //possible values
+    $found: ();
+    @each $key, $value in $ref-list {
+        @if (chroma-has-color($key, $scheme-key)) {
+            $found: map-set($found, $key, color($scheme-key, $key));
+        }
+    }
+    @return $found;
+}
+
+@function is-valid-color-reference($-ref ) {
+    //it must have color to have a valid reference
+    @if (color($-ref)) {
+        $result: color($-ref);
+        @debug "#{$-ref} is a color of type #{type-of($result)}";
+        @return true;
+    }
+    @return false;
+}
+
+@function get-transformed-colormap( $source-map:(),$transform-map:()) {
+    $-newmap: ();
+
+    @each $key, $value in $transform-map {
+        ////TRANSFORMATION
+        ///check to see if source map has both key and value in its keys
+        @if (map-get($source-map,$value) and map-get($source-map,$key)) {
+
+            $-newmap: map-set($-newmap, $key, map-get($source-map, $value));
+        }
+    }
+    @return $-newmap;
+}
+
+@function clean-palatte-strings($-base-colors ) {
+    $clean-color-map: ();
+    $clean-value: value;
+    @each $key, $value in $-base-colors {
+
+        @if (type-of($value) == string) {
+            $clean-value: clean-string($value);
+        } @else if (type-of($value) == color) {
+            $clean-value: $value;
+        } @else {
+            @error "unexpected color key: #{$key}  value:#{$value}";
+        }
+        @if ($clean-value) {
+            $clean-color-map: map-set($clean-color-map, clean-string($key), $clean-value);
+        }
+    }
+    @return $clean-color-map;
+}
+
+@function get-schemes-with-transforms($_schemes:$schemes) {
+    $schemes-with-transforms: ();
+    @each $key, $scheme in $_schemes {
+        @if (map-get($scheme, transform)) {
+            //  @debug "FOUND!";
+            $schemes-with-transforms: map-set($schemes-with-transforms, $key, $scheme);
+        }
+    }
+    @return $schemes-with-transforms;
+}
+
 @function get-module-color(){
     @return true;
 }
