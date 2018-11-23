@@ -6,7 +6,6 @@
 @import "variables";
 @import "functions";
 @import "mixins";
-@import "cm_color-manager/index";
 
 @mixin init-color-module(){
     @include init-chroma($baseColors,$schemes);
