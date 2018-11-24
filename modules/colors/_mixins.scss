@@ -1,5 +1,3 @@
-
-
 %border-defaults {
     border-style: solid;
     border-width: 1px;
@@ -71,19 +69,48 @@
         @include g-color-scheme($color-scheme);
     }
 }
+@mixin init-cm($_baseColors,$_schemes,$additional-schemes:false,$allow-unregistered:false) {
 
-@mixin init-chroma($_baseColors,$_schemes,$additional-schemes:false){
     $chroma: define-default-color-scheme('Branding color names for use by "functional" color names below.');
     // Add colors to the default color scheme.
-    $chroma: add-colors($_baseColors); //variable from config file.
-
+    $chroma: add-colors((clean-palatte-strings($_baseColors))); //variable from config file.
     @each $key, $scheme in $_schemes {
+        @if (type-of($scheme)== map) {
+        } @else {
+            @debug "not found#{$scheme}";
+        }
 
-        $chroma: define-color-scheme($key, map-get($scheme,description));
-
+        @if (map-get($scheme, parent)) {
+            $chroma: define-color-scheme($key, map-get($scheme, description), map-get($scheme, parent));
+        } @else {
+            //scheme with no parent
+            $chroma: define-color-scheme($key, map-get($scheme, description));
+            @if (map-has_key($scheme, colors)) {
+                $chroma: add-colors(map-get($scheme, key), clean-palatte-strings(map-get($scheme, colors)));
+            }
+        }
         @if (map-has_key($scheme, colors)) {
-           $chroma: add-colors(map-get($scheme, key), map-get($scheme, colors));
-            $color-key-map:  add-all-color-keys($color-key-map,map-get($scheme, colors), $scheme);
+            $chroma: add-colors(map-get($scheme, key), clean-palatte-strings(map-get($scheme, colors)));
         }
     }
+    @include do-transforms(get-schemes-with-transforms());
 }
+
+@mixin do-transforms($_schemes) {
+    @each $key, $scheme in $_schemes {
+
+        $transform-map: map-get($scheme, transform);
+
+        @if (type-of(map-get($scheme, transform)) == string  and function-exists(map-get($scheme, transform))) {
+            $transform-map: call(get-function(map-get($scheme, transform)));
+        }
+        @if (map-get($scheme, parent)) {
+
+            @if (not map-get($scheme, colors)) {
+                $scheme: map-set($scheme, colors, ());
+            }
+            $transformed-colormap: get-transformed-colormap(get-scheme-colors-list($key), $transform-map);
+            $chroma: add-colors($key, $transformed-colormap);
+        }
+    }
+}  ;
