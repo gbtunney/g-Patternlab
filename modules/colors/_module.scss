@@ -1,18 +1,7 @@
 //*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
 //*** Dependancies: Chroma Sass
 
- //this will store all possible color keys.
-
 @import "variables";
 @import "functions";
 @import "mixins";
 @import "chroma-sass/sass/_chroma.scss";
-
-
-
-
-//@debug "light #{color(light,border)}";
-//@debug "inverted #{color(dark,border)}";
-//@debug get-scheme-colors-list(alt-light);
-
-

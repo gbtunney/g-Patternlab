@@ -7,7 +7,7 @@
         hover-foreground:rgba(color($color-scheme, foreground), .7)
     );*/
 
-@mixin g-simple-component($scheme:$chroma-active-scheme,$font:font-san-serif,$base-font-unit:1,$props:( background: true, foreground: true),$do-rhythm-spacing: true,$name: simple-component) {
+@mixin g-simple-component($scheme:$chroma-active-scheme,$font:font-san-serif,$base-font-unit:1,$props:( background: true, foreground: true, accent:true,border:true),$do-rhythm-spacing: true,$name: simple-component) {
 
     @include g-color-scheme($scheme, $props...);
 
@@ -19,7 +19,7 @@
 
             //todo : some sort of variable for this
             @if ($do-rhythm-spacing) {
-                @include rhythm-padding(1, 2);
+                @include rhythm-padding(.75, .75);
             }
             @content;
         }

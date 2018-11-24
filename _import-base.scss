@@ -1,6 +1,5 @@
-@import "utilities/_g-functions.scss";
-@import "modules/colors/module";
-@import "modules/typography/module";
-@import "modules/responsive/module";
-@import "modules/rhythm-spacing/module";
-@import "modules/generator/module";
+@import "../g-Patternlab/modules/colors/module";
+@import "../g-Patternlab/modules/typography/module";
+@import "../g-Patternlab/modules/rhythm-spacing/module";
+@import "../g-Patternlab/modules/components/module";
+@import "../g-Patternlab/modules/generator/module";
