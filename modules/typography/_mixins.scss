@@ -2,31 +2,24 @@
 //*** THESE ARE THE CORE BREAKPOINT WRAPPER
 //*** Dependencies: Modular Scale  | Compass Vertical Rhythm. | Sass DRY | Sass Toolkit
 $DRY_ENABLED:false!default;
-@mixin setType($size-unit: 0,$font: font-san-serif, $lines-unit:false ) {
+@mixin setType($_font-scale-unit: 0,$_font-key: font-san-serif, $-rhyhm-lines:false ) {
     //TODO : fix
-    $required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight);
-    $font-map: setting($font); //this is the only real place setting is used
 
-    @if ($lines-unit == false) {
-        @include dry(#{$font}-#{$size-unit}, $DRY_ENABLED) {
-            @include adjust-font-size-to(ms($size-unit));
+    ///props that will be dumped in the css.
+    $required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight);
+    $font-map: setting($_font-key); //this is the only real place setting is used
+
+    @if ($-rhyhm-lines == false) {
+        @include dry(#{$_font-key}-#{$_font-scale-unit}, $DRY_ENABLED) {
+            @include adjust-font-size-to(ms($_font-scale-unit));
         }
     } @else {
-        @include adjust-font-size-to(ms($size-unit), $lines-unit);
+        @include adjust-font-size-to(ms($_font-scale-unit), $-rhyhm-lines);
     }
 
-    @include dry($font, $DRY_ENABLED) {
+    @include dry($_font-key, $DRY_ENABLED) {
         @for $i from 1 through length($required-font-props) {
             #{nth($required-font-props, $i)}: map-get($font-map, nth($required-font-props, $i));
         }
-    }
-}
-
-@mixin resetType( ) {
-    //TODO : fix
-    $required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight);
-    // $font-map: setting($font); //this is the only real place setting is used
-    @for $i from 1 through length($required-font-props) {
-        #{nth($required-font-props, $i)}: inherit;
     }
 }

@@ -1,4 +1,4 @@
-$active-scheme : light!default;
+$active-scheme : functional!default;
 //$generate-scheme-classes:true;
 //$generate-swatch-classes: false;
 
@@ -52,7 +52,6 @@ $schemes: (
     )
 )!default;
 
-
 /// COLOR SCHEME DEFAULTS - MAPPING (dont need to edit)
 
 $default-accent-selector: 'h1, h2, h3, h4, h5, h6,a ' !default;
@@ -78,7 +77,7 @@ $fallback-lookup-map: (
     hover-foreground: foreground,
     hover-fill: foreground
 );
-
+//this is used by the inverted transform
 $inverted-key-lookup-map: (
     foreground: background,
     background: foreground,

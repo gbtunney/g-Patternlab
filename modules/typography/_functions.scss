@@ -1,13 +1,49 @@
-@function get-module-typography(){
+@function get-module-typography() {
     @return true;
 }
-@function get-dependancies-typography(){
+
+@function get-dependancies-typography() {
     @return (
             (adjust-font-size-to): true,
-            ( setting ):true,
+            (setting):true,
             (dry):true, //dry
             (ms):true, ///modular scale,
             (get-enabled-g-functions):true
     );
 }
 
+@function get-font-map($_key:type,$_default-font-map: $default-font-map) {
+    @if map-get($font-maps, $_key) {
+        @return map-get($font-maps, $_key);
+    } @else {
+        @return $_default-font-map;
+    }
+}
+
+@function get-font-size($_key: default,$_unit:1) {
+    ///this does the same thing as get scale value except it pulls key from font
+    $_font-size-scale: false;
+
+    @if (type-of($_key) ==number and has-unit($_key)) {
+        @return $_key;
+    } @else if (type-of($_key) ==number and has-unit($_key)==false) {
+        $_font-size-scale: map-get(get-font-map($_key), size-scale);
+
+        $_font-size-scale: get-scale-value($_font-size-scale, $_unit);
+    } @else {
+        $_font-size-scale: get-scale-value($_key, $_unit);
+    }
+
+    @return $_font-size-scale;
+}
+
+@function init-font-maps($_font-maps:$font-maps, $_default-font-map: $default-font-map) {
+
+    $new-map-collection: (default:$default-font-map);
+
+    @each $key, $prop in $font-maps {
+        $new-map: map_merge($default-font-map, $prop);
+        $new-map-collection: map-set($new-map-collection, $key, $new-map);
+    }
+    @return $new-map-collection;
+}

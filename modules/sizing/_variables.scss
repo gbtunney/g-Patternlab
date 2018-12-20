@@ -1,0 +1,39 @@
+$modularscale-default-settings: (
+    base: 20px,
+    ratio: 1.2,
+    sm:(
+        base: 25px,
+        ratio: 1.2
+    )
+)!default;
+
+//todo: make this a default value
+$scale-map: (
+    icon:(
+        transform: rs,
+        options: (base:10px
+        ), ///  option is direct base value gets multipled by unit below
+        units: (
+            xxs: -2,
+            xs: -1,
+            sm: 0,
+            md: 1,
+            lg: 2,
+            xl: 3,
+            xxl: 4,
+            xxxl: 5
+        )
+    ),
+    forced-size-icon:(
+        transform: fixedval, ///no multipliers.
+        options: 20px, ///thread is for modular scale
+        units: (
+            sm: 20px,
+            md: 50px,
+            lg: 100px
+        )
+    )
+)!default;
+
+//probably move?
+$default-scale-key: icon !default;

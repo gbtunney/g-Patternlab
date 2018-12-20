@@ -5,7 +5,6 @@
 
 @mixin init-color-module(){
     @include init-cm($baseColors,$schemes);
-    $chroma-active-scheme: light;
 }
 @mixin write-scheme-property($property: foreground, $value: false,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
 
@@ -57,16 +56,29 @@
 
 }
 
-@mixin g-simple-color-scheme($color-scheme:$chroma-active-scheme ) {
+@mixin g-new-simple-color-scheme($color-scheme:$chroma-active-scheme, $props:false ) {
 
     @if (type-of($color-scheme) == "map") {
         //true "quick mode"
         $quick-color-scheme-map: $color-scheme;
         @each $key, $value in $quick-color-scheme-map {
-            @include write-scheme-property($key, get-color-value($value), false);
+            @debug $key;
+            @debug '#{$key} :: #{ get-color-value($value) }';
+            @include write-scheme-property($key, get-color-value($value), $default-svg-selector);
         }
     } @else {
-        @include g-color-scheme($color-scheme);
+
+        @if (chroma-has-scheme($color-scheme)) {
+            @if ($props and type-of($props) == "map") {
+
+                @debug 'gonna send props';
+                @include g-color-scheme($color-scheme,$props...);
+
+            } @else {
+                @include g-color-scheme($color-scheme);
+            }
+        }
+
     }
 }
 @mixin init-cm($_baseColors,$_schemes,$additional-schemes:false,$allow-unregistered:false) {

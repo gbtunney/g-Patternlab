@@ -15,7 +15,10 @@
     //  @include g-simple-color-scheme($scheme);
     @if mixin-exists(dry) {
         @include dry($name, $DRY_ENABLED) {
-            @include setType($base-font-unit, $font, 0);
+
+            @if ( $font ){
+                @include setType($base-font-unit, $font, 0);
+            }
 
             //todo : some sort of variable for this
             @if ($do-rhythm-spacing) {

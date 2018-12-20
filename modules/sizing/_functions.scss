@@ -1,0 +1,146 @@
+///stub functions
+@function get-module-sizing() {
+    @return true;
+}
+
+@function get-dependancies-sizing() {
+    @return (
+            (rhythm): true,
+            (ms):true, ///modular scale,
+    );
+}
+
+//*** custom TRANSFORMATION FUNCTIONTIONS for scale maps
+//ms: MODULAR SCALE function
+
+//rs: RATIO SIZE
+@function rs($v,$base: 0) {
+
+    @if ($v==0) {
+        @return 0;
+    }
+    @if (type-of ($v)== number and has-unit($v)==false) {
+        @return $v * $base;
+    } @else {
+        @return 0;
+    }
+}
+
+//rs: FIXED SIZE
+
+@function fs($v,/* it seeems like these dummy need to be present to not fuck it up*/$base: false,$ratio: false) {
+    @return $v;
+}
+
+////********MODULE HELPERS
+
+@function get-scale-def($_key, $_scale-definition-collection: $scale-map) {
+
+    @return map-get($_scale-definition-collection, $_key);
+}
+
+@function validate-scale-definition-key ($_key, $_scale-definition-collection: $scale-map) {
+
+    @if (map-get($_scale-definition-collection, $_key)) {
+        @return true;
+    }
+    @return false;
+}
+
+@function is-valid-lookup-key($_scale-def-key,$_key) {
+
+    $unit-lookup: map-get($_scale-def-key, units);
+    //if it has the unit propeety, then if it has the specific key .
+    @if ($unit-lookup and map-has-key($unit-lookup, $_key)) {
+        @return true;
+    } @else {
+        @return false;
+    }
+}
+
+@function is-valid-transformation($_transformation-str) {
+    @if ($_transformation-str and function_exists($_transformation-str)) {
+        @return true;
+    } @else {
+        @return false;
+    }
+}
+
+@function get-value-by-key($_scale-def-key,$_key) {
+    ///might not work like this
+    @if ($_scale-def-key ==false or $_key == false) {
+        @return false;
+    }
+    $unit-lookup: map-get($_scale-def-key, units);
+    //if it has the unit propeety, then if it has the specific key .
+    @if ($unit-lookup and map-has-key($unit-lookup, $_key)) {
+        @return map-get($unit-lookup, $_key);
+    } @else {
+        @error "PROBLEM WITH KEY ";
+    }
+}
+
+// /replacement ms function becomes a 'gate' .
+@function get-scale-value($_scale-def-key:type /* can be a scale def KEY or scaledef map */, $_value:1 /*value OR value key*/
+) {
+    ///if the definition key can either be a key in the scale definition objects "units" prop,
+    // or it can be the whole scale definition (if one isnt registered or something "on the fly' modifications.
+
+    $current-scale-definition: ();
+    $current-value: false;
+
+    @if (type-of($_scale-def-key)==map) {
+        $current-scale-definition: $_scale-def-key;
+    } @else if (validate-scale-definition-key($_scale-def-key)) {
+
+        @debug "---------------------------------------";
+
+        $current-scale-definition: get-scale-def($_scale-def-key);
+    }
+
+    //see if the value is a key that needs to be converted to the actual value/
+    @if (is-valid-lookup-key($current-scale-definition, $_value)) {
+        $current-value: get-value-by-key($current-scale-definition, $_value);
+
+        @debug "scale definition , : #{$current-scale-definition} cleanvalue #{$_value} value processed: #{$current-value}";
+
+    } @else if ($_value) {
+        $current-value: $_value;
+        /// defined values can be assigned directly.
+    }
+    $transformation-func: false;
+    //check to see if transformation needs to be applied. if none present, just return the value.
+    @if (is-valid-transformation(map-get($current-scale-definition, transform))) {
+
+        $transformation-func: get-function(map-get($current-scale-definition, transform));
+        //apply the transformation i guess???
+
+    }
+
+    @debug "TRANSFORM ATION FUNC #{map-get($current-scale-definition,transformation)}";
+
+    ///options ( SHOULD BE A MAP. )
+    $_options: (map-get($current-scale-definition, options));
+    //todo: mybe validate function here
+    @if ($_options == undefined or type-of($_options) != map) {
+        $_options: ();
+    }
+
+    $args: (v:$current-value); //map default args object
+
+    //merge the maps with additional parameters for functions.
+    $args: map-merge($args, $_options);
+
+    @if ($transformation-func) {
+        ///do transformation
+
+        @return call($transformation-func, $args...);
+
+    } @else {
+        ///return the args object
+        @return $args;
+    }
+
+    //in order to provide a VALUE to a transformation function, it needs to be a NUMBER.    2, or 20px are acceptable values.
+    @return false;
+}

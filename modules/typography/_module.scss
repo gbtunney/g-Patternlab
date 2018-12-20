@@ -1,7 +1,6 @@
-//*** THESE ARE THE CORE COLOR FUNCTIONS BUILT TO WORK WITH OR WITHOUT CHROMA SASS
+//*** TYPOGRAPHY IS AN EXTENSION OF SIZING MODULE
 //*** Dependancies: Modular Scale, Compass Mixins
-@import "sass-toolkit/stylesheets/toolkit/_settings.scss"; //TODO: get rid of this
-@import "modularscale-sass/stylesheets/_modularscale.scss";
+
 @import "sass-dry/_dry.scss";
 
 @import "variables";
@@ -17,17 +16,11 @@
 //}
 
 //init type maps
-$font-map: map-get($typography, "fonts");
+$font-maps: map-get($typography, "fonts");
+$default-font-map: map-get($font-maps, default);
 
-$default-font-map: map-get($font-map, default);
-
-@each $key, $prop in $font-map {
-    $font-map-merged: map_merge($default-font-map, $prop);
-    @include setting-set($key, $font-map-merged);
-}
-
-//**** modular scale
-$modularscale: map-get($typography, modularscale);
+///merge additional scales (rather than replace)
+$scale-map: map-merge($scale-map, map-get($typography, type-scale-map));
 
 //*** COMPASS PROPS
 //$base-font-size: 20px; // Sets the base font size
@@ -46,3 +39,26 @@ $BASE_FONT_SIZE: map-get($modularscale, base);
 $base-font-size: $BASE_FONT_SIZE;
 $base-line-height: $BASE_LINE_HEIGHT;
 $relative-font-sizing: false;
+
+
+//*********initialize module
+$font-maps: init-font-maps($font-maps,$default-font-map);
+
+
+
+///***EXAMPLE JUNK
+///the function rs NEEDS TO not have pixel values as units.--
+$testfontsize : get-font-size((
+    transform: fs,
+    options:   (base:40px
+    ),
+    units: (
+        sm: 20px,
+        md: 1.5,
+        lg: 100px,
+        1: 30px
+    )
+),lg);
+
+//@debug "FONT SIZE TEST HERE #{$testfontsize}";
+@debug "FONT SIZE TEST HERE #{get-font-size(type, 0)}";
