@@ -1,0 +1,64 @@
+/* SIMPLE COMPONENT -component with no flags!!!
+ $props: (
+        background: true, foreground: true,
+        border: true,
+        fill:foreground,
+        hover-background:rgba(color($color-scheme, background), .7),
+        hover-foreground:rgba(color($color-scheme, foreground), .7)
+    );*/
+
+////************SIMPLE COMPONENT!!!!
+@mixin g-simple-component( $color:(scheme: dark,
+props: (
+            background: true,
+            foreground: true,
+            accent:false,
+            border:true
+        )
+    ), $font:  false,
+    $spacing:false
+) {
+    //-______________________________________________________________________
+    @if ($color) {
+
+        $_scheme: map-get($color, scheme);
+        $_props: map-get($color, props);
+
+        @include g-color-scheme($_scheme, $_props...);
+    }
+    @if ($font) {
+
+        $_font-key: map-get($font, font-key);
+        $_value: map-get($font, value);
+
+        @if (validate-scale-definition-key($_font-key)) {
+            //use scale instead
+        } @else {
+            @include setType($_font-key, $_value, 2);
+        }
+    }
+    @if ($spacing) {
+
+        @each $item in $spacing {
+            @if type-of($item)== map {
+                $_scale-key: map-get($item, scale-key);
+                $_value: map-get($item, value);
+                $_css-prop: map-get($item, css-prop);
+                @if (validate-scale-definition-key($_scale-key)) {
+                    //use scale instead
+
+                    @if (type-of($_value) ==map) {
+                        @include rhythm-spacing($_css-prop, $_scale-key, $_value...);
+
+                    } @else {
+                        @include rhythm-spacing($_css-prop, $_scale-key, $_value);
+
+                    }
+                } @else {
+
+                }
+            }
+        }
+    }
+    @content;
+}

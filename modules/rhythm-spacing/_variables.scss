@@ -1,4 +1,34 @@
-$use-typography-rhythm: true!default;
-$base-spacing-unit: 20px!default;
-$alt-spacing-unit: 15px!default;
+$default-spacing-map: map-get($font-maps, default);
+
+
+///merge additional scales (rather than replace)
+
+$default-rhythm-scale-key: button !default;
+$default-rhythm-scale-value-key: md;
+$rhythm-scale-map: (
+    button:(
+        transform: rs,
+        options: (base:10px
+        ), ///  option is direct base value gets multipled by unit below
+        units: (
+            xxs: -2,
+            xs: -1,
+            sm: -1,
+            md: 1,
+            lg: 2,
+            xl: 3,
+            xxl: 4,
+            xxxl: 5
+        )
+    ),
+    forced-size-icon:(
+        transform: fixedval, ///no multipliers.
+        options: 20px, ///thread is for modular scale
+        units: (
+            sm: 20px,
+            md: 50px,
+            lg: 100px
+        )
+    )
+)!default;
 

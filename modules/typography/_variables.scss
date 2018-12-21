@@ -1,18 +1,18 @@
 $typekit:'https://use.typekit.net/kxg6qeb.css'!default;
 $typography: (
     required-props: 'font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight',
-    line-height: 1.3,
+    line-height: 1.4,
     type-scale-map: (
         type:(
             transform: ms,
             options: (
                 base:16px,
-                ratio:1.1
+                ratio:1.4
             ), ///option is the thread is for modular scale
             units: (
                 xxs: -2,
                 xs: -1,
-                sm: 0,
+                sm: 2,
                 md: 1,
                 lg: 2,
                 xl: 3,
@@ -45,8 +45,7 @@ fonts:(
         font-serif-italic: (
             font-family: "adobe-garamond-pro",
             title: 'italic serif',
-            font-style: italic,
-            size-scale: icon
+            font-style: italic
         ),
         font-serif-bold: (
             font-family: "adobe-garamond-pro",
@@ -60,3 +59,9 @@ fonts:(
         )
     )
 )!default;
+
+$required-font-props: (font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight)!default;
+
+
+$default-type-scale-key: type !default;
+$default-type-scale-value-key: md;

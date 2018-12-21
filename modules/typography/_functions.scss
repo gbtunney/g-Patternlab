@@ -28,7 +28,11 @@
         @return $_key;
     } @else if (type-of($_key) ==number and has-unit($_key)==false) {
         $_font-size-scale: map-get(get-font-map($_key), size-scale);
-
+        ///this number thing is wierd. i thin this was supposedto be the unit or something??
+//@error "please fix";
+       // $_font-size-scale: get-scale-value($_font-size-scale, $_unit);
+    }@else if (get-font-map($_key)) {
+        $_font-size-scale: map-get(get-font-map($_key), size-scale);
         $_font-size-scale: get-scale-value($_font-size-scale, $_unit);
     } @else {
         $_font-size-scale: get-scale-value($_key, $_unit);

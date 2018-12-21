@@ -5,11 +5,4 @@
 @import "mixins";
 @import "functions";
 
-@if ( $use-typography-rhythm ){
-    @if function-exists(rhythm) {
-        $base-spacing-unit: rhythm(1);
-        $alt-spacing-unit: rhythm(1) * .5;
-    }@else {
-        @debug "Error: to use typography rhytm please import typography module";
-    }
-}
+$scale-map: map-merge($scale-map, $rhythm-scale-map);
