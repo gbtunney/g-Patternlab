@@ -1,0 +1,157 @@
+@mixin c-button( $color-scheme: $chroma-active-scheme,$units:lg,$width:auto,$font:font-san-serif ) {
+
+    //this is basically a wrapper for a kabob.
+
+    $self: &;
+    width: $width;
+    max-width: fit-content;
+
+    //TODO: this is kind of messy, fix maybe?
+    @if mixin-exists(dry) {
+        @include dry(c-button, $DRY_ENABLED) {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+    } @else {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 0;
+    }
+
+    @if (function-exists(get-module-color) and function-exists(color)) {
+        $props: (
+            background: true,
+            foreground: true,
+            border: true,
+            fill:foreground,
+            hover-background:rgba(color($color-scheme, background), .7),
+            hover-foreground:rgba(color($color-scheme, foreground), .7)
+        );
+        @include g-color-scheme($color-scheme, $props...);
+
+        &.--hover-invert {
+            $props: (
+                background: true,
+                foreground: true,
+                border: true,
+                fill:foreground,
+                hover-background: invert,
+                hover-foreground:invert
+            );
+            @include g-color-scheme($color-scheme, $props...);
+
+        }
+        &.--accent {
+            $props: (
+                background: true,
+                foreground: true,
+                border: true,
+                fill:accent,
+                hover-background:true,
+                hover-foreground:true
+            );
+            @include g-color-scheme($color-scheme, $props...);
+        }
+
+    } @else {
+        @debug "PLEASE ENABLE COLOR MODULE TO USE COLOR PART OF COMPONENT"
+    }
+
+    @if function-exists(get-g-placeholders-utility) {
+        @extend %u-reset-link-color;
+    } @else {
+        @debug "PLEASE IMPORT utilities/gplaceholder to use u-reset-link-color";
+    }
+
+    @if (function-exists(get-module-typography)) {
+  //  @include setType( $font,$units, 0);
+
+        &__center {
+        text-align: center;
+      //  @include setType($font,$units,  0);
+        }
+
+        &.--italic {
+            &__center {
+             //   @include setType( font-serif-italic,$units, 1);
+            }
+        }
+
+    } @else {
+        @debug "PLEASE ENABLE TYPOGRAPHY MODULE TO USE TYPE FUNCTIONS"
+    }
+
+    //selectors without dependencies
+    &.--no-background, &.--no-background:hover {
+        background-color: transparent;
+    }
+
+    &.--no-border {
+        border: none;
+    }
+
+    &.--no-padding {
+        padding: 0;
+    }
+
+    @if (function-exists(get-module-rhythm-spacing)) {
+
+        padding: rhythm(.5) rhythm(1);
+
+        &.--sm-padding {
+            padding: rhythm(.25) rhythm(1);
+
+        }
+
+        ///BORDER RADIUS
+        //the default is square button
+        &.--rounded {
+            padding: rhythm(.5);
+            border-radius: rhythm(.5);
+        }
+
+        &.--circle {
+            padding: #{rhythm(1) / 6};
+            border-radius: 100%;
+            line-height: 0;
+            height: 100%;
+        }
+        &.--round-right {
+            border-top-right-radius: rhythm(.5);
+            border-bottom-right-radius: rhythm(.5);
+            padding-left: rhythm(.5);
+
+        }
+
+        &__left + &__center {
+            padding-left: rhythm(.5);
+        }
+        &__center + &__right {
+            padding-left: rhythm(.5);
+        }
+
+    } @else {
+        //TODO: switch to internal padding function.
+        @debug "PLEASE ENABLE TYPE MODULE TO USE PADDING PART OF COMPONENT"
+    }
+
+    @if mixin-exists(o-icon-svg) {
+        &__icon {
+            @include o-icon-svg(false, $units);
+
+        }
+
+        &__left, &__right {
+            @include o-icon-svg(false, $units - 1);
+        }
+    } @else {
+        @debug "PLEASE ENABLE OBJECTS TO USE ICONS"
+    }
+
+    @content;
+}

@@ -1,0 +1,72 @@
+/*SVG ICON SYSTEM*/
+.icon {
+    display: inline-flex;
+    align-self: center;
+}
+
+.icon svg, .icon img {
+    height: 1em;
+    width: 1em;
+    fill: currentColor;
+}
+
+.icon.baseline svg, .icon img {
+    top: .125em;
+    position: relative;
+}
+
+
+//********VISUAL OBJECTS ///
+@mixin c-icon-svg-text($color:false,$width: 100%,$height:$width) {
+   // width: $width;
+   // height: $height;
+    //display: inline;
+
+    display: inline-flex;
+    align-self: center;
+
+    svg,img {
+        height: 1em;
+        width: 1em;
+
+        $props: (
+            background: false,
+            foreground:false,
+            fill: $color
+        );
+        @if ($color!=false) {
+            @include g-color-scheme($props...);
+        }
+    }
+    img{
+        top: .125em;
+        position: relative;
+    }
+    &.baseline{
+        top: .125em;
+        position: relative;
+    }
+}
+
+
+//********VISUAL OBJECTS ///
+@mixin c-icon-svg($color:false,$width: 100%,$height:$width) {
+    width: $width;
+    height: $height;
+    display: inline;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        $props: (
+            background: false,
+            foreground:false,
+            fill: $color
+        );
+        @if ($color!=false) {
+            @include g-color-scheme($props...);
+        }
+    }
+}
