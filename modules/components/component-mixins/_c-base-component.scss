@@ -8,7 +8,7 @@
     );*/
 
 ////************SIMPLE COMPONENT!!!!
-@mixin g-simple-component( $color:(scheme: dark,
+@mixin _base-component( $color:(scheme: dark,
 props: (
             background: true,
             foreground: true,
