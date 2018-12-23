@@ -6,7 +6,7 @@
     margin: rhythm-spacing($horizontal-proportion, $unit) rhythm-spacing($vertical-proportion, $unit);
 }
 
-@mixin rhythm-spacing($prop: padding,$scale-definition-key:$default-rhythm-scale-key, $left:$default-rhythm-scale-value-key,$top:$default-rhythm-scale-value-key,$right:$left,$bottom:$top,$_scale-map:$scale-map ) {
+@mixin rhythm-spacing($prop: padding,$scale-definition-key:$default-rhythm-scale-key, $left:$default-rhythm-scale-value-key,$top:$left,$right:$left,$bottom:$top,$_scale-map:$scale-map ) {
 
     @if $scale-definition-key==false {
         ////just do it in 'direct' mode

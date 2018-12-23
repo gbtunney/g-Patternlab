@@ -11,7 +11,7 @@
                     @include g-generate-all-font-utility-classes;
 
                 } @else if ($key== rhythm-spacing) {
-                    @include g-generate-utility-padding();
+                    @include g-generate-utility-spacing();
                 } @else if ($key== utility-static) {
 
                 } @else if ($key== components) {

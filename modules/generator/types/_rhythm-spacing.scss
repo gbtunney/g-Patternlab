@@ -1,4 +1,122 @@
-@mixin g-generate-utility-padding() {
+
+$demo-obj: (
+    color: (
+        scheme: dark,
+        props: (
+            background: true,
+            foreground: true,
+            accent:false,
+            border:true,
+            fill:foreground
+        )
+    ),
+    font:(
+        font-key: font-san-serif,
+        scale-key:type,
+        zvalue: xxl
+    ),
+    spacing:(
+        (css-prop: padding,
+            scale-key: button,
+            value: (
+                top: xl,
+                bottom: xl,
+                left: xl,
+                right: xl
+            ),
+        ), (
+            css-prop: margin,
+            scale-key: button,
+            value: lg
+        ),
+    )
+);
+
+$default-generate-spacing: (
+    (
+        class-suffix: padding-default,
+        css-prop: padding,
+        scale-key: button,
+    ), (
+        class-suffix: margin-default,
+        css-prop: margin,
+        scale-key: button,
+    ),
+);
+
+
+@mixin g-generate-utility-spacing($config-map:$default-generate-spacing) {
+
+    @debug "rhythm spacing:: #{function-exists(get-module-rhythm-spacing)}";
+
+    @if function_exists(get-module-rhythm-spacing){
+
+        @each $item in $config-map {
+
+            @if type-of($item)== map {
+
+                $_scale-key: map-get($item, scale-key); //no specific scale key bc we want to do all keys
+               // $_value: map-get($item, value);
+
+                $_class-suffix:  map-get($item,class-suffix);
+                $_css-prop: map-get($item, css-prop);
+
+                @if (validate-scale-definition-key($_scale-key)) {
+                    //use scale instead
+
+                    $_scale:get-scale-def($_scale-key);
+                    $_unit-arr :  map-get($_scale,units);
+
+                    @each $unit-key, $_value in $_unit-arr {
+
+
+                        //idk should NOT BE A MAP YRT until it can do multiple calues.
+                        @if (type-of($_value) ==map) {
+                          //  @include rhythm-spacing($_css-prop, $_scale-key, $_value );
+@error ;
+                        } @else {
+                            @debug "generat #{$_scale-key} unit #{$unit-key}  #{$_value}";
+
+                            @include utility(get-utility-prefix(spacing, "#{$utility-seperator}#{$_class-suffix}#{$unit-key}")) {
+                                @include rhythm-spacing($_css-prop, $_scale-key, $unit-key);
+                            }
+
+                        }
+
+                   // rhythm-spacing($prop: padding,$scale-definition-key:$default-rhythm-scale-key, $left:$
+                    }
+
+
+                } @else {
+
+                }
+            }
+        }
+
+
+
+
+
+        @each $unit-key, $unit-value in $scale-lookup-units {
+
+
+            @include utility(get-utility-prefix(padding, "#{$unit-key}#{$utility-seperator}1_2")) {
+                //  padding: rhythm-padding($unit-value) rhythm($unit-value);
+                @include rhythm-padding(1,1,$unit-value);
+            }
+            @include utility(get-utility-prefix(padding, $unit-key)) {
+                //padding: rhythm($unit-value * .5) rhythm($unit-value);
+                @include rhythm-padding(.5,1,$unit-value);
+            }
+
+        }
+
+    }
+}
+
+
+
+@mixin oldg-generate-utility-padding() {
 
     @debug "rhythm spacing:: #{function-exists(get-module-rhythm-spacing)}";
 
@@ -15,6 +133,7 @@
         }
     }
 }
+
 
 @mixin static-utilities-spacing(){
 
