@@ -5,45 +5,73 @@
 @mixin rhythm-margin($horizontal-proportion: 1,$vertical-proportion: 1, $unit: $base-spacing-unit) {
     margin: rhythm-spacing($horizontal-proportion, $unit) rhythm-spacing($vertical-proportion, $unit);
 }
+@function first($list) {
+       @if ( nth($list, 1)){
+           @return nth($list, 1);
+       }@else {
+           @return false;
+       }
+}
 
-@mixin rhythm-spacing($prop: padding,$scale-definition-key:$default-rhythm-scale-key, $left:$default-rhythm-scale-value-key,$top:$left,$right:$left,$bottom:$top,$_scale-map:$scale-map ) {
-
+@mixin rhythm-spacing($prop: padding,$scale-definition-key:$default-rhythm-scale-key, $key-list:false,$options:false,$list-value-var: v ) {
+    $prop-value-to-write:"";  ///output string
     @if $scale-definition-key==false {
-        ////just do it in 'direct' mode
+        ////TODO: just do it in 'direct' mode
+
+
+        ///**************FUNCTION 'DIRECT MODE'
+    }@else if ((type-of( $scale-definition-key)==string ) and (function-exists($scale-definition-key))){
+
+        $value-list: $key-list;
+
+        @if ($value-list) {
+            @each $current-value, $index in $value-list {
+
+                $i: index($value-list, $current-value);
+
+                @if ($index != null) {
+                    $i: $index;
+                }
+
+                @if ($options==false) {
+
+                } @else if (type-of($options) == map) {
+                    ///call function direct with addicitonal properties
+                    $args: ($list-value-var:$current-value); //map default args object
+                    $args: map-merge($args, $options);
+
+                    $prop-value-to-write: append($prop-value-to-write, call(get-function($scale-definition-key), $args...));
+
+                } @else if ($options == false) {
+                    ///call function direct with list value
+                    $prop-value-to-write: append($prop-value-to-write, call(get-function($scale-definition-key), $value-list));
+                }
+            }
+        }
+    }@else if (validate-scale-definition-key($scale-definition-key)) {
+        //@error ;
+
+        @if (type-of($key-list)==list){
+
+            @each $current-key,$index in $key-list {
+
+                $i: index($key-list, $current-key);
+
+                @if ($index != null){
+                    $i:$index;
+                }
+
+                @if (is-valid-lookup-key($scale-definition-key, $current-key)) {
+                    $prop-value-to-write  : append($prop-value-to-write, get-scale-value($scale-definition-key, $current-key));
+                }
+            }
+
+        }
+
+
     }
-    //validate
-    @debug get-scale-value($scale-definition-key, $right);
-    //@error ;
-    // @error ;
-    @if (validate-scale-definition-key($scale-definition-key)) {
 
-        @if (is-valid-lookup-key($scale-definition-key, $left)) {
-            @debug "LEFT KEY #{$left} in scale  #{$scale-definition-key} NOT FOUND #{get-scale-value($scale-definition-key,$left)} ";
-            $left: get-scale-value($scale-definition-key, $left);
-        }
-        @if (is-valid-lookup-key($scale-definition-key, $right)) {
-            @debug "RIGHT KEY #{$right} in scale  #{$scale-definition-key} NOT FOUND ";
-            //$right : auto;
-            $right: get-scale-value($scale-definition-key, $right);
-
-        }
-        @if (is-valid-lookup-key($scale-definition-key, $top)) {
-            @debug "TOP KEY #{$top} in scale  #{$scale-definition-key} NOT FOUND ";
-            //$top : auto;
-            $top: get-scale-value($scale-definition-key, $top);
-
-        }
-        @if (is-valid-lookup-key($scale-definition-key, $bottom)) {
-            @debug "BOTTOM KEY #{$bottom} in scale  #{$scale-definition-key} NOT FOUND ";
-            //$bottom : auto;
-            $bottom: get-scale-value($scale-definition-key, $bottom);
-        }
-
-        #{$prop}: #{$top} #{$right} #{$bottom} #{$left};
-        @debug "#{$prop} IS : #{$top} #{$right} #{$bottom} #{$left}";
-    } @else {
-        @error "";
-    }
-
+    #{$prop}: #{$prop-value-to-write};
+    @debug "using scale '#{$scale-definition-key}' to WRITE CSS #{$prop} : #{$prop-value-to-write}";
 }
 

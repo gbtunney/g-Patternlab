@@ -16,11 +16,13 @@
 //rs: RATIO SIZE
 @function rs($v,$base: 0) {
 
+    @debug "CALLING RS #{$v} #{$base}";
     @if ($v==0) {
         @return 0;
     }
     @if (type-of ($v)== number and has-unit($v)==false) {
-        @return $v * $base;
+        //@return "cant mutiplu";
+        @return ($v * $base);
     } @else {
         @return 0;
     }
@@ -35,40 +37,27 @@
 ////********MODULE HELPERS
 
 @function get-scale-def($_key, $_scale-definition-collection: $scale-map) {
-
     @return map-get($_scale-definition-collection, $_key);
 }
 
+//*****VALIDATORS
 @function validate-scale-definition-key ($_key, $_scale-definition-collection: $scale-map) {
-
-    @if (map-get($_scale-definition-collection, $_key)) {
-        @return true;
-    }
-    @return false;
+    @return map-get($_scale-definition-collection, $_key);
 }
 
 @function is-valid-lookup-key($_scale-def-key,$_key) {
 
     $_scale-def: $_scale-def-key;
 
-    @if (type-of($_scale-def-key) == string){
+    @if (type-of($_scale-def-key) == string) {
         $_scale-def: get-scale-def($_scale-def-key);
     }
     $unit-lookup: map-get($_scale-def, units);
-    //if it has the unit propeety, then if it has the specific key .
-    @if ($unit-lookup and map-has-key($unit-lookup, $_key)) {
-        @return true;
-    } @else {
-        @return false;
-    }
+    @return ($unit-lookup and map-has-key($unit-lookup, $_key));
 }
 
 @function is-valid-transformation($_transformation-str) {
-    @if ($_transformation-str and function_exists($_transformation-str)) {
-        @return true;
-    } @else {
-        @return false;
-    }
+    @return ($_transformation-str and function_exists($_transformation-str));
 }
 
 @function get-value-by-key($_scale-def-key,$_key) {
@@ -85,6 +74,92 @@
     }
 }
 
+@function only-auto($value) {
+    @return ($value == md);
+
+}
+
+@function is-single-item($value) {
+    @return (type-of($value) != map and length($value) == 1);
+}
+
+//@function sizing-key-to-value($function, $key-list:false,$options:false,$list-value-var: v)
+
+@function transform-each($_sourceArr :false /***unit map ***/, $_transform-func:false, $_options:false, $list-value-var: v) {
+
+    $_transform-result: false;
+    $map-to-return: ();
+    //don't do anything.
+    @if (is-function($_transform-func) ==false) {
+        @return false;
+    }
+    //loops thru target keys to make a new list of values;
+    @if (is-iterable($_sourceArr)) {
+
+        @each $key, $value in $_sourceArr {
+
+            $_new-map: false;
+
+            @if (type-of($_options) == map and is-function($_transform-func)) {
+                // merge map  if function needs additional options  parameters with value to call function .
+
+                @if (is-single-item($value)) {
+
+                    $_new-map: map-set((), $list-value-var, $value); ///if there are additional options, item needs to be put in map instead of returned
+                }
+                $_new-map: map-merge($_new-map, $_options);
+
+                ////call transformation function
+                $_transform-result: call(get-function($_transform-func), $_new-map...);
+
+            } @else if (is-function($_transform-func)) {
+                //use plain value
+                $_transform-result: call(get-function($_transform-func), $value);
+
+                @debug "ERROR #{$_transform-result}";
+            }
+
+            @if ($_transform-result != false) {
+                $map-to-return: map-set($map-to-return, $key, $_transform-result);
+            }
+        }
+        @return $map-to-return;
+    }
+}
+
+@function sizing-key-to-value($target-keys:false,$value-lookup-map:false /***unit map ***/, $filter-func:false,$list-value-var: v) {
+
+    $output: "";
+
+    //loops thru target keys to make a new list of values;
+    @if (is-iterable($target-keys)) {
+
+        @each $target-key, $index in $target-keys {
+
+            $i: index($target-keys, $target-key);
+            $value-to-write: "";
+
+            @if (is-map($value-lookup-map) and   map-get($value-lookup-map,$target-key)) {
+                $value-to-write: append($output, map-get($value-lookup-map, $target-key));
+            } @else { // sizing-key-to-value(sm 30px sm, (sm:140px )  //this only works with length values right now.
+                $value-to-write: $target-key;
+            }
+
+            //function to filter values?
+            @if (is-function($filter-func)) {
+                @if (call(get-function($filter-func),$value-to-write) ==true) {
+                    $value-to-write: $value-to-write;
+                } @else if (/*//is boolean*/
+                    is-boolean(call(get-function($filter-func), $value-to-write))) {
+                    $value-to-write: call(get-function($filter-func), $value-to-write);
+                }
+            }
+            $output: append($output, $value-to-write);
+        }
+        @return $output;
+    }
+}
+
 // /replacement ms function becomes a 'gate' .
 @function get-scale-value($_scale-def-key:type /* can be a scale def KEY or scaledef map */, $_value:1 /*value OR value key*/
 ) {
@@ -98,7 +173,7 @@
         $current-scale-definition: $_scale-def-key;
     } @else if (validate-scale-definition-key($_scale-def-key)) {
 
-      //  @debug "---------------------------------------";
+        //  @debug "---------------------------------------";
 
         $current-scale-definition: get-scale-def($_scale-def-key);
     }
@@ -107,7 +182,7 @@
     @if (is-valid-lookup-key($current-scale-definition, $_value)) {
         $current-value: get-value-by-key($current-scale-definition, $_value);
 
-      //  @debug "scale definition , : #{$current-scale-definition} cleanvalue #{$_value} value processed: #{$current-value}";
+        //  @debug "scale definition , : #{$current-scale-definition} cleanvalue #{$_value} value processed: #{$current-value}";
 
     } @else if ($_value) {
         $current-value: $_value;
@@ -121,8 +196,6 @@
         //apply the transformation i guess???
 
     }
-
-  //  @debug "TRANSFORM ATION FUNC #{map-get($current-scale-definition,transformation)}";
 
     ///options ( SHOULD BE A MAP. )
     $_options: (map-get($current-scale-definition, options));
