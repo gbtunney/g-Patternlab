@@ -3,6 +3,7 @@
 //single font
 @mixin g-generate-font-utility-classes( $font-key: font-san-serif ) {
     @if(function-exists(get-module-typography)){
+       @error "here";
         @each $unit-key, $unit-value in $scale-lookup-units {
             ///TODO: reimplement dry?
             @include utility(get-utility-prefix(type, #{$font-key}#{$utility-seperator}#{$unit-key})) {

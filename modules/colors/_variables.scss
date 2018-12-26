@@ -58,6 +58,7 @@ $default-accent-selector: 'h1, h2, h3, h4, h5, h6,a ' !default;
 $default-svg-selector: 'path, g,circle' !default;
 $default-svg-hover-selector: 'path:hover, g:hover' !default;
 
+////this is a reference to the css property to be writen.
 $property-lookup-map: (
     foreground: color,
     background: background-color,

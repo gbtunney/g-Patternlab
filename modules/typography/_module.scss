@@ -48,7 +48,7 @@ $font-maps: init-font-maps($font-maps,$default-font-map);
 
 ///***EXAMPLE JUNK
 ///the function rs NEEDS TO not have pixel values as units.--
-$testfontsize : get-font-size((
+/*$testfontsize : get-font-size((
     transform: fs,
     options:   (base:40px
     ),
@@ -58,7 +58,7 @@ $testfontsize : get-font-size((
         lg: 100px,
         1: 30px
     )
-),lg);
+),lg);*/
 
 //@debug "FONT SIZE TEST HERE #{$testfontsize}";
-@debug "FONT SIZE TEST HERE #{get-font-size(type, 0)}";
+//@debug "FONT SIZE TEST HERE #{get-font-size(type, 0)}";

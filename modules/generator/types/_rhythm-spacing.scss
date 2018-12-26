@@ -1,4 +1,4 @@
-
+///TODO : im moving this asap.
 $demo-obj: (
     color: (
         scheme: dark,
@@ -13,7 +13,7 @@ $demo-obj: (
     font:(
         font-key: font-san-serif,
         scale-key:type,
-        zvalue: xxl
+        value: xxl
     ),
     spacing:(
         (css-prop: padding,
@@ -32,89 +32,184 @@ $demo-obj: (
     )
 );
 
-$default-generate-spacing: (
+$fonts: (
+    default: (
+        size-scale: type,
+        font-family: monospace,
+        text-transform: none,
+        text-decoration: none,
+        letter-spacing: 0,
+        word-spacing: -1px,
+        font-weight: normal,
+        font-style: normal
+    ),
+    font-san-serif: (
+        font-family: "cronos-pro-display",
+        letter-spacing:0px,
+        title: 'Primary: Mr Eaves Sans'
+    ),
+    font-serif: (
+        font-family: "adobe-garamond-pro",
+        title: 'Secondary, Headers : Mrs Eaves'
+    ));
+
+
+
+//SCALE OBJECT!!!!
+$scale-demo-obj: ((
+    func: rs, //string of function.
+    options: (base:10px //if options != false, will be merged.
+    ), ///  option is direct base value gets multipled by unit below
+    scale: (
+        xxs: -2,
+        xs: -1,
+        sm: 0,
+        md: 1,
+        lg: 2,
+        xl: 3,
+        xxl: 4,
+        xxxl: 5
+    ),
+    scale-ref: false, //like "button" if this is defined it will become the scale  object if it doesnt already excist
+    value: sm lg ,   ///sent as the first parater.    value == true  render all.
+
+    description: 'inverted',
+),
+(
+    font-key: font-san-serif,
+    scale-key:type,
+    value: xxl
+),
+(
+    scheme: dark,  ////this is a 'color render object     'this is the same as value'
+    props: (
+        background: true,
+        foreground: true,
+        accent:false,
+        border:true,
+        fill:foreground
+    )
+),
     (
+        key: dark,
+        description: 'inverted',
+        parent: light,
+        transform:inverted,
+        colors:()
+    )
+);
+
+///RENDER OBJECT!!!!!
+@function parse-render-object(){
+
+
+}
+
+@function test-spacing($v, $base: 1, $scale-key: button, $func:false){
+
+    @if (validate-scale-definition-key($scale-key)) {
+        //use scale instead
+
+        $_scale: get-scale-def($scale-key);
+        $_units: map-get($_scale,units);
+
+        $_newval : transform-by-list($v,$_units, map-get($_scale,transform), map-get($_scale,options));
+
+      //  @error ($_newval);
+        @return $_newval ;
+
+    }@else{
+        @return false;
+    }
+
+}
+
+@function mytester($val){
+    @return "I AM A TESTER@";
+}
+$testscale: (
+    transform: test-spacing,
+    options: (base:10px, scale-key: button, func: rs
+    ), ///  option is direct base value gets multipled by unit below
+    units: (
+        sm-md: sm md,
+        sm-lg: sm lg,
+        md-lg: md lg,
+        lg-xxl: lg xxl sm sm
+    ),
+
+);
+
+$default-generate-spacing: (
+    /*(
         class-suffix: padding-default,
         css-prop: padding,
         scale-key: button,
-    ), (
+    ),*/
+    (
+        class-suffix: padding-testert,
+        css-prop: padding,
+        scale-key: $testscale,
+    ),
+    (
         class-suffix: margin-default,
         css-prop: margin,
         scale-key: button,
-    ),
+    )
 );
-
 
 @mixin g-generate-utility-spacing($config-map:$default-generate-spacing) {
 
     @debug "rhythm spacing:: #{function-exists(get-module-rhythm-spacing)}";
 
-    @if function_exists(get-module-rhythm-spacing){
+    @if function_exists(get-module-rhythm-spacing) {
 
         @each $item in $config-map {
-
             @if type-of($item)== map {
 
                 $_scale-key: map-get($item, scale-key); //no specific scale key bc we want to do all keys
-               // $_value: map-get($item, value);
-
-                $_class-suffix:  map-get($item,class-suffix);
+                $_class-suffix: map-get($item, class-suffix);
                 $_css-prop: map-get($item, css-prop);
 
                 @if (validate-scale-definition-key($_scale-key)) {
                     //use scale instead
 
-                    $_scale:get-scale-def($_scale-key);
-                    $_unit-arr :  map-get($_scale,units);
+                    $_scale: get-scale-def($_scale-key);
+                    $_unit-arr: map-get($_scale, units);
+
+                    $newval: transform-each($_unit-arr, rs, (base:10px
+                    ));
+
+                    //$newval : transform-by-list(2 sm,$_units,false, (multiplier: 300px),value);
 
                     @each $unit-key, $_value in $_unit-arr {
-
-
                         //idk should NOT BE A MAP YRT until it can do multiple calues.
                         @if (type-of($_value) ==map) {
-                          //  @include rhythm-spacing($_css-prop, $_scale-key, $_value );
-@error ;
+                            //  @include rhythm-spacing($_css-prop, $_scale-key, $_value );
                         } @else {
-                            @debug "generat #{$_scale-key} unit #{$unit-key}  #{$_value}";
-
+                            //   @debug "generat #{$_scale-key} unit #{$unit-key}  #{$_value}";
                             @include utility(get-utility-prefix(spacing, "#{$utility-seperator}#{$_class-suffix}#{$unit-key}")) {
-                                @include rhythm-spacing($_css-prop, $_scale-key, $unit-key);
+                                //  @include rhythm-spacing($_css-prop, $_scale-key, $unit-key);
                             }
-
                         }
-
-                   // rhythm-spacing($prop: padding,$scale-definition-key:$default-rhythm-scale-key, $left:$
                     }
 
+                } @else if (is-map($_scale-key)) {
+                    $_units: map-get($_scale-key, units);
 
-                } @else {
+                    $newval: transform-each($_units, map-get($_scale-key, transform), map-get($_scale-key, options));
 
+                    $unit-key: lg-xxl;
+
+                    @include utility(get-utility-prefix(spacing, "#{$utility-seperator}#{$_class-suffix}#{$unit-key}")) {
+                        // margin: 20px;
+                        @include rhythm-spacing($_css-prop, $newval, $unit-key);
+                    }
                 }
             }
         }
-
-
-
-
-
-        @each $unit-key, $unit-value in $scale-lookup-units {
-
-
-            @include utility(get-utility-prefix(padding, "#{$unit-key}#{$utility-seperator}1_2")) {
-                //  padding: rhythm-padding($unit-value) rhythm($unit-value);
-                @include rhythm-padding(1,1,$unit-value);
-            }
-            @include utility(get-utility-prefix(padding, $unit-key)) {
-                //padding: rhythm($unit-value * .5) rhythm($unit-value);
-                @include rhythm-padding(.5,1,$unit-value);
-            }
-
-        }
-
     }
 }
-
-
 
 @mixin oldg-generate-utility-padding() {
 

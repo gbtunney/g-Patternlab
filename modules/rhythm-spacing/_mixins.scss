@@ -50,7 +50,6 @@
         }
     }@else if (validate-scale-definition-key($scale-definition-key)) {
         //@error ;
-
         @if (type-of($key-list)==list){
 
             @each $current-key,$index in $key-list {
@@ -69,6 +68,14 @@
         }
 
 
+    }@else if (is-map($scale-definition-key) ){
+
+
+        @if ( map-get($scale-definition-key,$key-list)){     ///TODO: please fit this function
+            $prop-value-to-write: map-get($scale-definition-key,$key-list);
+          //  @error "hi #{$prop-value-to-write} #{get-scale-value($scale-definition-key, $key-list) }";
+
+        }
     }
 
     #{$prop}: #{$prop-value-to-write};

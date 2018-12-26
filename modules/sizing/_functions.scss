@@ -80,9 +80,10 @@
 }
 
 @function is-single-item($value) {
-    @return (type-of($value) != map and length($value) == 1);
+    @return (type-of($value) != map and ( length($value) >= 1 ) );
 }
 
+///remap merges values with option maps
 @function remap-value($value:false, $_options:false, $value-key: v /* if value is a single item , map with this key*/){
 
     @if (type-of($_options) == map) {
@@ -90,13 +91,16 @@
         $_new-map:false;
 
         @if (is-single-item($value)) {
+
             $_new-map: map-set((), $value-key, $value); ///if there are additional options, item needs to be put in map instead of returned
         }@else if (is-map($value)){
+
             $_new-map: $value;
         }
 
         @if ( is-map($_new-map) ){
             $_new-map: map-merge($_new-map, $_options);
+
         }@else{
             @error "EEERRRORO tryng to merge non - map value ";
         }
@@ -106,8 +110,9 @@
     }
 
 }
+//this will transform EACH UNIT of the map.
+@function transform-each($_sourceArr :false /***unit map ***/, $_transform-func:false, $_options:false, $map-key-var: v) {
 
-@function transform-each($_sourceArr :false /***unit map ***/, $_transform-func:false, $_options:false, $list-value-var: v) {
 
     //loops thru target keys to make a new list of values;
     @if (is-iterable($_sourceArr)) {
@@ -132,15 +137,20 @@
             ///if its a key (sm ) and not a value...
             @if (is-map($_sourceArr) and map-get($_sourceArr,$key)) {
                 $new-key: $key;
+
+
                 $new-value: map-get($_sourceArr, $key);
             } @else {
+
                 $new-key: index($_sourceArr, $key); //have to flip flop these.
                 $new-value: nth($_sourceArr, $new-key);
             }
 
-            $new-value: remap-value($new-value, $_options, $list-value-var);
+            $new-value: remap-value($new-value, $_options, $map-key-var);
 
             @if (is-function($_transform-func)) {
+
+
                 $_transform-result: call(get-function($_transform-func), $new-value...);
             } @else {
                 $_transform-result: $new-value;
@@ -154,6 +164,43 @@
 
         @return $map-to-return;
     }
+}
+
+/*$args:(
+    _sourceArr:false,
+    _transform-func:false,
+    _options:false,
+    _map-key-var:v
+
+)*///$_args: (_sourceArr:false,_transform-func:false, _options:false, _map-key-var:v)
+//new function to transform a single value "sm" or list of values: margin: sm sm 20px lg
+@function transform-by-list($target-list:false /*CAN BE LIST w single item */ ,$sourceArr :false /***unit map ***/, $transform-func:false, $options:false, $map-key-var: v ) {
+
+    $_output-list:"";
+
+    $_result-map : transform-each($sourceArr,$transform-func,$options,$map-key-var);
+
+    @if (is-iterable($target-list)) {
+
+        @each $_target-key, $index in $target-list {
+
+            $i: index($target-list, $_target-key);
+            $value-to-write: "";
+
+            @if (is-map($_result-map) and   map-get($_result-map,$_target-key)) {
+             //if its a map, and the key is found...
+            //todo: this might be wrong??
+                $value-to-write: append($value-to-write, map-get($_result-map, $_target-key));
+            } @else { // sizing-key-to-value(sm 30px sm, (sm:140px )  //this only works with length values right now.
+               //// if it is a single value...
+                $value-to-write: $_target-key;
+            }
+
+            $_output-list: append($_output-list, $value-to-write);
+        }
+
+    }
+    @return $_output-list;
 }
 
 @function sizing-key-to-value($target-keys:false,$value-lookup-map:false /***unit map ***/, $filter-func:false,$_options:false,$list-value-var: v) {
@@ -195,9 +242,55 @@ $resultMap : transform-each($value-lookup-map, $filter-func, $_options,$list-val
         @return $output;
     }
 }
+///rewrite of this
 
 // /replacement ms function becomes a 'gate' .
-@function get-scale-value($_scale-def-key:type /* can be a scale def KEY or scaledef map */, $_value:1 /*value OR value key*/
+@function get-scale-value($_scale-def-key:type /* can be a scale def KEY or scaledef map */, $_value:1 /* can also be list sm lg value OR value key*/
+) {
+    ///if the definition key can either be a key in the scale definition objects "units" prop,
+    // or it can be the whole scale definition (if one isnt registered or something "on the fly' modifications.
+
+    $current-scale-definition: ();
+
+
+    $defaults:(
+        _target-list:false,
+        _sourceArr:false,
+        _transform-func:false,
+        _options:false
+    );
+
+    @if (is-map($_scale-def-key)) {
+        $current-scale-definition: $_scale-def-key;
+    } @else if (validate-scale-definition-key($_scale-def-key)) {
+        $current-scale-definition: get-scale-def($_scale-def-key);
+    }
+
+///todo:rework this.
+    $_units: if( map-get($current-scale-definition, units), map-get($current-scale-definition, units),false  );
+    $transformation-func: if(map-get($current-scale-definition, transform), map-get($current-scale-definition, transform),false);
+    $_options: if(map-get($current-scale-definition, options), map-get($current-scale-definition, options),false);
+
+
+    $defaults:(
+        target-list:$_value,
+        sourceArr:$_units,
+        transform-func:$transformation-func,
+        options:$_options
+    );
+
+    $result: transform-by-list($defaults...);  ////possibly add a validation parameter if it comes bACK false.
+ //   @error "#{$result}";
+
+    //$newval : transform-each(-4, false , (multiplier: 300),value);
+   // $newval : transform-  by-list(2 sm,$_units,false, (multiplier: 300px),value);
+
+
+    @return $result;
+}
+
+// /replacement ms function becomes a 'gate' .
+@function get-scale-value2($_scale-def-key:type /* can be a scale def KEY or scaledef map */, $_value:1 /*value OR value key*/
 ) {
     ///if the definition key can either be a key in the scale definition objects "units" prop,
     // or it can be the whole scale definition (if one isnt registered or something "on the fly' modifications.
