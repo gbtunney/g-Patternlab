@@ -83,53 +83,86 @@
     @return (type-of($value) != map and length($value) == 1);
 }
 
-//@function sizing-key-to-value($function, $key-list:false,$options:false,$list-value-var: v)
+@function remap-value($value:false, $_options:false, $value-key: v /* if value is a single item , map with this key*/){
+
+    @if (type-of($_options) == map) {
+        // merge map  if function needs additional options  parameters with va
+        $_new-map:false;
+
+        @if (is-single-item($value)) {
+            $_new-map: map-set((), $value-key, $value); ///if there are additional options, item needs to be put in map instead of returned
+        }@else if (is-map($value)){
+            $_new-map: $value;
+        }
+
+        @if ( is-map($_new-map) ){
+            $_new-map: map-merge($_new-map, $_options);
+        }@else{
+            @error "EEERRRORO tryng to merge non - map value ";
+        }
+        @return $_new-map;
+    }@else {
+        @return $value;
+    }
+
+}
 
 @function transform-each($_sourceArr :false /***unit map ***/, $_transform-func:false, $_options:false, $list-value-var: v) {
 
-    $_transform-result: false;
-    $map-to-return: ();
-    //don't do anything.
-    @if (is-function($_transform-func) ==false) {
-        @return false;
-    }
     //loops thru target keys to make a new list of values;
     @if (is-iterable($_sourceArr)) {
 
-        @each $key, $value in $_sourceArr {
+        $_transform-result: false;
+        $map-to-return: ();
 
-            $_new-map: false;
+        $is-single-item: false;
 
-            @if (type-of($_options) == map and is-function($_transform-func)) {
-                // merge map  if function needs additional options  parameters with value to call function .
-
-                @if (is-single-item($value)) {
-
-                    $_new-map: map-set((), $list-value-var, $value); ///if there are additional options, item needs to be put in map instead of returned
-                }
-                $_new-map: map-merge($_new-map, $_options);
-
-                ////call transformation function
-                $_transform-result: call(get-function($_transform-func), $_new-map...);
-
-            } @else if (is-function($_transform-func)) {
-                //use plain value
-                $_transform-result: call(get-function($_transform-func), $value);
-
-                @debug "ERROR #{$_transform-result}";
-            }
-
-            @if ($_transform-result != false) {
-                $map-to-return: map-set($map-to-return, $key, $_transform-result);
+        @if (is-single-item($_sourceArr)) {
+            //if it is a single item.
+            @if (length($_sourceArr) == 1) {
+                $is-single-item: true;
             }
         }
+
+        @each $key, $value in $_sourceArr {
+
+            $new-key: false;
+            $new-value: false;
+
+            ///if its a key (sm ) and not a value...
+            @if (is-map($_sourceArr) and map-get($_sourceArr,$key)) {
+                $new-key: $key;
+                $new-value: map-get($_sourceArr, $key);
+            } @else {
+                $new-key: index($_sourceArr, $key); //have to flip flop these.
+                $new-value: nth($_sourceArr, $new-key);
+            }
+
+            $new-value: remap-value($new-value, $_options, $list-value-var);
+
+            @if (is-function($_transform-func)) {
+                $_transform-result: call(get-function($_transform-func), $new-value...);
+            } @else {
+                $_transform-result: $new-value;
+            }
+
+            @if ($is-single-item) {
+                @return $_transform-result;
+            }
+            $map-to-return: map-set($map-to-return, $new-key, $_transform-result);
+        }
+
         @return $map-to-return;
     }
 }
 
-@function sizing-key-to-value($target-keys:false,$value-lookup-map:false /***unit map ***/, $filter-func:false,$list-value-var: v) {
+@function sizing-key-to-value($target-keys:false,$value-lookup-map:false /***unit map ***/, $filter-func:false,$_options:false,$list-value-var: v) {
 
     $output: "";
+
+    ////ARGS?SPREAD? ???
+$resultMap : transform-each($value-lookup-map, $filter-func, $_options,$list-value-var);
+
 
     //loops thru target keys to make a new list of values;
     @if (is-iterable($target-keys)) {
@@ -138,6 +171,9 @@
 
             $i: index($target-keys, $target-key);
             $value-to-write: "";
+
+
+
 
             @if (is-map($value-lookup-map) and   map-get($value-lookup-map,$target-key)) {
                 $value-to-write: append($output, map-get($value-lookup-map, $target-key));
@@ -211,7 +247,6 @@
 
     @if ($transformation-func) {
         ///do transformation
-
         @return call($transformation-func, $args...);
 
     } @else {

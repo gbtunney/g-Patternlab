@@ -599,3 +599,13 @@ $sc-constants: (
 @function is-boolean($value){
     @return (type-of($value) == boolean);
 }
+@function is-map($value){
+    @return (type-of($value) == map);
+}
+@function first($list) {
+    @return nth($list, 1);
+}
+
+@function last($list) {
+    @return nth($list, length($list));
+}
