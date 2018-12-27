@@ -12,11 +12,25 @@
     );
 }
 
+@function init-typography-module($_font-maps:$font-maps, $_default-font-map: $default-font-map){
+
+
+    //@error #{$_font-maps};
+
+
+   // $_font-maps : map-values(  init-font-maps($_font-maps,$_default-font-map));
+
+     //@return add-definition-map($_font-maps,type);
+    @return false;
+}
+
+
 @function get-font-map($_key:type,$_default-font-map: $default-font-map) {
-    @if map-get($font-maps, $_key) {
-        @return map-get($font-maps, $_key);
-    } @else {
-        @return $_default-font-map;
+
+    @if (get-definition-map($_key)){
+        @return get-definition-map($_key);
+    }@else{
+        @error "FONT MAP NOT FND!";
     }
 }
 
@@ -46,7 +60,12 @@
     $new-map-collection: (default:$default-font-map);
 
     @each $key, $prop in $font-maps {
-        $new-map: map_merge($default-font-map, $prop);
+
+        $new-map: map-merge($prop, (key: $key));
+
+
+        $new-map: map_merge($default-font-map,$new-map);
+      //  @debug $new-map;
         $new-map-collection: map-set($new-map-collection, $key, $new-map);
     }
     @return $new-map-collection;

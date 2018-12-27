@@ -10,6 +10,10 @@
     );
 }
 
+@function init-sizing-module(){
+    @return add-definition-map($default-scale-map,scale);
+}
+
 //*** custom TRANSFORMATION FUNCTIONTIONS for scale maps
 //ms: MODULAR SCALE function
 
@@ -37,7 +41,9 @@
 ////********MODULE HELPERS
 
 @function get-scale-def($_key, $_scale-definition-collection: $scale-map) {
-    @return map-get($_scale-definition-collection, $_key);
+
+    @return get-definition-map($_key);
+    //  @return map-get($_scale-definition-collection, $_key);
 }
 
 //*****VALIDATORS
@@ -102,7 +108,7 @@
             $_new-map: map-merge($_new-map, $_options);
 
         }@else{
-            @error "EEERRRORO tryng to merge non - map value ";
+            @error "EEERRRORO tryng to merge non - map value #{$value} options : #{$_options}";
         }
         @return $_new-map;
     }@else {
@@ -131,6 +137,7 @@
 
         @each $key, $value in $_sourceArr {
 
+
             $new-key: false;
             $new-value: false;
 
@@ -145,6 +152,7 @@
                 $new-key: index($_sourceArr, $key); //have to flip flop these.
                 $new-value: nth($_sourceArr, $new-key);
             }
+///            @debug "TRYING TO TRANSFORM key: #{$new-key} value: #{$new-value}";
 
             $new-value: remap-value($new-value, $_options, $map-key-var);
 

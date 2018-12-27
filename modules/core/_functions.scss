@@ -1,0 +1,89 @@
+///stub functions
+@function get-module-core(){
+    @return true;
+}
+@function get-dependancies-core(){
+    @return (
+            (rhythm): true
+    );
+}
+
+
+@function _core-init() {
+    @if length($_DEFINITION_MAP) == 0 {
+        @return (
+            'schemes': (
+            ),
+            'font': (),
+            'scale': (),
+        );
+    }
+    @else {
+        @return $_DEFINITION_MAP;
+    }
+}
+
+@function is-valid-definition-map($map) {
+    @return (is-map($map) and (map-get($map,key)  and ( map-get($map,value) or map-get($map,options))  ) );
+}
+
+@function get-definition-map($key:false,$_DEFINITION_MAP: $DEFINITION_MAP){
+    @return map-get($_DEFINITION_MAP,$key);
+}
+@function add-single-definition-map($definition-map: false,$type: generic,$validator: is-valid-definition-map, $overwrite: false , $_DEFINITION_MAP: $DEFINITION_MAP){
+    @if ( call(get-function($validator),$definition-map) ){
+        $key: map-get($definition-map,key);
+
+        @if not($key) {@error "NO KEY IN THIS MAP "; @return false;}
+
+        @if (get-definition-map($key) ){
+
+            @error "KEY #{($definition-map)}  IS ALREADY ADDED TO DICTIONARY  #{get-definition-map($definition-map)}";
+
+        }@else{
+            $_DEFINITION_MAP: append($_DEFINITION_MAP,$definition-map);
+            @return $_DEFINITION_MAP;
+            //  @debug "ADDING MAP";
+        }
+    }@else{
+        @error "NOT VaLID #{$definition-map}";
+        @return false;
+    }
+
+}
+@function add-definition-map($map: false,$type: generic,$validator: is-valid-definition-map, $_DEFINITION_MAP: $DEFINITION_MAP ){
+    $_NEW_DEFINITION_MAP: $_DEFINITION_MAP;
+    @if (is-map($map) ){
+        $map : ($map,() );  //make into a single item list
+    }
+
+    @if(length($map)> 1 ){
+        @each  $value in $map {
+        @if ( call(get-function($validator),$value) ){
+            $key: map-get($value,key);
+            $value: if( map-get($value,type),$value,map-set($value,type, $type));
+
+                @if not($key) {@error "NO KEY IN THIS MAP "; @return false;}
+
+                @if (get-definition-map($key) ){
+
+                    @error "KEY #{($value)}  IS ALREADY ADDED TO DICTIONARY  #{get-definition-map($key)}";
+
+                }@else{
+
+                    $_NEW_DEFINITION_MAP: map-set($_NEW_DEFINITION_MAP,$key,$value);
+                 //   @debug "TESTING!!!!!!!!#{$value}  : #{$_NEW_DEFINITION_MAP}";
+
+                   //
+                   // $_NEW_DEFINITION_MAP: append($_NEW_DEFINITION_MAP,$value);
+                }
+            }
+        }
+        @return $_NEW_DEFINITION_MAP;
+
+    }@else {
+        @error "TRYING TO ADD EMPTY MAP";
+    }
+@return $_NEW_DEFINITION_MAP;
+        ///if its a single map
+}

@@ -19,8 +19,7 @@
 $font-maps: map-get($typography, "fonts");
 $default-font-map: map-get($font-maps, default);
 
-///merge additional scales (rather than replace)
-$scale-map: map-merge($scale-map, map-get($typography, type-scale-map));
+//$scale-map: map-get($typography, type-scale-map);
 
 //*** COMPASS PROPS
 //$base-font-size: 20px; // Sets the base font size
@@ -41,10 +40,11 @@ $base-line-height: $BASE_LINE_HEIGHT;
 $relative-font-sizing: false;
 
 
-//*********initialize module
-$font-maps: init-font-maps($font-maps,$default-font-map);
+//*********initialize module'
+//@error #{ map-values(init-font-maps($font-maps,$default-font-map))};
 
-
+//$DEFINITION_MAP: init-typography-module ($font-maps,$default-font-map);
+//TODO: $DEFINITION_MAP: add-definition-map(map-get($typography, type-scale-map),scale);
 
 ///***EXAMPLE JUNK
 ///the function rs NEEDS TO not have pixel values as units.--

@@ -5,4 +5,7 @@
 @import "mixins";
 @import "functions";
 
-$scale-map: map-merge($scale-map, $rhythm-scale-map);
+//$scale-map: map-merge($scale-map, $rhythm-scale-map);
+//TODO: $DEFINITION_MAP: add-definition-map(map-get($typography, type-scale-map),scale);
+
+

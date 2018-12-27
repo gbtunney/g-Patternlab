@@ -3,7 +3,8 @@ $typography: (
     required-props: 'font-family, letter-spacing, word-spacing, text-transform, text-decoration, font-style, font-weight',
     line-height: 1.4,
     type-scale-map: (
-        type:(
+        (
+            key:type,
             transform: ms,
             options: (
                 base:36px,
@@ -24,6 +25,7 @@ $typography: (
 
 fonts:(
         default: (
+            key:default,
             size-scale: type,
             font-family: monospace,
             text-transform: none,

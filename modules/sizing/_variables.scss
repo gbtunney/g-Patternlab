@@ -8,8 +8,8 @@ $modularscale-default-settings: (
 )!default;
 
 //todo: make this a default value
-$scale-map: (
-    icon:(
+$default-scale-map: (
+    default:(
         transform: rs,
         options: (base:10px
         ), ///  option is direct base value gets multipled by unit below
@@ -23,17 +23,8 @@ $scale-map: (
             xxl: 4,
             xxxl: 5
         )
-    ),
-    forced-size-icon:(
-        transform: fixedval, ///no multipliers.
-        options: 20px, ///thread is for modular scale
-        units: (
-            sm: 20px,
-            md: 50px,
-            lg: 100px
-        )
     )
 )!default;
 
 //probably move?
-$default-scale-key: icon !default;
+$default-scale-key: default !default;
