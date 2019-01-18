@@ -1,0 +1,112 @@
+///move to general utilitisz
+@function is-single-item($value) {
+    @return (type-of($value) != map and ( length($value) >= 1 ));
+}
+
+///remap merges values with option maps
+@function remap-value($value:false, $_options:false, $value-key: v /* if value is a single item , map with this key*/
+) {
+
+    @if (type-of($_options) == map) {
+        // merge map  if function needs additional options  parameters with va
+        $_new-map: false;
+
+        @if (is-single-item($value)) {
+
+            $_new-map: map-set((), $value-key, $value); ///if there are additional options, item needs to be put in map instead of returned
+        } @else if (is-map($value)) {
+
+            $_new-map: $value;
+        }
+
+        @if (is-map($_new-map)) {
+            $_new-map: map-merge($_options, $_new-map);
+
+        } @else {
+            @error "EEERRRORO tryng to merge non - map value #{$value} options : #{$_options}";
+        }
+        @return $_new-map;
+    } @else {
+        @return $value;
+    }
+}
+
+@function assign($unit:(),$props:(),$additional-parameters:false) {
+    @if (is-single-item($props) and is-single-item($unit)) {
+        @return map-set((), to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
+    }
+    @return false;
+}
+
+@function include($units:(),$props:(),$additional-parameters:false) {
+
+    $filtered-units: ();
+
+    @each $prop_key in $props {
+        ///@debug "******checking the prop #{$prop_key} #{map-get($units, $prop_key)} ";
+        @if (map-get($units, $prop_key)) {
+            $filtered-units: map-set($filtered-units, $prop_key, map-get($units, $prop_key));
+        } @else {
+            //npt found props
+        }
+    }
+    @return $filtered-units;
+}
+
+@function new-transform-data($units : () , $options:false,$transform:false,$var:v /* transformed ones variable name if it neds one*/
+) {
+    //@debug "transforming :   #{$transform} #{$var} units: #{$units} options: #{$options}";
+    $map-to-return: ();
+    $_transform-result: false;
+
+    @if (type-of($units) == map) {
+        @each $key, $value in $units {
+            $new-key: false;
+            $new-value: false;
+            ///if its a key (sm ) and not a value...
+            @if (map-get($units, $key)) {
+                $new-key: $key;
+                $new-value: map-get($units, $key);
+            } @else {
+
+                $new-key: index($units, $key); //have to flip flop these.
+                $new-value: nth($units, $new-key);
+            }
+            // @debug "TRYING TO TRANSFORM key: #{$new-key} value: #{$new-value}";
+            $new-value: remap-value($new-value, $options, $var);
+
+            @if (is-function($transform)) {
+                $_transform-result: call(get-function($transform), $new-value...);
+            } @else {
+                $_transform-result: map-merge($options, $new-value);
+            }
+            $map-to-return: map-set($map-to-return, $new-key, $_transform-result);
+        }
+    } @else {
+        @error "BAD DATA OBJECT";
+    }
+    @return $map-to-return;
+}
+
+//take calculated and filter map
+@function get-rendered-data($units:(), $props:() , $filter: false, $prefix:false,$module:false) {
+
+    $filtered-unit-arr: $units;
+    @if ($filter==false) {
+        @return $units;
+    }
+
+    @if (is-function($filter)) {
+
+        @each $key, $value in $units {
+            $filtered-unit-arr: map-set($filtered-unit-arr, $key, ());
+
+            $transformed-val: call(get-function($filter), $value, $props);
+
+            $filtered-unit-arr: map-set($filtered-unit-arr, $key, $transformed-val);
+        }
+    } @else {
+        @debug "NOT A FUNCTION";
+    }
+    @return $filtered-unit-arr;
+}
