@@ -18,7 +18,7 @@
     @if $scale-definition-key==false {
         ////TODO: just do it in 'direct' mode
 
-
+@error ;
         ///**************FUNCTION 'DIRECT MODE'
     }@else if ((type-of( $scale-definition-key)==string ) and (function-exists($scale-definition-key))){
 
@@ -32,8 +32,8 @@
                 @if ($index != null) {
                     $i: $index;
                 }
-
                 @if ($options==false) {
+            @debug "hi #{$prop-value-to-write} ";
 
                 } @else if (type-of($options) == map) {
                     ///call function direct with addicitonal properties
@@ -77,7 +77,7 @@
 
         }
     }
-
+///GILLINANS COMMENT!!!!!!!!!
     #{$prop}: #{$prop-value-to-write};
     @debug "using scale '#{$scale-definition-key}' to WRITE CSS #{$prop} : #{$prop-value-to-write}";
 }

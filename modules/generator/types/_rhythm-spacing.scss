@@ -171,10 +171,10 @@ $default-generate-spacing: (
                 $_class-suffix: map-get($item, class-suffix);
                 $_css-prop: map-get($item, css-prop);
 
-                @if (validate-scale-definition-key($_scale-key)) {
+                @if (get-definition-map($_scale-key)) {
                     //use scale instead
 
-                    $_scale: get-scale-def($_scale-key);
+                    $_scale: get-definition-map($_scale-key);
                     $_unit-arr: map-get($_scale, units);
 
                     $newval: transform-each($_unit-arr, rs, (base:10px
@@ -189,7 +189,8 @@ $default-generate-spacing: (
                         } @else {
                             //   @debug "generat #{$_scale-key} unit #{$unit-key}  #{$_value}";
                             @include utility(get-utility-prefix(spacing, "#{$utility-seperator}#{$_class-suffix}#{$unit-key}")) {
-                                //  @include rhythm-spacing($_css-prop, $_scale-key, $unit-key);
+
+                                 @include rhythm-spacing($_css-prop, $_scale-key, $unit-key);
                             }
                         }
                     }

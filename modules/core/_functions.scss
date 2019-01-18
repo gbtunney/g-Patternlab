@@ -87,3 +87,11 @@
 @return $_NEW_DEFINITION_MAP;
         ///if its a single map
 }
+@function get-rendered-definition( $definition-key, $unit-key: false){
+
+    $_def-map: get-definition-map($definition-key);
+
+
+    @return transform-each(map-get($_def-map,units),map-get($_def-map,transform),map-get($_def-map,options) );
+
+}

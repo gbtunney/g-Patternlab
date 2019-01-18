@@ -40,14 +40,14 @@
 
 ////********MODULE HELPERS
 
-@function get-scale-def($_key, $_scale-definition-collection: $scale-map) {
+@function get-scale-def($_key) {
 
     @return get-definition-map($_key);
     //  @return map-get($_scale-definition-collection, $_key);
 }
 
 //*****VALIDATORS
-@function validate-scale-definition-key ($_key, $_scale-definition-collection: $scale-map) {
+@function validate-scale-definition-key ($_key, $_scale-definition-collection: ()) {
     @return map-get($_scale-definition-collection, $_key);
 }
 
@@ -105,7 +105,7 @@
         }
 
         @if ( is-map($_new-map) ){
-            $_new-map: map-merge($_new-map, $_options);
+            $_new-map: map-merge( $_options,$_new-map);
 
         }@else{
             @error "EEERRRORO tryng to merge non - map value #{$value} options : #{$_options}";
@@ -116,10 +116,129 @@
     }
 
 }
+@function transform-each($_sourceArr :false /***unit map ***/, $_transform-func:false, $_options:false, $map-key-var: v) {
+    //loops thru target keys to make a new list of values;
+    @if (is-iterable($_sourceArr)) {
+
+        $_transform-result: false;
+        $map-to-return: ();
+
+        $is-single-item: false;
+
+        @if (is-single-item($_sourceArr)) {
+            //if it is a single item.
+            @if (length($_sourceArr) == 1) {
+                $is-single-item: true;
+            }
+        }
+
+        @each $key, $value in $_sourceArr {
+
+
+            $new-key: false;
+            $new-value: false;
+
+            ///if its a key (sm ) and not a value...
+            @if (is-map($_sourceArr) and map-get($_sourceArr,$key)) {
+                $new-key: $key;
+
+
+                $new-value: map-get($_sourceArr, $key);
+            } @else {
+
+                $new-key: index($_sourceArr, $key); //have to flip flop these.
+                $new-value: nth($_sourceArr, $new-key);
+            }
+            ///            @debug "TRYING TO TRANSFORM key: #{$new-key} value: #{$new-value}";
+
+            $new-value: remap-value($new-value, $_options, $map-key-var);
+
+            @if (is-function($_transform-func)) {
+
+
+                $_transform-result: call(get-function($_transform-func), $new-value...);
+            } @else {
+                $_transform-result: $new-value;
+            }
+
+            @if ($is-single-item) {
+                @return $_transform-result;
+            }
+            $map-to-return: map-set($map-to-return, $new-key, $_transform-result);
+        }
+
+        @return $map-to-return;
+    }
+}
+//$new-type-scale-map: (
+//    (
+//        key:type, ///might not be needed if it doesnt need to look anything up
+//        render:(
+//            module:size,//dont know??
+//            prefix: newtype, //if it is to be generated, use a class prefix before,
+//            required-props: 'font-size'
+//        ),
+//        transform: ms,
+//        options: (
+//            base:36px,
+//            ratio:1.4
+//        ), ///option is the thread is for modular scale
+//        units: (
+//            xxs: -2,
+//            xs: -1,
+//            sm: 2,
+//            md: 1,
+//            lg: 2,
+//            xl: 3,
+//            xxl: 4,
+//            xxxl: 5
+//        )
+//    )
+//);
+@function transform-data($units : () , $options:false,$transform:false,$var:v /* transformed ones variable name if it neds one*/, $key : nokeyset ,$render:false) {
+    //loops thru target keys to make a new list of values;
+   //$units /***unit map ***/, $_transform-func:false, $_options:false, $map-key-var: v
+///@debug "TRANSFORM!!!";
+    $map-to-return: ();
+    $_transform-result: false;
+
+    ///if its a single val it could just render funcition?
+    /*@if ($is-single-item) {
+        @return $_transform-result;
+    }*/
+
+    @if (type-of($units) == map ){
+        @each $key, $value in $units {
+            $new-key: false;
+            $new-value: false;
+
+            ///if its a key (sm ) and not a value...
+            @if ( map-get($units,$key) ) {
+                $new-key: $key;
+                $new-value: map-get($units, $key);
+            } @else {
+
+                $new-key: index($units, $key); //have to flip flop these.
+                $new-value: nth($units, $new-key);
+            }
+            ///            @debug "TRYING TO TRANSFORM key: #{$new-key} value: #{$new-value}";
+            $new-value: remap-value($new-value, $options, $var);
+            @debug $new-value;
+
+            @if (is-function($transform)) {
+                $_transform-result: call(get-function($transform), $new-value...);
+            } @else {
+                $_transform-result: map-merge($options,$new-value);
+            }
+            $map-to-return: map-set($map-to-return, $new-key, $_transform-result);
+        }
+    }@else {
+        @error "BAD DATA OBJECT";
+    }
+@return $map-to-return;
+}
 //this will transform EACH UNIT of the map.
 @function transform-each($_sourceArr :false /***unit map ***/, $_transform-func:false, $_options:false, $map-key-var: v) {
-
-
     //loops thru target keys to make a new list of values;
     @if (is-iterable($_sourceArr)) {
 
