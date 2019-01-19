@@ -1,4 +1,5 @@
 @import "modularscale-sass/stylesheets/_modularscale.scss";
+@import 'sassdash/scss/sassdash';
 
 @import 'functions';
 
@@ -69,10 +70,28 @@ $sample-font-render-map:
         key: unused
     )
 ;
+
+
+
 $calculated-data-map: new-transform-data(map-get($sample-font-render-map,variants)...);
 
 $rendered-map: get-rendered-data($calculated-data-map,map-get($sample-font-render-map,render)...);
-@debug $rendered-map;
+
+//@debug $rendered-map;
+
+$map: ( 'user': 'fred', 'age': 40 );
+$foo: _pick($map, 'user');
+@debug $foo;
+// => ( 'user': 'fred' )
+$foo: _pick($map, _is-string);
+// => ( 'user': 'fred' )
+@debug $foo;
+
+
+$var : map-deep-get($sample-font-render-map,variants , units );
+//@debug $var;
+
+//@debug _omit($var, font-serif-bold font-serif-italic );
 
 $sample-font-size-render-map:
     (
@@ -102,13 +121,120 @@ $sample-font-size-render-map:
         key: unused
     ) ;
 
+$sample-font-size-render-map-test:
+    (
+        render:(
+            module:size, //dont know??
+            prefix: newtype, //if it is to be generated, use a class prefix before,
+            filter: assign,
+            props: (font-size),
+        ),
+        variants:(
+            transform: ms,
+            options: (
+                base:36px,
+                ratio:1.4
+            ), ///option is the thread is for modular scale
+            units:20px,
+
+        ),
+        key: unused
+    ) ;
+
+$sample-font-size-render-map-2:
+    (
+        render:(
+            module:size, //dont know??
+            prefix: newtype, //if it is to be generated, use a class prefix before,
+            filter: assign,
+            props: (font-size),
+        ),
+        variants:(
+            transform: false,
+            options: (
+
+            ), ///option is the thread is for modular scale
+            units: (
+                sm: 20px,
+                md:  times-three 20px,
+                lg: 30px 30px,
+            )
+        ),
+        key: unused
+    ) ;
+
+
+$default-render-obj:
+    (
+        render:(
+            module:false, //dont know??
+            prefix: random, //if it is to be generated, use a class prefix before,
+            filter: false,
+            props: false
+        ),
+        variants:(
+            transform: false,
+            options: (), ///option is the thread is for modular scale
+            units: ()
+        ),
+        variant-key: false,
+        key:false
+    ) ;
+
+///should extend the default?
+
+@function default-render(){
+    @return map-get($default-render-map,render);
+}
 
 
 
 
 
 
-$calculated-data-map: new-transform-data(map-get($sample-font-size-render-map,variants)...);
 
-$rendered-map: get-rendered-data($calculated-data-map,map-get($sample-font-size-render-map,render)...);
-@debug $rendered-map;
+
+
+//$calculated-data-map: new-transform-data(map-get($sample-font-size-render-map,variants)...);
+
+//$rendered-map: get-rendered-data($calculated-data-map,map-get($sample-font-size-render-map,render)...);
+//@debug $rendered-map;
+
+
+
+@function times-three($n, $args...) {
+    @return $n * 3;
+}
+
+
+@mixin generate-object($render:call(get-function(default-render)),$variants:map-get($default-render-obj,variants),$variant-key:map-get($default-render-obj,variant-key) ,$key:map-get($default-render-obj,key) ){
+
+ @if ($variant-key != false){  @error "DO SINGLE ITEM LATER"};
+
+    $transformed-data-map: new-transform-data($variants...);
+    $render-data-map: get-rendered-data($transformed-data-map,$render...);
+
+    $prefix : map-get($render,prefix);
+
+    @each $key,$value in $render-data-map{
+
+        #{$prefix}-#{$key}{
+@include write-css-property($value);
+
+        }
+    }
+}
+
+@mixin write-css-property($props:() ) {
+    @each $key, $value in $props {
+        #{$key}: #{$value};
+
+    }
+}
+//@include generate-object($sample-font-size-render-map...);
+
+@include generate-object($sample-font-render-map...);
+@include generate-object($sample-font-size-render-map-2...);
+@debug new-transform-data(map-get($sample-font-size-render-map-2,variants)...)
+//@include generate-object($sample-font-size-render-map-test...);
+

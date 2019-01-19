@@ -4,30 +4,17 @@
 }
 
 ///remap merges values with option maps
+
 @function remap-value($value:false, $_options:false, $value-key: v /* if value is a single item , map with this key*/
 ) {
-
-    @if (type-of($_options) == map) {
-        // merge map  if function needs additional options  parameters with va
-        $_new-map: false;
-
-        @if (is-single-item($value)) {
-
-            $_new-map: map-set((), $value-key, $value); ///if there are additional options, item needs to be put in map instead of returned
-        } @else if (is-map($value)) {
-
-            $_new-map: $value;
+    @if (is-map($value ) == false) {
+        $test: _first($value);
+        @if (_is-function(_first($value))) {
+            $value: call(get-function(_first($value)), _drop($value, 1)...);
         }
-
-        @if (is-map($_new-map)) {
-            $_new-map: map-merge($_options, $_new-map);
-
-        } @else {
-            @error "EEERRRORO tryng to merge non - map value #{$value} options : #{$_options}";
-        }
-        @return $_new-map;
+        @return _assign((#{$value-key}: $value), $_options);
     } @else {
-        @return $value;
+        @return map-merge($_options, $value);
     }
 }
 
@@ -40,17 +27,13 @@
 
 @function include($units:(),$props:(),$additional-parameters:false) {
 
-    $filtered-units: ();
+    @return  _pick($units, $props );
+}
 
-    @each $prop_key in $props {
-        ///@debug "******checking the prop #{$prop_key} #{map-get($units, $prop_key)} ";
-        @if (map-get($units, $prop_key)) {
-            $filtered-units: map-set($filtered-units, $prop_key, map-get($units, $prop_key));
-        } @else {
-            //npt found props
-        }
-    }
-    @return $filtered-units;
+@function exclude($units:(),$props:(),$additional-parameters:false) {
+
+    @return  _omit($units, $props );
+
 }
 
 @function new-transform-data($units : () , $options:false,$transform:false,$var:v /* transformed ones variable name if it neds one*/
@@ -77,8 +60,13 @@
 
             @if (is-function($transform)) {
                 $_transform-result: call(get-function($transform), $new-value...);
+                $_transform-result:  _map($new-value, $transform);
+
+
             } @else {
-                $_transform-result: map-merge($options, $new-value);
+
+               $_transform-result: map-merge($options, $new-value);
+
             }
             $map-to-return: map-set($map-to-return, $new-key, $_transform-result);
         }
@@ -97,12 +85,10 @@
     }
 
     @if (is-function($filter)) {
-
+        //TODO USE SASSDASH
         @each $key, $value in $units {
             $filtered-unit-arr: map-set($filtered-unit-arr, $key, ());
-
             $transformed-val: call(get-function($filter), $value, $props);
-
             $filtered-unit-arr: map-set($filtered-unit-arr, $key, $transformed-val);
         }
     } @else {
