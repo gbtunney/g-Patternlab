@@ -1,0 +1,34 @@
+//TODO: use sassdash insteadddd
+@mixin output-css-declarations($render:call(get-function(default-render)),$variants:map-get($default-render-obj,variants),$variant-key:map-get($default-render-obj,variant-key) ,$key:map-get($default-render-obj,key) ) {
+    $prefix: map-get($render, prefix);
+    $transformed-data-map: transform-data($variants...);
+    $render-data-map: get-rendered-data($transformed-data-map, $render...);
+
+    ///if you only want one key??
+    @if $variant-key and _has($render-data-map, $variant-key) {
+        @warn "THIS IS A SINGLE ITEM!!#{$variant-key}";
+        $render-data-map: map-get($render-data-map, $variant-key);
+
+        @if ($prefix) {
+            #{$prefix}-#{$variant-key} {
+                @include _declare($render-data-map);
+            }
+        } @else {
+            @include _declare($render-data-map);
+        }
+    } @else {
+
+        @if _is-iterable($render-data-map) {
+            @each $key, $value in $render-data-map {
+
+                @if $prefix {
+                    #{$prefix}-#{$key} {
+                        @include _declare($value);
+                    }
+                } @else {
+                    @include _declare($render-data-map);
+                }
+            }
+        }
+    }
+}

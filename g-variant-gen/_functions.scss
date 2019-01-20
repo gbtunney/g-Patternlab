@@ -7,7 +7,7 @@
 
 @function remap-value($value:false, $_options:false, $value-key: v /* if value is a single item , map with this key*/
 ) {
-    @if (is-map($value ) == false) {
+    @if not _is-map($value ) {
         $test: _first($value);
         @if (_is-function(_first($value))) {
             $value: call(get-function(_first($value)), _drop($value, 1)...);
@@ -19,26 +19,33 @@
 }
 
 @function assign($unit:(),$props:(),$additional-parameters:false) {
-    @if (is-single-item($props) and is-single-item($unit)) {
-        @return map-set((), to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
+
+
+    @if is-single-item($props) and is-single-item($unit) {
+        @debug "!*****---------!!!!!!!!assign!!!!!!!!!!!!transform result#{$unit}   #{$props}";
+
+        @warn "calling assign!";
+      @return (font-size:6666px);
+     //   @return map-set((), _to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
+    }@else{
+
     }
     @return false;
 }
 
 @function include($units:(),$props:(),$additional-parameters:false) {
 
-    @return  _pick($units, $props );
+    @return _pick($units, $props);
 }
 
 @function exclude($units:(),$props:(),$additional-parameters:false) {
 
-    @return  _omit($units, $props );
+    @return _omit($units, $props);
 
 }
 
-@function new-transform-data($units : () , $options:false,$transform:false,$var:v /* transformed ones variable name if it neds one*/
+@function transform-data($units : () , $options:false,$transform:false,$var:v /* transformed ones variable name if it neds one*/
 ) {
-    //@debug "transforming :   #{$transform} #{$var} units: #{$units} options: #{$options}";
     $map-to-return: ();
     $_transform-result: false;
 
@@ -55,24 +62,25 @@
                 $new-key: index($units, $key); //have to flip flop these.
                 $new-value: nth($units, $new-key);
             }
-            // @debug "TRYING TO TRANSFORM key: #{$new-key} value: #{$new-value}";
+             @debug "TRYING TO TRANSFORM key: #{$new-key} value: #{$new-value}";
             $new-value: remap-value($new-value, $options, $var);
 
-            @if (is-function($transform)) {
+            @if (_is-function($transform)) {
                 $_transform-result: call(get-function($transform), $new-value...);
-                $_transform-result:  _map($new-value, $transform);
-
-
+                //this seems wrong?? $_transform-result:  _map($new-value, $transform);
             } @else {
+                @debug "no transform result#{$_transform-result}";
 
-               $_transform-result: map-merge($options, $new-value);
-
+                $_transform-result: map-merge($options, $new-value);
             }
+
+
             $map-to-return: map-set($map-to-return, $new-key, $_transform-result);
         }
     } @else {
         @error "BAD DATA OBJECT";
     }
+
     @return $map-to-return;
 }
 
@@ -83,12 +91,20 @@
     @if ($filter==false) {
         @return $units;
     }
+    @if (_is-function($filter)) {
 
-    @if (is-function($filter)) {
         //TODO USE SASSDASH
         @each $key, $value in $units {
+
+
+            //add key with empty array
             $filtered-unit-arr: map-set($filtered-unit-arr, $key, ());
+
+
+            //filter map with props
             $transformed-val: call(get-function($filter), $value, $props);
+
+            //replace with new
             $filtered-unit-arr: map-set($filtered-unit-arr, $key, $transformed-val);
         }
     } @else {
