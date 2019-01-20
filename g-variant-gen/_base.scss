@@ -111,7 +111,7 @@ $test3:
             props: (font-size),
         ),
         variants:(
-            transform: false,
+            transform: no-transformation,
             options: (
 
             ), ///option is the thread is for modular scale
@@ -155,48 +155,10 @@ $default-render-obj:
         key:false
     ) ;
 
-///should extend the default?
-@mixin render-queue($collection: false){
-
-    @if  get-render-type($collection) == map {
-        @include output-css-declarations($collection...);
-    }
-
-    @if ( get-render-type($collection) == collection){
-        @warn "collection:";
-        @each $render-map in $collection{
-
-                @if get-render-type($render-map) == map{
-                    @include output-css-declarations($render-map...);
-
-                }@else{
-                    @error "RENDER OBJECT ERROR!!!! #{$render-map}";
-                }
-        }
-    }
-
-}
-
-@function get-render-type($collection){
-    @if (_($collection,is-render-key) ) {
-        @error "ITS A RENDER KEY!!";
-        @return key;
-    }
-    @if (_($collection, is-render-map)){
-       // @warn "THIS IS A RENDER MAP!!!";
-        @return map;
-    }
-    @if( _($collection, is-render-collection)){
-       // @warn "IS COLLECTION";
-        @return collection;
-    }
-
-    @error "BROKEN ENTRY";
-    @return false;
-}
 
 
-   @include render-queue($test1);
+
+   @include render-queue(($test3,$test1,$test2));
 
 @debug "!!!!!!!!!error";
 

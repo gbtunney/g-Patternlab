@@ -32,3 +32,20 @@
         }
     }
 }
+
+///should extend the default?
+@mixin render-queue($collection: false){
+    @if  get-render-type($collection) == map {
+        @include output-css-declarations($collection...);
+    }
+    @if ( get-render-type($collection) == collection){
+        @warn "collection:";
+        @each $render-map in $collection{
+            @if get-render-type($render-map) == map{
+                @include output-css-declarations($render-map...);
+            }@else{
+                @error "RENDER OBJECT ERROR!!!! #{$render-map}";
+            }
+        }
+    }
+}
