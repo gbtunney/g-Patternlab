@@ -70,14 +70,13 @@ $test2:
         ),
         key: unused,
         variant-key: font-small-caps,
-    )
-;
+    );
 
 $test1:
     (
         render:(
             module:size, //dont know??
-            prefix: newtype, //if it is to be generated, use a class prefix before,
+            prefix: modular-scale-example, //if it is to be generated, use a class prefix before,
             filter: assign,
             props: (font-size),
         ),
@@ -106,7 +105,7 @@ $test3:
     (
         render:(
             module:size, //dont know??
-            prefix: static-font-size, //if it is to be generated, use a class prefix before,
+            prefix: example-static-font-size, //if it is to be generated, use a class prefix before,
             filter: assign,
             props: (font-size),
         ),
@@ -124,19 +123,36 @@ $test3:
         key: unused
     ) ;
 
+$test4:
+    (
+        description: "Demo object for a ratio size operation.",
+        render:(
+            module:size, //dont know??
+            prefix: example-ratio, //if it is to be generated, use a class prefix before,
+            filter: assign,
+            props: (font-size),
+        ),
+        variants:(
+            transform: ratio-size,
+            options: (
+                base:36px
+            ), ///option is the thread is for modular scale
+            units: (
+                xxs: -2,
+                xs: -1,
+                sm: 2,
+                md: 1,
+                lg: 2,
+                xl: 3,
+                xxl: 4,
+                xxxl: 5
+            )
+        ),
+        key: unused
+    ) ;
 
 
-/// ways to check the render map
 
-@function is-render-map($map){
-    @return ( (_has($map, variants)) and (_has($map, render)) );
-}
-@function is-render-collection($collection){
-    @return ( _is-iterable($collection) and _is-list-like($collection));
-}
-@function is-render-key($collection){
-    @return ( ( _is-iterable($collection) is false ) and _is-string($collection));
-}
 
 $default-render-obj:
     (
@@ -149,16 +165,27 @@ $default-render-obj:
         variants:(
             transform: false,
             options: (), ///option is the thread is for modular scale
-            units: ()
+            units: (
+                sm: 20px,
+                md:  lighten red 5%,
+                lg: 30px,
+                xl:(
+                ratio:36px,
+                    font-size:30px
+                )
+            )
         ),
         variant-key: false,
         key:false
     ) ;
 
+  //
 
 
+@debug add-to-style-dictionary($default-render-obj,teststyle);
+@debug add-to-style-dictionary($test3,test3);
+//@debug add-to-style-dictionary($test3,test3);
 
-   @include render-queue(($test3,$test1,$test2));
-
-@debug "!!!!!!!!!error";
-
+@include render-queue(test3 $test1 teststyle);
+//@debug get-render-style(test3 teststyle, $style-dictionary);
+@debug get-queue(test3 $test1 teststyle);

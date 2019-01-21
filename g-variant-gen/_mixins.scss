@@ -1,9 +1,10 @@
 //TODO: use sassdash insteadddd
-@mixin output-css-declarations($render:call(get-function(default-render)),$variants:map-get($default-render-obj,variants),$variant-key:map-get($default-render-obj,variant-key) ,$key:map-get($default-render-obj,key) ) {
+@mixin output-css-declarations($render:call(get-function(default-render)),$variants:map-get($default-render-obj,variants),$variant-key:map-get($default-render-obj,variant-key) ,$key:map-get($default-render-obj,key),$description:false ) {
     $prefix: map-get($render, prefix);
     $transformed-data-map: transform-data($variants...);
     $render-data-map: get-rendered-data($transformed-data-map, $render...);
 
+    @if $default-render-obj { @debug "RENDERING OBJECT WITH DESCRIPTION #{$description}"};
     ///if you only want one key??
     @if $variant-key and _has($render-data-map, $variant-key) {
         @warn "THIS IS A SINGLE ITEM!!#{$variant-key}";
@@ -32,18 +33,15 @@
         }
     }
 }
-
 ///should extend the default?
-@mixin render-queue($collection: false){
-    @if  get-render-type($collection) == map {
-        @include output-css-declarations($collection...);
-    }
-    @if ( get-render-type($collection) == collection){
-        @warn "collection:";
-        @each $render-map in $collection{
-            @if get-render-type($render-map) == map{
+@mixin render-queue($collection: false) {
+    $queue: get-queue($collection);
+    @if ($queue) {
+        @each $render-map in $queue {
+
+            @if is-render-map($render-map) {
                 @include output-css-declarations($render-map...);
-            }@else{
+            } @else {
                 @error "RENDER OBJECT ERROR!!!! #{$render-map}";
             }
         }
