@@ -59,9 +59,6 @@ $module-defaults: (
     @if ($use-defaults) {
         $new-render-obj: _assign(get-default($default-module), $renderObj);
     }
-
-    //@if ( _has($map, 'b')
-
     @if ($key) {
         $new-render-obj: map-set($new-render-obj, key, $key);
     } @else {
@@ -74,27 +71,26 @@ $module-defaults: (
     } @else {
         $style-dictionary: map-set($style-dictionary, $key, $new-render-obj) !global;
     }
-
-    // $foo: _merge($users, ages);
-
-    //@debug $foo;
-    //@debug length($style-dictionary);
     @return false;
 }
-@function get-single-render-style($key, $args...) {
+@function get-single-render-style($key,$prop:false, $args...) {
 
+    @debug "HERE #{$key}";
     @if (_($key, is-render-map)) {
             @return $key;
     }
     @if (_get($style-dictionary, $key) == false){
         @return false;
     }
-    @return _get($style-dictionary, $key);
+    @if ($prop){
+   @return _get($style-dictionary, $key #{$prop});
+    }
+    @return _get($style-dictionary, $key ) ;
 }
 
 
 
-@function get-render-style($key, $_style-dictionary:$style-dictionary) {
+@function get-render-style($key, $prop: false,$_style-dictionary:$style-dictionary) {
     @return _map($key, get-single-render-style);
 }
 
@@ -196,7 +192,7 @@ $module-defaults: (
 }
 
 //take calculated and filter map
-@function get-rendered-data($units:(), $props:() , $filter: false, $prefix:false,$module:false) {
+@function get-rendered-data($units:(), $props:() , $filter: false, $suffix:false,$module:false) {
 
     $filtered-unit-arr: $units;
     @if ($filter==false) {
@@ -235,21 +231,48 @@ $module-defaults: (
         // @warn "IS COLLECTION";
         @return collection;
     }
-
     @error "BROKEN ENTRY";
     @return false;
 }
 @function get-queue($collection: false){
     @if ( is-render-map($collection) ){
-        //@return $collection;
         $collection: _push((),$collection );
     }
-
     @if ($collection != false){
         @return  get-render-style($collection);
     }
     @return false;
 }
+
+@function format-selector($selector, $suffix:false, $suffix-key: false) {
+    @if ($selector) {
+        $_new-selector: $selector;
+        @if ($suffix) {
+            $_new-selector: #{$_new-selector}-#{$suffix-key}; //_concat($_new-selector, $suffix);
+        }
+        @return $_new-selector;
+    } @else if ($selector== false and $suffix==true) {
+        @return #{&}-#{$suffix-key};
+    }
+    @return false;
+}
+
+
+///should extend the default?
+@function get-render-value($variants:map-get($default-render-obj,variants),$variant-key:map-get($default-render-obj,variant-key) ,$render:false, $selector: false,$key:map-get($default-render-obj,key),$description:false ) {
+
+    @if (is-render-key($variants)) {
+        $variants: get-single-render-style($variants, variants);
+    }
+    $transformed-data-map: transform-data($variants...);
+
+    $new-list: "";
+    @each $key in $variant-key {
+        $new-list: _push($new-list, _get($transformed-data-map, $key));
+    }
+    @return $new-list;
+}
+
 /// ways to check the render map
 @function is-render-map($map){
     @return ( (_has($map, variants)) and (_has($map, render)) );
