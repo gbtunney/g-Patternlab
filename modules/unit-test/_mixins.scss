@@ -1,0 +1,12 @@
+@mixin test-all-dependencies($-modules: $test-modules,$_TEST-DEPENDANCIES : $TEST-DEPENDANCIES) {
+    @if ($_TEST-DEPENDANCIES) {
+        @each $key, $value in $test-modules {
+            @if (function-exists("get-dependancies-#{$key}")) {
+                $tests-var: call("get-dependancies-#{$key}");
+                @if ($tests-var) {
+                    @include run(test(dependancy-check, $tests-var));
+                }
+            }
+        }
+    }
+}

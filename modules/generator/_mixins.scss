@@ -4,14 +4,14 @@
         @each $key, $value in $-generate-map {
             @if ($value == true) {
                 @if ($key == scheme-classes) {
-                    @include g-generate-scheme-utility-classes;
+                   // @include g-generate-scheme-utility-classes;
                 } @else if ($key== swatch-classes) {
-                     @include g-generate-swatches();
+                   //  @include g-generate-swatches();
                 } @else if ($key== type-classes) {
-                    @include g-generate-all-font-utility-classes;
+                   // @include g-generate-all-font-utility-classes;
 
                 } @else if ($key== rhythm-spacing) {
-                    @include g-generate-utility-spacing();
+                   // @include g-generate-utility-spacing();
                 } @else if ($key== utility-static) {
 
                 } @else if ($key== components) {
@@ -20,64 +20,4 @@
             }
         }
     }
-}
-
-@mixin new-generate-utility-classes( $_render-map, $_string ) {
-    @if (function-exists(get-module-typography)) {
-        @each $key, $value in $_render-map {
-
-            @debug $key;
-
-            #{'.test me'}{
-                font-size: 30px;
-            }
-            @include utility(get-utility-prefix(type, #{$utility-seperator}#{$key})) {
-                @debug $value;
-                @each $property, $property-value in $value {
-                    @debug "WRING CSS FOR PROP#{$property} value : #{$property-value}#";
-                    #{$property}: #{$property-value};
-                }
-            }
-        }
-    }
-}
-
-@mixin render-data-obj($rendered_obj:(), $prefix: none,$props:false,$module:false) {
-    $new-render-obj: ();
-    @if ($props) {
-        @each $key, $value in $rendered_obj {
-            $new-render-obj: map-set($new-render-obj, $key, ());
-
-            ///check to see if they are the same type!!!
-            @if (type-of($props)==type-of($rendered_obj)) {
-                @error 'SAME TYPE!';
-
-            }
-            /////TODO: filter filter function
-
-            //list with the css properties
-            @each $prop_key in $props {
-                //@debug "******checking the prop #{$prop_key} #{$value} ";
-                @if (map-get($value, $prop-key)) {
-                    $new-render-obj: map-deep-set($new-render-obj, $key $prop_key, map-get($value, $prop-key));
-                } @else {
-                    //npt found props
-                }
-            }
-        }
-
-        @each $key, $value in $new-render-obj {
-            //@include utility(get-utility-prefix(type, #{$utility-seperator}#{$key})) {
-            .wrap-#{$key} {
-                @each $css_key, $css_value in $value {
-                    #{$css_key}: #{$css_value};
-                }
-            }
-        }
-    }
-}
-
-@function filter-data-props(){
-
-
 }

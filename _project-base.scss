@@ -1,0 +1,31 @@
+@import "dependencies";
+@import "project-variables";
+
+//todo: fix this
+@import "objects/objects";
+@import "modules/core/module";
+@import "modules/colors/module";
+
+
+//@import "../g-Patternlab/modules/typography/module";
+@import "modules/rhythm-spacing/module";
+//@import "../g-Patternlab/modules/components/module";
+//@import "../g-Patternlab/modules/generator/module";
+
+@import "modules/unit-test/module";
+
+$generate-map: (
+    scheme-classes: false,
+    swatch-classes: false,
+    type-classes:false,
+    rhythm-spacing:false,
+    utility-static:false,
+    components:false
+
+);
+@include init-color-module;
+
+@debug "GILLIAN";
+//$DEFINITION_MAP: init-sizing-module();
+
+

@@ -1,0 +1,38 @@
+$TEST-DEPENDANCIES: true!default;
+
+$tests-dependencies: (
+        (get-module-typography): true,
+        (get-module-color): true,
+        (get-module-rhythm-spacing): true,
+        (color): true,
+        (dry):true
+);
+
+//@include run(test('dependancy-check', $tests-dependencies));
+$test-modules: (
+    color:(
+        enabled:true,
+        testDependancies:true,
+        generate:true,
+    ),
+    typography:(
+        enabled:true,
+        testDependancies:true,
+        generate:true,
+    ),
+    rhythm-spacing:(
+        enabled:true,
+        testDependancies:true,
+        generate:false,
+    ),
+    responsive:(
+        enabled:true,
+        testDependancies:true,
+        generate:true,
+    ),
+    generator:(
+        enabled:true,
+        testDependancies:true,
+        generate:true,
+    )
+)!default;

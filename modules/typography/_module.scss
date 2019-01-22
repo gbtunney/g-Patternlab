@@ -1,65 +1,40 @@
 //*** TYPOGRAPHY IS AN EXTENSION OF SIZING MODULE
 //*** Dependancies: Modular Scale, Compass Mixins
 
-@import "sass-dry/_dry.scss";
-
-@import "variables";
-
-@import "compass-mixins/lib/compass/_typography.scss";
-@import "mixins";
-@import "functions";
-
-@charset "UTF-8";
-
-//@if ($typekit){
-@import url($typekit);
+//@import "sass-dry/_dry.scss";
+//
+//@import "variables";
+//
+//@import "compass-mixins/lib/compass/_typography.scss";
+//@import "mixins";
+//@import "functions";
+//
+//@charset "UTF-8";
+//
+////@if ($typekit){
+//@import url($typekit);
+////}
+//
+////init type maps
+//$font-maps: map-get($typography, "fonts");
+//$default-font-map: map-get($font-maps, default);
+//
+////$scale-map: map-get($typography, type-scale-map);
+//
+////*** COMPASS PROPS
+////$base-font-size: 20px; // Sets the base font size
+////$base-line-height: 16px; // Sets the base line height
+//
+//$BASE_LINE_HEIGHT: map-get($typography, line-height);
+//$BASE_FONT_SIZE: map-get($modularscale, base);
+//
+////convert unitless lineheight
+//@if (has-unit($BASE_LINE_HEIGHT)) {
+//} @else {
+//    $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
 //}
-
-//init type maps
-$font-maps: map-get($typography, "fonts");
-$default-font-map: map-get($font-maps, default);
-
-//$scale-map: map-get($typography, type-scale-map);
-
-//*** COMPASS PROPS
-//$base-font-size: 20px; // Sets the base font size
-//$base-line-height: 16px; // Sets the base line height
-
-$BASE_LINE_HEIGHT: map-get($typography, line-height);
-$BASE_FONT_SIZE: map-get($modularscale, base);
-
-//convert unitless lineheight
-@if (has-unit($BASE_LINE_HEIGHT)) {
-} @else {
-    $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
-}
-
-//***** SET compass vars
-$base-font-size: $BASE_FONT_SIZE;
-$base-line-height: $BASE_LINE_HEIGHT;
-$relative-font-sizing: false;
-
-
-
-//*********initialize module'
-//@error #{ map-values(init-font-maps($font-maps,$default-font-map))};
-
-//$DEFINITION_MAP: init-typography-module ($font-maps,$default-font-map);
-//TODO: $DEFINITION_MAP: add-definition-map(map-get($typography, type-scale-map),scale);
-
-///***EXAMPLE JUNK
-///the function rs NEEDS TO not have pixel values as units.--
-/*$testfontsize : get-font-size((
-    transform: fs,
-    options:   (base:40px
-    ),
-    units: (
-        sm: 20px,
-        md: 1.5,
-        lg: 100px,
-        1: 30px
-    )
-),lg);*/
-
-//@debug "FONT SIZE TEST HERE #{$testfontsize}";
-//@debug "FONT SIZE TEST HERE #{get-font-size(type, 0)}";
+//
+////***** SET compass vars
+//$base-font-size: $BASE_FONT_SIZE;
+//$base-line-height: $BASE_LINE_HEIGHT;
+//$relative-font-sizing: false;

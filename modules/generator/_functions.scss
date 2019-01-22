@@ -1,21 +1,7 @@
 //GENERIC FUNCTIONS for generator
-@function get-scale-units($key: 0) {
-
-    @if (type-of($key)== number) {
-        @return $key;
-    } @else if (type-of(string)) {
-        @return map-get($scale-lookup-units, $key);
-    } @else {
-        @debug "ALERT !!! scale unit: #{$key} type error";
-    }
-}
 
 @function get-utility-prefix($utility-type-key, $key:'' ) {
     @return #{map-get($utility-prefixes,$utility-type-key)}#{$utility-seperator}#{$key};
-}
-
-@function set-generate-map( $bool:true ,$map: $generate-map ){
-    @return map-set-all($map,$bool);
 }
 
 @function get-module-generator(){

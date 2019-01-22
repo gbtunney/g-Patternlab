@@ -1,97 +1,285 @@
-///stub functions
-@function get-module-core(){
-    @return true;
-}
-@function get-dependancies-core(){
-    @return (
-            (rhythm): true
-    );
-}
+$style-dictionary: (
+);
 
+//module defaults
+$module-defaults: (
+    color:(
+        render:(
+            module:color, //dont know??
+            prefix: false, //if it is to be generated, use a class prefix before,
+            filter: color,
+            props: (),
+        ),
+        variants:(
+            transform: no-transformation,
+            options: (
+            ), ///option is the thread is for modular scale
+            units: (
+                default: (
+                ),
+                accent: (
+                ),
+            )
+        ),
+        key: unused
+    ),
+    size:(
+        render:(
+            module:size, //dont know??
+            prefix: false, //if it is to be generated, use a class prefix before,
+            filter: assign,
+            props: (),
+        ),
+        variants:(
+            transform: no-transformation,
+            options: (
+            ), ///option is the thread is for modular scale
+            units: (
+            )
+        ),
+        key: unused
+    )
+);
 
-@function _core-init() {
-    @if length($_DEFINITION_MAP) == 0 {
-        @return (
-            'schemes': (
-            ),
-            'font': (),
-            'scale': (),
-        );
+@function get-default( $module-name : size) {
+    @if map-get($module-defaults, $module-name) {
+        @return map-get($module-defaults, $module-name);
+    } @else {
+        @error "DEFAULTS FROM MODULE #{$module-name} NOT FOUND.";
     }
-    @else {
-        @return $_DEFINITION_MAP;
+}
+
+@function add-to-style-dictionary($renderObj:(),$key:false,$use-defaults:true, $default-module:size, $_style-dictionary: $style-dictionary ) {
+    $new-render-obj: ();
+
+    @if _is-map( $renderObj ) == false {
+        @error "not a map";
     }
+
+    @if ($use-defaults) {
+        $new-render-obj: _assign(get-default($default-module), $renderObj);
+    }
+    @if ($key) {
+        $new-render-obj: map-set($new-render-obj, key, $key);
+    } @else {
+        $key: map-get($new-render-obj, key);
+    }
+    //@debug   "FIND ::: #{_result(_find($_style-dictionary, 'key', test3), true)}" ;
+
+    @if (_get($_style-dictionary, $key)) {
+        @warn "ALREADY ADDED #{$key}";
+    } @else {
+        $style-dictionary: map-set($style-dictionary, $key, $new-render-obj) !global;
+    }
+    @return false;
 }
+@function get-single-render-style($key,$prop:false, $args...) {
 
-@function is-valid-definition-map($map) {
-    @return (is-map($map) and (map-get($map,key)  and ( map-get($map,value) or map-get($map,options))  ) );
-}
-
-@function get-definition-map($key:false,$_DEFINITION_MAP: $DEFINITION_MAP){
-    @return map-get($_DEFINITION_MAP,$key);
-}
-@function add-single-definition-map($definition-map: false,$type: generic,$validator: is-valid-definition-map, $overwrite: false , $_DEFINITION_MAP: $DEFINITION_MAP){
-    @if ( call(get-function($validator),$definition-map) ){
-        $key: map-get($definition-map,key);
-
-        @if not($key) {@error "NO KEY IN THIS MAP "; @return false;}
-
-        @if (get-definition-map($key) ){
-
-            @error "KEY #{($definition-map)}  IS ALREADY ADDED TO DICTIONARY  #{get-definition-map($definition-map)}";
-
-        }@else{
-            $_DEFINITION_MAP: append($_DEFINITION_MAP,$definition-map);
-            @return $_DEFINITION_MAP;
-            //  @debug "ADDING MAP";
-        }
-    }@else{
-        @error "NOT VaLID #{$definition-map}";
+    @debug "HERE #{$key}";
+    @if (_($key, is-render-map)) {
+            @return $key;
+    }
+    @if (_get($style-dictionary, $key) == false){
         @return false;
     }
-
-}
-@function add-definition-map($map: false,$type: generic,$validator: is-valid-definition-map, $_DEFINITION_MAP: $DEFINITION_MAP ){
-    $_NEW_DEFINITION_MAP: $_DEFINITION_MAP;
-    @if (is-map($map) ){
-        $map : ($map,() );  //make into a single item list
+    @if ($prop){
+   @return _get($style-dictionary, $key #{$prop});
     }
+    @return _get($style-dictionary, $key ) ;
+}
 
-    @if(length($map)> 1 ){
-        @each  $value in $map {
-        @if ( call(get-function($validator),$value) ){
-            $key: map-get($value,key);
-            $value: if( map-get($value,type),$value,map-set($value,type, $type));
 
-                @if not($key) {@error "NO KEY IN THIS MAP "; @return false;}
 
-                @if (get-definition-map($key) ){
+@function get-render-style($key, $prop: false,$_style-dictionary:$style-dictionary) {
+    @return _map($key, get-single-render-style);
+}
 
-                    @error "KEY #{($value)}  IS ALREADY ADDED TO DICTIONARY  #{get-definition-map($key)}";
-
-                }@else{
-
-                    $_NEW_DEFINITION_MAP: map-set($_NEW_DEFINITION_MAP,$key,$value);
-                 //   @debug "TESTING!!!!!!!!#{$value}  : #{$_NEW_DEFINITION_MAP}";
-
-                   //
-                   // $_NEW_DEFINITION_MAP: append($_NEW_DEFINITION_MAP,$value);
-                }
-            }
+@function ratio-size($v:1, $base: 1 ) {
+    @if (_is-integer($v)) {
+        $v: ($v * $base);
+        @if (has-unit($v) == false) {
+            @warn "ratio size value has no unit----#{$v}";
         }
-        @return $_NEW_DEFINITION_MAP;
-
-    }@else {
-        @error "TRYING TO ADD EMPTY MAP";
+        @return $v;
+    } @else {
+        @warn "trying to do a ratio-size on non integer: #{$v}";
+        @return $v;
     }
-@return $_NEW_DEFINITION_MAP;
-        ///if its a single map
+    @return false;
 }
-@function get-rendered-definition( $definition-key, $unit-key: false){
 
-    $_def-map: get-definition-map($definition-key);
+///move to general utilitisz
+@function is-single-item($value) {
+
+    @return (type-of($value) != map and ( length($value) >= 1 ));
+}
+
+///remap merges values with option maps
+
+@function remap-value($value:false, $_options:false, $value-key: v /* if value is a single item , map with this key*/
+) {
+    @if (is-map($value ) == false) {
+        $test: _first($value);
+        @if (_is-function(_first($value))) {
+            $value: call(get-function(_first($value)), _drop($value, 1)...);
+        }
+        @return _assign((#{$value-key}: $value), $_options);
+    } @else {
+        @return map-merge($_options, $value);
+    }
+}
+
+@function no-transformation($v) {
+    @return $v;
+}
+
+//filter function for single numbers...
+@function assign($unit:(),$props:(),$additional-parameters:false) {
+
+    @if is-single-item($props) and is-single-item($unit) {
+        @return map-set((), _to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
+    } @else if (_is-map($unit) and is-single-item($props)) {
+        @return map-set((), _to-string($props), map-values($unit)); ///if there are additional options, item needs to be put in map instead of returned
+
+    } @else {
+
+    }
+    @return false;
+}
+
+@function include($units:(),$props:(),$additional-parameters:false) {
+    @return _pick($units, $props);
+}
+
+@function exclude($units:(),$props:(),$additional-parameters:false) {
+    @return _omit($units, $props);
+}
+
+@function transform-data($units : () , $options:false,$transform:false,$var:v /* transformed ones variable name if it neds one*/
+) {
+    $map-to-return: ();
+    $_transform-result: false;
+
+    @if (type-of($units) == map) {
+        @each $key, $value in $units {
+            $new-key: false;
+            $new-value: false;
+            ///if its a key (sm ) and not a value...
+            @if (map-get($units, $key)) {
+                $new-key: $key;
+                $new-value: map-get($units, $key);
+            } @else {
+
+                $new-key: index($units, $key); //have to flip flop these.
+                $new-value: nth($units, $new-key);
+            }
+            // @debug "TRYING TO TRANSFORM key: #{$new-key} value: #{$new-value}";
+            $new-value: remap-value($new-value, $options, $var);
+
+            @if (_is-function($transform)) {
+                $_transform-result: call(get-function($transform), $new-value...);
+                // $_transform-result:  _map($new-value, $transform);
+                //this seems wrong?? $_transform-result:  _map($new-value, $transform);
+            } @else {
+                $_transform-result: map-merge($options, $new-value);
+            }
+            $map-to-return: map-set($map-to-return, $new-key, $_transform-result);
+        }
+    } @else {
+        @error "BAD DATA OBJECT";
+    }
+    @return $map-to-return;
+}
+
+//take calculated and filter map
+@function get-rendered-data($units:(), $props:() , $filter: false, $suffix:false,$module:false) {
+
+    $filtered-unit-arr: $units;
+    @if ($filter==false) {
+        @return $units;
+    }
+    @if (_is-function($filter)) {
+
+        //TODO USE SASSDASH
+        @each $key, $value in $units {
+
+            //add key with empty array
+            $filtered-unit-arr: map-set($filtered-unit-arr, $key, ());
+
+            //filter map with props
+            $transformed-val: call(get-function($filter), $value, $props);
+
+            //replace with new
+            $filtered-unit-arr: map-set($filtered-unit-arr, $key, $transformed-val);
+        }
+    } @else {
+        @debug "NOT A FUNCTION";
+    }
+    @return $filtered-unit-arr;
+}
+
+@function get-render-type($collection) {
+    @if (_($collection, is-render-key)) {
+       // @error "ITS A RENDER KEY!!";
+        @return key;
+    }
+    @if (_($collection, is-render-map)) {
+        // @warn "THIS IS A RENDER MAP!!!";
+        @return map;
+    }
+    @if (_($collection, is-render-collection)) {
+        // @warn "IS COLLECTION";
+        @return collection;
+    }
+    @error "BROKEN ENTRY";
+    @return false;
+}
+@function get-queue($collection: false){
+    @if ( is-render-map($collection) ){
+        $collection: _push((),$collection );
+    }
+    @if ($collection != false){
+        @return  get-render-style($collection);
+    }
+    @return false;
+}
+
+@function format-selector($selector, $suffix:false, $suffix-key: false) {
+    @if ($selector) {
+        $_new-selector: $selector;
+        @if ($suffix) {
+            $_new-selector: #{$_new-selector}-#{$suffix-key}; //_concat($_new-selector, $suffix);
+        }
+        @return $_new-selector;
+    } @else if ($selector== false and $suffix==true) {
+        @return #{&}-#{$suffix-key};
+    }
+    @return false;
+}
 
 
-    @return transform-each(map-get($_def-map,units),map-get($_def-map,transform),map-get($_def-map,options) );
+///should extend the default?
+@function get-render-value($variants:map-get($default-render-obj,variants),$variant-key:map-get($default-render-obj,variant-key) ,$render:false, $selector: false,$key:map-get($default-render-obj,key),$description:false ) {
 
+    @if (is-render-key($variants)) {
+        $variants: get-single-render-style($variants, variants);
+    }
+    $transformed-data-map: transform-data($variants...);
+
+    $new-list: "";
+    @each $key in $variant-key {
+        $new-list: _push($new-list, _get($transformed-data-map, $key));
+    }
+    @return $new-list;
+}
+
+/// ways to check the render map
+@function is-render-map($map){
+    @return ( (_has($map, variants)) and (_has($map, render)) );
+}
+@function is-render-collection($collection){
+    @return ( _is-iterable($collection) and _is-list-like($collection));
+}
+@function is-render-key($collection){
+    @return ( ( _is-iterable($collection) is false ) and _is-string($collection));
 }

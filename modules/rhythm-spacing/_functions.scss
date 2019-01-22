@@ -3,7 +3,5 @@
 }
 @function get-dependancies-rhythm-spacing(){
     @return (
-            (rhythm): true,
-            (get-scale-value):true
     );
 }

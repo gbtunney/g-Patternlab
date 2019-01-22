@@ -1,5 +1,43 @@
 ///initialize the engine
-@debug "hello";
-$DEFINITION_MAP :();//_core-init();
+$style-dictionary: (
+);
 
-
+//module defaults
+$core-module-defaults: (
+    color:(
+        render:(
+            module:color, //dont know??
+            prefix: false, //if it is to be generated, use a class prefix before,
+            filter: color,
+            props: (),
+        ),
+        variants:(
+            transform: no-transformation,
+            options: (
+            ), ///option is the thread is for modular scale
+            units: (
+                default: (
+                ),
+                accent: (
+                ),
+            )
+        ),
+        key: unused
+    ),
+    size:(
+        render:(
+            module:size, //dont know??
+            prefix: false, //if it is to be generated, use a class prefix before,
+            filter: assign,
+            props: (),
+        ),
+        variants:(
+            transform: no-transformation,
+            options: (
+            ), ///option is the thread is for modular scale
+            units: (
+            )
+        ),
+        key: unused
+    )
+);

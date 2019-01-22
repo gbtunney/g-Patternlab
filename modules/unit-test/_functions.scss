@@ -1,0 +1,9 @@
+///stub functions
+@function get-module-unit-test(){
+    @return true;
+}
+@function get-dependancies-unit-test(){
+    @return (
+            (rhythm): true
+    );
+}
