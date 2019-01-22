@@ -1,7 +1,10 @@
 ////GENERIC DEPENDANCIES
 @import "utilities/vendor/_sassy-cast.scss";
-@import "utilities/_g-functions.scss";
+@import "sass-bem-constructor/stylesheets/_bem-constructor.scss";
+@import "utilities/new-utility-mixins/functions";
+@import "utilities/new-utility-mixins/mixins";
+
 @import "sassytester/sass/_SassyTester.scss";
-@import "utilities/unit-tests";
 @import "modularscale-sass/stylesheets/_modularscale.scss";
 @import 'sassdash/scss/sassdash';
+

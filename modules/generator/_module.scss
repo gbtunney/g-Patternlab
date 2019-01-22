@@ -4,12 +4,10 @@
 //*** swatch, colorscheme requires color module
 //*** utility padding requires type module
 
-@import "node_modules/sass-bem-constructor/stylesheets/_bem-constructor.scss";
 
 @import "functions";
 @import "variables";
 @import "mixins";
-@import "types/types";
 
 //various debug modes.
 @if ($GENERATOR_ON == force){

@@ -2,8 +2,20 @@
 @function get-module-unit-test(){
     @return true;
 }
-@function get-dependancies-unit-test(){
+@function get-dependancies-unit-test() {
     @return (
             (rhythm): true
     );
+}
+
+@function dependancy-check($func/*function*/
+) {
+    @debug "DEPENDENCY CHECK FOR #{$func}";
+    $found: false;
+    @if mixin-exists($func) {
+        $found: true;
+    } @else if function-exists($func) {
+        $found: true;
+    }
+    @return $found;
 }

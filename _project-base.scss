@@ -25,7 +25,8 @@ $generate-map: (
 );
 @include init-color-module;
 
-@debug "GILLIAN";
-//$DEFINITION_MAP: init-sizing-module();
+
+@debug batch-add-to-style-dictionary($base-render-objects);
+@include render-queue((font-size,typography,ratio-size-demo) );
 
 

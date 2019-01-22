@@ -1,7 +1,7 @@
 ///initialize the engine
 $style-dictionary: (
-);
-
+)!default;
+$default-module-key: size!default;
 //module defaults
 $core-module-defaults: (
     color:(
@@ -40,4 +40,4 @@ $core-module-defaults: (
         ),
         key: unused
     )
-);
+)!default;

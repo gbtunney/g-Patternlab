@@ -1,11 +1,11 @@
 //TODO: use sassdash insteadddd
-@mixin output-css-declarations($render:call(get-function(default-render)),$variants:map-get($default-render-obj,variants),$variant-key:map-get($default-render-obj,variant-key) , $selector: false,$key:map-get($default-render-obj,key),$description:false ) {
+@mixin output-css-declarations($render:get-default($default-module-key render),$variants:get-default($default-module-key variants),$variant-key:false , $selector: false,$key:get-default($default-module-key key),$description:false ) {
 
     $suffix: map-get($render, suffix);
     $transformed-data-map: transform-data($variants...);
     $render-data-map: get-rendered-data($transformed-data-map, $render...);
 
-    @if $default-render-obj {
+    @if $description {
         @debug "RENDERING OBJECT WITH DESCRIPTION #{$description}"
     }
 
@@ -41,12 +41,15 @@
 ///should extend the default?
 @mixin render-queue($collection: false,$unit-key:false,$selector:false) {
     $queue: get-queue($collection);
+    @debug "RENDER OBJECT ERROR!!!! #{$collection}";
+
     @if ($queue) {
         @each $render-map in $queue {
+
             @if is-render-map($render-map) {
                 @include output-css-declarations($render-map...);
             } @else {
-                @error "RENDER OBJECT ERROR!!!! #{$render-map}";
+               // @error "RENDER OBJECT ERROR!!!! #{$queue}";
             }
         }
     }

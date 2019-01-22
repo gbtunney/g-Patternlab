@@ -126,3 +126,147 @@ $schemes: (
         )
     )
 );
+
+$base-render-objects:(
+    (
+        key: typography,
+        selector: typography,
+        render:(
+            module:size, //dont know??
+            suffix: true, //if it is to be generated, use a class suffix before,
+            filter: include,
+            props: (
+                font-family,
+                letter-spacing,
+                word-spacing,
+                text-transform,
+                text-decoration,
+                font-style,
+                font-weight
+            ),
+        ),
+        variants:(
+            transform: false,
+            options: (
+                size-scale: type,
+                text-transform: none,
+                text-decoration: none,
+                letter-spacing: 10000px,
+                word-spacing: -1px,
+                font-weight: normal,
+                font-style: normal
+            ),
+            units: (
+                default:(
+                    font-family: monospace
+                ),
+                font-san-serif: (
+                    font-family: "cronos-pro-display",
+                    letter-spacing:0px,
+                    title: 'Primary: Mr Eaves Sans'
+                ),
+                font-serif:(
+                    font-family: "adobe-garamond-pro",
+                    title: 'Secondary, Headers : Mrs Eaves'
+                ),
+                font-serif-italic: (
+                    font-family: "adobe-garamond-pro",
+                    title: 'italic serif',
+                    font-style: italic
+                ),
+                font-serif-bold:(
+                    font-family: "adobe-garamond-pro",
+                    title: "'bold serif'",
+                    font-weight: 700
+                ),
+                font-small-caps:(
+                    font-family: "adobe-garamond-pro",
+                    text-transform: "uppercase",
+                    title: 'Accent, Small Caps : Mrs Eaves Roman Small Caps'
+                ),
+                font-test:(
+                    font-family: "adobe-garamond-pro",
+                    text-transform: "testing",
+                    title: "testing"
+                )
+            ),
+        ),
+    ),
+    (
+        key: font-size,
+        selector: '.type-font-size',
+        description: "Demo: modularscale size operation.",
+        render:(
+            module:size, //dont know??
+            suffix: true, //if it is to be generated, use a class suffix before,
+            filter: assign,
+            props: (font-size),
+        ),
+        variants:(
+            transform: ms,
+            options: (
+                base:36px,
+                ratio:1.4
+            ), ///option is the thread is for modular scale
+            units: (
+                xxs: -2,
+                xs: -1,
+                sm: 2,
+                md: 1,
+                lg: 2,
+                xl: 3,
+                xxl: 4,
+                xxxl: 5
+            )
+        )
+    ),
+    (
+        key: ratio-size-demo,
+        selector:ratio-size-demo,
+        description: "Demo: ratio size operation.",
+        render:(
+            module:size, //dont know??
+            suffix: true, //if it is to be generated, use a class suffix before,
+            filter: assign,
+            props: (font-size),
+        ),
+        variants:(
+            transform: ratio-size,
+            options: (
+                base:36px
+            ), ///option is the thread is for modular scale
+            units: (
+                xxs: -2,
+                xs: -1,
+                sm: 2,
+                md: 1,
+                lg: 2,
+                xl: 3,
+                xxl: 4,
+                xxxl: 5
+            )
+        )
+    ),
+    (
+        description: "Demo - static size values.",
+        render:(
+            module:size, //dont know??
+            suffix: true, //if it is to be generated, use a class suffix before,
+            filter: assign,
+            props: (font-size),
+        ),
+        variants:(
+            transform: no-transformation,
+            options: (
+
+            ), ///option is the thread is for modular scale
+            units: (
+                sm: 20px,
+                md:  lighten red 5%,
+                lg: 30px,
+            )
+        ),
+        key: static-size-demo,
+        selector:static-size-demo
+    )
+);

@@ -1,52 +1,18 @@
-$style-dictionary: (
-);
-
-//module defaults
-$module-defaults: (
-    color:(
-        render:(
-            module:color, //dont know??
-            prefix: false, //if it is to be generated, use a class prefix before,
-            filter: color,
-            props: (),
-        ),
-        variants:(
-            transform: no-transformation,
-            options: (
-            ), ///option is the thread is for modular scale
-            units: (
-                default: (
-                ),
-                accent: (
-                ),
-            )
-        ),
-        key: unused
-    ),
-    size:(
-        render:(
-            module:size, //dont know??
-            prefix: false, //if it is to be generated, use a class prefix before,
-            filter: assign,
-            props: (),
-        ),
-        variants:(
-            transform: no-transformation,
-            options: (
-            ), ///option is the thread is for modular scale
-            units: (
-            )
-        ),
-        key: unused
-    )
-);
-
-@function get-default( $module-name : size) {
-    @if map-get($module-defaults, $module-name) {
-        @return map-get($module-defaults, $module-name);
+@function get-default( $module-name : size,$_core-module-defaults:$core-module-defaults) {
+    // @warn _get($core-module-defaults,$module-name);
+    @if _get($core-module-defaults, $module-name) {
+        @return _get($core-module-defaults, $module-name);
     } @else {
         @error "DEFAULTS FROM MODULE #{$module-name} NOT FOUND.";
     }
+}
+
+@function batch-add-to-style-dictionary($collection, $_style-dictionary: $style-dictionary ) {
+    $dictionary: ();
+    @each $value in $collection {
+        $dictionary: add-to-style-dictionary($value, map-get($value, key));
+    }
+    @return $_style-dictionary;
 }
 
 @function add-to-style-dictionary($renderObj:(),$key:false,$use-defaults:true, $default-module:size, $_style-dictionary: $style-dictionary ) {
@@ -73,24 +39,35 @@ $module-defaults: (
     }
     @return false;
 }
-@function get-single-render-style($key,$prop:false, $args...) {
 
-    @debug "HERE #{$key}";
+@function get-single-render-style($key, $args...) {
+
     @if (_($key, is-render-map)) {
-            @return $key;
+        @return $key;
     }
-    @if (_get($style-dictionary, $key) == false){
+    @if (_get($style-dictionary, $key) == false) {
         @return false;
     }
-    @if ($prop){
-   @return _get($style-dictionary, $key #{$prop});
-    }
-    @return _get($style-dictionary, $key ) ;
+
+    @return _get($style-dictionary, $key);
 }
 
+//TODO: dont know whaat i should name this
+@function get-single-render-style-props($key,$prop:false, $args...) {
 
+    @if (_($key, is-render-map)) {
+        @return $key;
+    }
+    @if (_get($style-dictionary, $key) == false) {
+        @return false;
+    }
+    @if ($prop) {
+        @return _get($style-dictionary, $key #{$prop});
+    }
+    @return _get($style-dictionary, $key);
+}
 
-@function get-render-style($key, $prop: false,$_style-dictionary:$style-dictionary) {
+@function get-render-style($key,$_style-dictionary:$style-dictionary) {
     @return _map($key, get-single-render-style);
 }
 
@@ -220,7 +197,7 @@ $module-defaults: (
 
 @function get-render-type($collection) {
     @if (_($collection, is-render-key)) {
-       // @error "ITS A RENDER KEY!!";
+        // @error "ITS A RENDER KEY!!";
         @return key;
     }
     @if (_($collection, is-render-map)) {
@@ -234,12 +211,14 @@ $module-defaults: (
     @error "BROKEN ENTRY";
     @return false;
 }
-@function get-queue($collection: false){
-    @if ( is-render-map($collection) ){
-        $collection: _push((),$collection );
+
+@function get-queue($collection: false) {
+    @if (is-render-map($collection)) {
+        $collection: _push((), $collection);
     }
-    @if ($collection != false){
-        @return  get-render-style($collection);
+    @if ($collection != false) {
+        @warn "HERE#{get-render-style($collection)}";
+        @return get-render-style($collection);
     }
     @return false;
 }
@@ -257,12 +236,11 @@ $module-defaults: (
     @return false;
 }
 
-
 ///should extend the default?
-@function get-render-value($variants:map-get($default-render-obj,variants),$variant-key:map-get($default-render-obj,variant-key) ,$render:false, $selector: false,$key:map-get($default-render-obj,key),$description:false ) {
+@function get-render-value($variants:(),$variant-key:false ,$render:false, $selector: false,$key:false,$description:false ) {
 
     @if (is-render-key($variants)) {
-        $variants: get-single-render-style($variants, variants);
+        $variants: get-single-render-style-props($variants, variants);
     }
     $transformed-data-map: transform-data($variants...);
 
@@ -274,12 +252,14 @@ $module-defaults: (
 }
 
 /// ways to check the render map
-@function is-render-map($map){
-    @return ( (_has($map, variants)) and (_has($map, render)) );
+@function is-render-map($map) {
+    @return ((_has($map, variants)) and (_has($map, render)));
 }
-@function is-render-collection($collection){
-    @return ( _is-iterable($collection) and _is-list-like($collection));
+
+@function is-render-collection($collection) {
+    @return (_is-iterable($collection) and _is-list-like($collection));
 }
-@function is-render-key($collection){
-    @return ( ( _is-iterable($collection) is false ) and _is-string($collection));
+
+@function is-render-key($collection) {
+    @return (( _is-iterable($collection) is false ) and _is-string($collection));
 }

@@ -1,0 +1,212 @@
+@mixin vertical-align($position: relative) {
+	position: $position;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+@mixin center-align {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+@mixin center-align-horz {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+
+
+//TODO fix this fussy path
+@mixin font-face($family, $path: '../fonts/icons' ){
+	@at-root {
+		@font-face {
+
+			font-family: $family;
+			src: url('#{$path}.eot');
+			src: url('#{$path}.eot?#iefix') format('embedded-opentype'), url('#{$path}.woff') format('woff'), url('#{$path}.ttf') format('truetype'), url('#{$path}.svg#icons') format('svg');
+			font-weight: normal;
+			font-style: normal;
+		}
+	}
+}
+
+
+
+// A Sass walk function,
+// Calling a given function to each member of a list
+// ---
+// @param [list] $list: list to walk through
+// @param [string] $function: function to apply to all members
+// @param [argList] $args: extra arguments to pass to the function
+// ---
+// @return [list] $list: updated list
+@function walk($list, $function, $args...) {
+	@if not function-exists($function) {
+		@warn "There is no `#{$function}` function.";
+		@return false;
+	}
+
+	@for $i from 1 through length($list) {
+		$list: set-nth($list, $i, call(get-function($function), nth($list, $i), $args...));
+	}
+
+	@return $list;
+}
+
+@function add($a, $b) {
+	@return $a + $b;
+}
+
+sass {
+	// Applying color functions to a list of colors
+	test: walk(red green blue, complement);
+	test: walk(red green blue, darken, 20%);
+
+	// Applying string functions to a list of strings
+	test: walk(one two three, to-upper-case);
+
+	// Chaining two walk functions
+	//test: walk(walk(3 6 9, add, 10), sqrt);
+
+	// Unknown function
+	//test: walk(test, 'gloubiboulga');
+}
+
+
+
+Skip to content
+Why GitHub?
+Enterprise
+Explore
+Marketplace
+Pricing
+
+Search
+
+Sign in
+Sign up
+8 3 4 helsingborg-stad/styleguide-web
+                       Code  Issues 1  Pull requests 0  Projects 0  Insights
+                                                                    Join GitHub today
+                                                                    GitHub is home to over 28 million developers working together to host and review code, manage projects, and build software together.
+
+styleguide-web/source/sass/utility/_aspect-ratio.scss
+dd15400  on Mar 19, 2018
+@JockeTF JockeTF Remove executable flag from files
+@sebastianthulin @Svanmark @JockeTF
+
+122 lines (95 sloc)  1.88 KB
+
+	/* Ratios */
+.ratio-16-9 {
+	@include aspect-ratio(16, 9);
+}
+
+.ratio-4-3 {
+	@include aspect-ratio(4, 3);
+}
+
+.ratio-10-3 {
+	@include aspect-ratio(10, 3);
+}
+
+.ratio-36-7 {
+	@include aspect-ratio(36, 7);
+}
+
+.ratio-1-1 {
+	@include aspect-ratio(1, 1);
+}
+
+@media #{$screen-xs} {
+	.ratio-16-9-xs {
+		@include aspect-ratio(16, 9);
+	}
+
+	.ratio-4-3-xs {
+		@include aspect-ratio(4, 3);
+	}
+
+	.ratio-10-3-xs {
+		@include aspect-ratio(10, 3);
+	}
+
+	.ratio-36-7-xs {
+		@include aspect-ratio(36, 7);
+	}
+
+	.ratio-1-1-xs {
+		@include aspect-ratio(1, 1);
+	}
+}
+
+@media #{$screen-sm} {
+	.ratio-16-9-sm {
+		@include aspect-ratio(16, 9);
+	}
+
+	.ratio-4-3-sm {
+		@include aspect-ratio(4, 3);
+	}
+
+	.ratio-10-3-sm {
+		@include aspect-ratio(10, 3);
+	}
+
+	.ratio-36-7-sm {
+		@include aspect-ratio(36, 7);
+	}
+
+	.ratio-1-1-sm {
+		@include aspect-ratio(1, 1);
+	}
+}
+
+@media #{$screen-md} {
+	.ratio-16-9-md {
+		@include aspect-ratio(16, 9);
+	}
+
+	.ratio-4-3-md {
+		@include aspect-ratio(4, 3);
+	}
+
+	.ratio-10-3-md {
+		@include aspect-ratio(10, 3);
+	}
+
+	.ratio-36-7-md {
+		@include aspect-ratio(36, 7);
+	}
+
+	.ratio-1-1-md {
+		@include aspect-ratio(1, 1);
+	}
+}
+
+@media #{$screen-lg} {
+	.ratio-16-9-lg {
+		@include aspect-ratio(16, 9);
+	}
+
+	.ratio-4-3-lg {
+		@include aspect-ratio(4, 3);
+	}
+
+	.ratio-10-3-lg {
+		@include aspect-ratio(10, 3);
+	}
+
+	.ratio-36-7-lg {
+		@include aspect-ratio(36, 7);
+	}
+
+	.ratio-1-1-lg {
+		@include aspect-ratio(1, 1);
+	}
+}
