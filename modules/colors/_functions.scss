@@ -85,6 +85,39 @@
             @return false;
         }
 
+    } @else if (_is-list($value) ) {
+
+        @if ( _is-function(_first($value)) ){
+
+            $func: _first($value);
+            $rest-of-list: _rest($value);
+
+            $new-color-key: _first($rest-of-list);
+            @if (chroma-has-color($new-color-key, $color-scheme)) {
+
+
+               // $rest-of-list : _splice($rest-of-list, 1,1,color($color-scheme, $color-key));
+                @warn "ITS A FUNCTION!!: #{$color-scheme}  #{$new-color-key}--- #{color($color-scheme, $color-key)}";
+                @return _exec($func,color($color-scheme, $new-color-key),_rest($rest-of-list)...);
+
+            } @else {
+                @return _exec($func,$rest-of-list...);
+
+            }
+          //  @return false;// _exec($value...);
+
+        }
+
+        @return false;
+       //
+      /*
+        @if (chroma-has-color($value, $color-scheme)) {
+            @return get-current-scheme-color-by-string($color-key, $value, $color-scheme);
+        } @else {
+            // @debug "ALERT!  value: #{$value} is not a valid color present in scheme: #{$color-scheme}";
+            @return false;
+        }*/
+
     } @else if (type-of($value) == color) {
         @return $value;
     } @else {

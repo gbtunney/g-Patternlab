@@ -3,38 +3,9 @@
 
 //@import "sass-dry/_dry.scss";
 //
-//@import "variables";
+@import "variables";
 //
-//@import "compass-mixins/lib/compass/_typography.scss";
-//@import "mixins";
-//@import "functions";
-//
-//@charset "UTF-8";
-//
-////@if ($typekit){
-//@import url($typekit);
-////}
-//
-////init type maps
-//$font-maps: map-get($typography, "fonts");
-//$default-font-map: map-get($font-maps, default);
-//
-////$scale-map: map-get($typography, type-scale-map);
-//
-////*** COMPASS PROPS
-////$base-font-size: 20px; // Sets the base font size
-////$base-line-height: 16px; // Sets the base line height
-//
-//$BASE_LINE_HEIGHT: map-get($typography, line-height);
-//$BASE_FONT_SIZE: map-get($modularscale, base);
-//
-////convert unitless lineheight
-//@if (has-unit($BASE_LINE_HEIGHT)) {
-//} @else {
-//    $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
-//}
-//
-////***** SET compass vars
-//$base-font-size: $BASE_FONT_SIZE;
-//$base-line-height: $BASE_LINE_HEIGHT;
-//$relative-font-sizing: false;
+@import "compass-mixins/lib/compass/_typography.scss";
+@import "mixins";
+@import "functions";
+

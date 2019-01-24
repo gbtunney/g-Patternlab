@@ -1,61 +1,118 @@
 @import "dependencies";
 @import "project-variables";
-
 //todo: fix this
 @import "objects/objects";
 @import "modules/core/module";
 @import "modules/colors/module";
-
-
-//@import "../g-Patternlab/modules/typography/module";
+@import "modules/typography/module";
 @import "modules/rhythm-spacing/module";
 //@import "../g-Patternlab/modules/components/module";
-//@import "../g-Patternlab/modules/generator/module";
-
+@import "modules/generator/module";
 @import "modules/unit-test/module";
 
 $generate-map: (
-    scheme-classes: false,
-    swatch-classes: false,
-    type-classes:false,
-    rhythm-spacing:false,
-    utility-static:false,
-    components:false
-
+	scheme-classes: false,
+	swatch-classes: false,
+	type-classes:false,
+	rhythm-spacing:false,
+	utility-static:false,
+	components:false
 );
 @include init-color-module;
 
+$functional-render-queue: (
 
+		description: "INVERT FUNCTIONAL COLOR ",
+		variant-key: invert-functional,
+		selector:false,
+		parent: color-schemes,
+		render:(suffix:false)
 
-
-$functional-render-queue:((
-    description: "INVERT FUNCTIONAL COLOR ",
-    variant-key: invert-functional,
-    selector:false,
-    parent: color-test,
-    render:(suffix:false)
-),
-(
-    description: "FONT SIZING  ",
-    variant-key: sm,
-    selector:false,
-    parent: font-size,
-    render:(suffix:false)
-)
 );
 
-$test: batch-add-to-style-dictionary($base-render-objects);
+/*,
+(
+description: "FONT SIZING  ",
+variant-key: sm,
+selector:false,
+parent: font-size,
+render:(suffix:false)
+)*/
+
+$generate-render-queue: (
+	(
+		description: "color swatches",
+		selector: '.color-swatches',
+		parent: color-swatches
+	),
+	(
+		description: "color schemes",
+		selector: '.color-schemes',
+		parent: color-schemes,
+		variants:(
+			options: (
+				obj: (
+					background: true,
+					foreground: true,
+					accent:false,
+					border: lighten foreground 10%,
+					fill:foreground,
+					hover-background:true,
+					hover-foreground:true
+				)
+			)
+		)
+	)
+);
+
+///ADD COLORS
+$test: batch-add-to-style-dictionary( $base-render-color-objs);
+
+///ADD SIZING VALUES
+$test: batch-add-to-style-dictionary( $base-render-objects);
+
 
 //@debug extend-style-key( color-test-2,$functional-render-queue);
 //@debug get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),);
 
 ///@debug " transform #{get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),get-single-render-style-props(color-test, render)...)}";
 
+
 //EXAMPLES:::::
 .example1 {
-    //use key "color-test" and render multiple variants within parent selector
-  //  @include render-queue(font-size,sm);
-    @include render-queue(extend-style-key( color-test-2,$functional-render-queue));
+	//use key "color-test" and render multiple variants within parent selector
+	//  @include render-queue(font-size,sm);
+	// @include render-queue(extend-style-key( color-test-2,$functional-render-queue));
+}
+
+//
+$generator-color-queue: extend-style-key( color-test-2,$generate-render-queue);
+//@include render-queue( $generator-color-queue);
+
+
+
+@include render-queue( padding-demo);
+
+
+
+
+
+
+$generator-component-test : extend-style-key( color-test-2,$functional-render-queue);
+@debug $generator-component-test;
+
+//@warn "#{choose-contrast-color(#200379)}";
+.hi {
+
+	//@include render-queue($generator-component-test);
+
+
+}
+
+@include block(gbt, utility) {
+
+	//@include render-queue(font-size, sm);
 }
 
 
+@debug "AVAILABLE STYLES IN DICTIONARY ARE:#{_keys($style-dictionary)}";

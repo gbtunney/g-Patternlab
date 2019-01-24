@@ -60,7 +60,7 @@ $schemes: (
         parent: light,
         colors:(
             foreground: oslo-gray,
-
+            accent: red,
             border: oslo-gray
         )
     ),
@@ -122,7 +122,7 @@ $schemes: (
             accent: lightning-yellow,
             border: lightning-yellow,
             link:lightning-yellow,
-            random:white
+            random:white,
         )
     ),
     functional: (
@@ -131,9 +131,9 @@ $schemes: (
         parent: false,
         colors:(
             foreground: blue,
-            background: white,
+            background: red,
             accent: orange,
-            border: blue,
+            border: purple,
             link: orange,
             link-focus:  link
         )
@@ -153,10 +153,73 @@ $schemes: (
     )
 );
 
+$scheme-list: _keys($schemes);
+
+$base-render-color-objs:((
+    key: color-schemes,
+    selector: false,
+    description: "color object",
+    render:(
+        module:size, //dont know??
+        suffix: true, //if it is to be generated, use a class suffix before,
+        filter: assign-map,
+        props: (
+            background: background-color ,
+            accent: ( prop-to-write: color,selector: 'h1, h2, h3, h4, h5, h6,a ') ,
+            foreground: ( prop-to-write: color),
+            border: border-color,
+            link: color,
+            fill: ( prop-to-write: fill,selector: 'path, g,circle'),
+            hover-background: ( prop-to-write: background-color,selector: ':hover', at-root:true) ,
+            hover-foreground: ( prop-to-write: color,selector: ':hover', at-root:true) ,
+            hover-fill: ( prop-to-write: fill,selector: ':hover', at-root:true)
+        ),
+    ), //  background:( prop-to-write: background-color, at-root:true , selector: '--hover')  ,
+    variants:(
+        transform: color-test,
+        options: (
+            obj: (
+                background: true,
+                foreground: true,
+                accent:false,
+                border: true,
+                fill:true
+            )
+        ), ///option is the thread is for modular scale
+        units: (
+            $scheme-list
+        )
+    )
+),
+(
+    key: color-swatches,
+    selector: false,
+    description: "color swatches",
+    render:(
+        module:size, //dont know??
+        suffix: true, //if it is to be generated, use a class suffix before,
+        filter: assign-map,
+        props: (
+            background:background-color,
+            foreground: color,
+            border: border-color,
+        ),
+    ),
+    variants:(
+        transform: get-color-contrast,
+        options: (
+            func:choose-contrast-color
+        ),
+        units: (
+            $baseColors
+        )
+    )
+)
+);
 $base-render-objects:(
     (
         key: typography,
-        selector: typography,
+        selector: '.g-typography',
         render:(
             module:size, //dont know??
             suffix: true, //if it is to be generated, use a class suffix before,
@@ -219,43 +282,8 @@ $base-render-objects:(
         ),
     ),
     (
-        key: color-test,
-        selector: '.color-scheme-test',
-        description: "Demo: modularscale size operation.",
-        render:(
-            module:size, //dont know??
-            suffix: true, //if it is to be generated, use a class suffix before,
-            filter: assign-map,
-            props: (
-                background:( prop-to-write: background-color, at-root:true , selector: '--hover')  ,
-                accent: ( prop-to-write: color,selector: 'h1, h2, h3, h4, h5, h6,a ') ,
-                foreground: ( prop-to-write: color,selector: 'h3 heading'),
-                border: border-color,
-                link: color,
-                fill: fill,
-                hover-background: background-color,
-                hover-foreground: color,
-                hover-fill: fill
-            ),
-        ),
-        variants:(
-            transform: color-test,
-            options: (
-                obj: (
-                    background: true,
-                    foreground: true,
-                    accent:false,
-                    border: true
-                )
-            ), ///option is the thread is for modular scale
-            units: (
-                accent-primary dark-accent-primary dark-accent-secondary functional  invert-functional
-            )
-        )
-    ),
-    (
         key: font-size,
-        selector: '.type-font-size',
+        selector: '.u-type-font-size',
         description: "Demo: modularscale size operation.",
         render:(
             module:size, //dont know??
@@ -308,6 +336,31 @@ $base-render-objects:(
             )
         )
     ),
+(
+    key: padding-demo,
+    selector:'.u-padding-demo',
+    description: "Demo: padding demo",
+    render:(
+        module:size, //dont know??
+        suffix: true, //if it is to be generated, use a class suffix before,
+        filter: assign,
+        props: (padding),
+    ),
+    variants:(
+        transform: ratio-size,
+        options: (
+            base:20px
+        ), ///option is the thread is for modular scale
+        units: (
+            xs: .25,
+            sm: .5,
+            md: 1 1 ,
+            md2: .5 1 ,
+            lg: 1.5,
+            xl: 2
+        )
+    )
+),
     (
         description: "Demo - static size values.",
         render:(

@@ -9,6 +9,7 @@
 @import "variables";
 @import "mixins";
 
+/*
 //various debug modes.
 @if ($GENERATOR_ON == force){
     $generate-map:set-generate-map(true);
@@ -17,3 +18,4 @@
 }@else if else($generate-map==true){
 
 }
+*/

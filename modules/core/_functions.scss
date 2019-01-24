@@ -65,6 +65,11 @@
 	@return _get($style-dictionary, $key);
 }
 
+@function times-three($n, $args...) {
+	@debug $args;
+	@return $n * 3;
+}
+
 @function get-render-style($key,$_style-dictionary:$style-dictionary) {
 	@if (length($key) == 1) {
 		//if it is not a list.
@@ -74,7 +79,14 @@
 }
 
 @function ratio-size($v:1, $base: 1 ) {
-	@if (_is-integer($v)) {
+	@if (_is-list($v)) {
+		$new-list:();
+		@each $integer in $v{
+			$new-list: _push($new-list,multiply($integer, $base));
+		}
+		@return $new-list;
+	}
+		@if (_is-number($v)) {
 		$v: ($v * $base);
 		@if (has-unit($v) == false) {
 			@warn "ratio size value has no unit----#{$v}";
@@ -112,8 +124,23 @@
 	@return $v;
 }
 
+@function get-color-contrast($v, $func ) {
+
+	$newmap:();
+
+	@if (is-color($v)){
+		$newmap: map-set($newmap, background, $v);
+		$newmap: map-set($newmap, foreground, choose-contrast-color($v));
+		$newmap: map-set($newmap, border, choose-contrast-color($v));
+	}
+
+	@return $newmap;
+}
+
+
 //filter function for single numbers...
 @function assign($unit:(),$props:(),$additional-parameters:false) {
+	@warn is-single-item($props) ;
 
 	@if is-single-item($props) and is-single-item($unit) {
 		@return map-set((), _to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
@@ -147,14 +174,26 @@
 
 	$new-map: ();
 
+
 	@if is-single-item($props) and is-single-item($unit) {
 		@return map-set((), _to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
 	} @else if (_is-map($unit) and _is-map($props)) {
+
 		@each $key, $value in $props {
 			@if (map-get($unit, $key)) {
-				$new-map: map-merge($new-map, get-selector-map(map-get($unit, $key), $value...));
+				//@debug "UNIT --#{$key}-#{map-get($unit, $key)}";
+
+				//@if ( _is-map($value)){
+					$new-map: recursive-map-merge($new-map, get-selector-map(map-get($unit, $key), $value...));
+
+				//}@else{
+					//@debug "UNIT --#{$new-map}-#{map-get($unit, $key)}";
+
+				//}
 			}
 		}
+		//@debug $new-map;
+
 		@return $new-map;
 	}
 	@return false;
@@ -173,8 +212,21 @@
 
 	$new-map: ();
 	@each $key, $value in $obj {
+
+	$val : get-current-scheme-color($key, $value, $v );
+		@if ($val ) {
+			//@debug "COLOR FOUND #{$key} #{$val} #{$v}";
+			$new-map: map-merge($new-map, ($key: $val));
+		}
+
 		@if ($value == true) {
-			$new-map: map-merge($new-map, ($key: color($v, $key)));
+
+
+			//@if (color($v, $key) ){
+				//$new-map: map-merge($new-map, ($key: color($v, $key)));
+		//	}@else{
+				//@warn "color #{$key} not found";
+			//}
 		}
 	}
 	@return $new-map;
@@ -223,10 +275,14 @@
 @function get-rendered-data($units:(), $props:() , $filter: false, $suffix:false,$module:false) {
 
 	$filtered-unit-arr: $units;
+
+
 	@if ($filter==false) {
 		@return $units;
 	}
 	@if (_is-function($filter)) {
+
+
 
 		//TODO USE SASSDASH
 		@each $key, $value in $units {
@@ -236,7 +292,6 @@
 
 			//filter map with props
 			$transformed-val: call(get-function($filter), $value, $props);
-
 			//replace with new
 			$filtered-unit-arr: map-set($filtered-unit-arr, $key, $transformed-val);
 		}

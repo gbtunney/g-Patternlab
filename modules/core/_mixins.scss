@@ -34,9 +34,15 @@
 
                 $new-selector: format-selector($selector, $suffix, $key);
 
+
                 @if ($new-selector) {
                     #{$new-selector} {
-                        @include _declare($declarations);
+                        @if ( $declarations and _is-map($declarations)){
+                            @include _declare($declarations);
+
+                        }@else{
+                            @warn "DECLARATIONS IS NOT A MAP";
+                        }
                         @include _rules($_render-map);
                     }
                     @if ($at-root) {
@@ -52,11 +58,15 @@
                     @include _declare($declarations);
                     @include _rules($_render-map);
 
-                    @each $__selector, $-declarations in $at-root {
-                        #{&}#{$__selector} {
-                            @include _declare($-declarations);
+                    @if ( $at-root != null ){
+                        @each $__selector, $-declarations in $at-root {
+
+                            #{&}#{$__selector} {
+                                   @include _declare($-declarations);
+                            }
                         }
                     }
+
                 }
             }
         } @else {
