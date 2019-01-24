@@ -13,6 +13,10 @@
         @return false;
     }
 }
+@function map-color(){
+   @return false;
+
+}
 
 @function get-current-scheme-color-by-string($color-key, $value, $color-scheme:$chroma-active-scheme ) {
 
@@ -187,4 +191,18 @@
 }
 @function inverted(){
     @return $inverted-key-lookup-map;
+}
+
+@function color-test-transform($v:1, $base: 1 ) {
+    @if (_is-integer($v)) {
+        $v: ($v * $base);
+        @if (has-unit($v) == false) {
+            @warn "ratio size value has no unit----#{$v}";
+        }
+        @return $v;
+    } @else {
+        @warn "trying to do a ratio-size on non integer: #{$v}";
+        @return $v;
+    }
+    @return false;
 }

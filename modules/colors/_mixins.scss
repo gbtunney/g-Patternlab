@@ -6,6 +6,23 @@
 @mixin init-color-module(){
     @include init-cm($baseColors,$schemes);
 }
+
+
+//TODO: not a thing yet.
+@function get-scheme-property($property: foreground, $value: false,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
+
+    $property-to-write: get-lookup-property($property);
+
+    $value-to-write: $value;
+
+    @if ($value-to-write and type-of($colorfunc)== string  and function-exists($colorfunc) and $colorfuncArgs != false) {
+        $value-to-write: call(get-function($colorfunc), $value-to-write, $colorfuncArgs);
+    }
+
+
+   @return ($property-to-write:$value-to-write);
+}
+
 @mixin write-scheme-property($property: foreground, $value: false,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
 
     $property-to-write: get-lookup-property($property);

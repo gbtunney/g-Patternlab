@@ -26,7 +26,36 @@ $generate-map: (
 @include init-color-module;
 
 
-@debug batch-add-to-style-dictionary($base-render-objects);
-@include render-queue((font-size,typography,ratio-size-demo) );
+
+
+$functional-render-queue:((
+    description: "INVERT FUNCTIONAL COLOR ",
+    variant-key: invert-functional,
+    selector:false,
+    parent: color-test,
+    render:(suffix:false)
+),
+(
+    description: "FONT SIZING  ",
+    variant-key: sm,
+    selector:false,
+    parent: font-size,
+    render:(suffix:false)
+)
+);
+
+$test: batch-add-to-style-dictionary($base-render-objects);
+
+//@debug extend-style-key( color-test-2,$functional-render-queue);
+//@debug get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),);
+
+///@debug " transform #{get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),get-single-render-style-props(color-test, render)...)}";
+
+//EXAMPLES:::::
+.example1 {
+    //use key "color-test" and render multiple variants within parent selector
+  //  @include render-queue(font-size,sm);
+    @include render-queue(extend-style-key( color-test-2,$functional-render-queue));
+}
 
 

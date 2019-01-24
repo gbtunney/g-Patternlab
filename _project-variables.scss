@@ -124,6 +124,32 @@ $schemes: (
             link:lightning-yellow,
             random:white
         )
+    ),
+    functional: (
+        key: functional,
+        description: 'Colors used by functional parts of the design.',
+        parent: false,
+        colors:(
+            foreground: blue,
+            background: white,
+            accent: orange,
+            border: blue,
+            link: orange,
+            link-focus:  link
+        )
+    ),
+    invert-functional: (
+        key: invert-functional,
+        description: 'Inverted Colors used by functional parts of the design.',
+        parent: 'functional',
+        transform:(
+            foreground: background,
+            background: foreground
+        ),
+        colors:(
+            background: purple,
+            new-linl: purple
+        )
     )
 );
 
@@ -191,6 +217,41 @@ $base-render-objects:(
                 )
             ),
         ),
+    ),
+    (
+        key: color-test,
+        selector: '.color-scheme-test',
+        description: "Demo: modularscale size operation.",
+        render:(
+            module:size, //dont know??
+            suffix: true, //if it is to be generated, use a class suffix before,
+            filter: assign-map,
+            props: (
+                background:( prop-to-write: background-color, at-root:true , selector: '--hover')  ,
+                accent: ( prop-to-write: color,selector: 'h1, h2, h3, h4, h5, h6,a ') ,
+                foreground: ( prop-to-write: color,selector: 'h3 heading'),
+                border: border-color,
+                link: color,
+                fill: fill,
+                hover-background: background-color,
+                hover-foreground: color,
+                hover-fill: fill
+            ),
+        ),
+        variants:(
+            transform: color-test,
+            options: (
+                obj: (
+                    background: true,
+                    foreground: true,
+                    accent:false,
+                    border: true
+                )
+            ), ///option is the thread is for modular scale
+            units: (
+                accent-primary dark-accent-primary dark-accent-secondary functional  invert-functional
+            )
+        )
     ),
     (
         key: font-size,

@@ -1,5 +1,10 @@
 //TODO: use sassdash insteadddd
-@mixin output-css-declarations($render:get-default($default-module-key render),$variants:get-default($default-module-key variants),$variant-key:false , $selector: false,$key:get-default($default-module-key key),$description:false ) {
+
+@function check-render-map($render-data-map:()) {
+
+}
+
+@mixin output-css-declarations($render:get-default($default-module-key render),$variants:get-default($default-module-key variants),$variant-key:false , $selector: false,$key:get-default($default-module-key key),$description:false,$parent:false ) {
 
     $suffix: map-get($render, suffix);
     $transformed-data-map: transform-data($variants...);
@@ -7,55 +12,109 @@
 
     @if $description {
         @debug "RENDERING OBJECT WITH DESCRIPTION #{$description}"
-    }
-
-;
+    } ;
     ///if you only want one key??
     @if $variant-key and _has($render-data-map, $variant-key) {
         $render-data-map: map-merge((), ($variant-key: (_get($render-data-map, $variant-key))));
         @warn "THIS IS A SINGLE ITEM!!#{$variant-key} after #{$render-data-map}";
     }
 
-
+    ///TODO : probably fix this somehow.
     @if _is-iterable($render-data-map) {
 
-        @each $key, $value in $render-data-map {
+        @if (map-depth($render-data-map) > 2) {
 
-            $new-selector: format-selector($selector, $suffix, $key);
+            $depth: map-depth($render-data-map);
 
-            @if ($new-selector) {
-                // @debug "WRITING #{$new-selector}";
-                #{$new-selector} {
-                    @include _declare($value);
+            @each $key, $value in $render-data-map {
+               //come up with something less wonky?
+                $declarations: _result($value, default);
+                $at-root: _result($value, at-root);
+                $_render-map: _omit($value, default, at-root);
+
+                $new-selector: format-selector($selector, $suffix, $key);
+
+                @if ($new-selector) {
+                    #{$new-selector} {
+                        @include _declare($declarations);
+                        @include _rules($_render-map);
+                    }
+                    @if ($at-root) {
+                        @at-root {
+                            @each $__selector, $-declarations in $at-root {
+                                #{$new-selector}#{$__selector} {
+                                    @include _declare($-declarations);
+                                }
+                            }
+                        }
+                    }
+                } @else {
+                    @include _declare($declarations);
+                    @include _rules($_render-map);
+
+                    @each $__selector, $-declarations in $at-root {
+                        #{&}#{$__selector} {
+                            @include _declare($-declarations);
+                        }
+                    }
                 }
-            } @else {
-                @debug "CSS WRITING #{$new-selector}";
+            }
+        } @else {
+            @each $key, $value in $render-data-map {
 
-                @include _declare($render-data-map);
+                $new-selector: format-selector($selector, $suffix, $key);
+                @if ($new-selector) {
+                    #{$new-selector} {
+                        @include _declare($value);
+                    }
+                } @else {
+                    @if (map-depth($render-data-map) > 1) {
+                        @if ($variant-key) {
+                            $my-map: _get($render-data-map, $variant-key);
+                            @if (_is-map($my-map)) {
+                                @include _declare($my-map);
+                            }
+                        } @else {
+                            @include _rules($my-map);
+                        }
+                    }
+                }
             }
         }
     }
-
 }
 
 ///should extend the default?
-@mixin render-queue($collection: false,$unit-key:false,$selector:false) {
+@mixin render-queue($collection: false,$unit-key:false,$override-selector: false,$override-suffix:false,$selector:false,$suffix:false) {
     $queue: get-queue($collection);
-    @debug "RENDER OBJECT ERROR!!!! #{$collection}";
 
-    @if ($queue) {
+    @if (is-render-map($queue)) {
+
+        @if ($unit-key) {
+            $queue: _set($queue, variant-key, $unit-key);
+        }
+        @if ($override-selector) {
+            $queue: _set($queue, selector, $selector);
+        }
+        @if ($override-suffix) {
+            $queue: _set($queue, render suffix, $suffix);
+        }
+
+        @include output-css-declarations($queue...);
+
+    } @else if ($queue) {
         @each $render-map in $queue {
 
             @if is-render-map($render-map) {
                 @include output-css-declarations($render-map...);
             } @else {
-               // @error "RENDER OBJECT ERROR!!!! #{$queue}";
+                @error "RENDER OBJECT ERROR!!!! #{$queue}";
             }
         }
     }
 }
 
-///should extend the default?
+///should extend the default?   TODO
 @mixin render-css-props($collection: false,$unit-key:false,$selector:false) {
     $queue: get-queue($collection);
     @if ($queue) {
@@ -69,5 +128,3 @@
         }
     }
 }
-
-
