@@ -379,6 +379,27 @@
 	@return $new-list;
 }
 
+///this would be used for fonts?
+@function get-lookup-prop($variants:(),$variant-key:false, $prop: false ) {
+
+	@if (is-render-key($variants)) {
+		$variants: get-single-render-style-props($variants, variants);
+	}
+	$transformed-data-map: transform-data($variants...);
+
+	//TODO: make this work with multiple sub props
+	$new-list: "";
+	@each $key in $variant-key {
+
+		$new-list: _push($new-list, _get($transformed-data-map, $key));
+	}
+	@if ($prop) {
+		@return _get($transformed-data-map, ($variant-key, $prop));
+	}
+
+	@return $new-list;
+}
+
 /// ways to check the render map
 @function is-render-map($map) {
 	@return ((_has($map, variants)) and (_has($map, render)));

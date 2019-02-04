@@ -65,14 +65,22 @@ $generate-render-queue: (
 	)
 );
 
+
+
+
+@debug "GILL";
 ///ADD COLORS
+
+//add something to dictionary
 $test: batch-add-to-style-dictionary( $base-render-color-objs);
 
 ///ADD SIZING VALUES
 $test: batch-add-to-style-dictionary( $base-render-objects);
 
 
+//// extend a dictionary item, for the generator etc.
 //@debug extend-style-key( color-test-2,$functional-render-queue);
+
 //@debug get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),);
 
 ///@debug " transform #{get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),get-single-render-style-props(color-test, render)...)}";
@@ -91,7 +99,8 @@ $generator-color-queue: extend-style-key( color-test-2,$generate-render-queue);
 
 
 
-@include render-queue( padding-demo);
+//@include render-queue( padding-demo);
+
 
 
 
@@ -99,7 +108,9 @@ $generator-color-queue: extend-style-key( color-test-2,$generate-render-queue);
 
 
 $generator-component-test : extend-style-key( color-test-2,$functional-render-queue);
-@debug $generator-component-test;
+//@debug $generator-component-test;
+@debug "HHHH";
+@debug get-lookup-prop(typography, font-serif, font-family);
 
 //@warn "#{choose-contrast-color(#200379)}";
 .hi {
@@ -115,4 +126,4 @@ $generator-component-test : extend-style-key( color-test-2,$functional-render-qu
 }
 
 
-@debug "AVAILABLE STYLES IN DICTIONARY ARE:#{_keys($style-dictionary)}";
+//@debug "AVAILABLE STYLES IN DICTIONARY ARE:#{_keys($style-dictionary)}";
