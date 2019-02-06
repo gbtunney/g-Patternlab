@@ -78,6 +78,44 @@
 	@return _map($key, get-single-render-style);
 }
 
+
+
+
+@function merge-style-key($keys:false ,$args:()) {
+
+	// (_is-list($keys)) {
+		$collection: get-render-style($keys);
+	$new-list:();
+	@each $map in $collection{
+
+		$new-list: _push($new-list, recursive-map-merge($map, $args))
+	}
+	@return $new-list;
+		//@return _map($collection,$args, merge-single-render-style-props);
+
+///	}
+
+	/*@if (_is-list($args)) {
+		$new-queue: (); ///should be a list.
+		$queue: $args;
+		@each $obj in $queue {
+			@if (_is-map($obj) and _get($obj,parent)) {
+				$parent-obj: get-render-style(_to-string(map-get($obj, parent)));
+				$new-queue: _push($new-queue, recursive-map-merge($parent-obj, $obj));
+			}
+		}
+		@return $new-queue;
+	} @else if (_is-map($args) and _get($args,parent)) {
+		$parent-obj: get-render-style(_to-string(map-get($args, parent)));
+		!* @if (is-render-obj($parent-obj) and $new-key) {
+			 $parent-obj: _set($parent-obj, key, $new-key);
+		 }*!
+		@return recursive-map-merge($parent-obj, $args);
+	}*/
+	@return false;
+}
+
+
 @function ratio-size($v:1, $base: 1 ) {
 	@if (_is-list($v)) {
 		$new-list:();
@@ -350,6 +388,9 @@
 	}
 	@return false;
 }
+
+
+
 
 @function format-selector($selector, $suffix:false, $suffix-key: false) {
 	@if ($selector) {
