@@ -109,9 +109,13 @@ suffix:false,
 )
 );
 
+$no-selectors-test-obj:(
+	selector: true,
+	render:(
+		suffix:true,
+	)
+);
 
-
-@debug "GILLdk";
 ///ADD COLORS
 
 //add something to dictionary
@@ -121,8 +125,32 @@ $test: batch-add-to-style-dictionary( $base-render-color-objs);
 $test: batch-add-to-style-dictionary( $base-render-objects);
 
 
-//// extend a dictionary item, for the generator etc.
-@debug merge-style-key( font-size color-schemes,  $no-selectors-obj);
+//// extend a dictionary item, for the genb  erator etc.
+//@debug coalateCollections(merge-style-key( font-size color-schemes,  $no-selectors-obj), font-serif dark);
+
+/*********EXAMPLE GENERTE QUEUE***********/
+$generator-color-queue: extend-style-key( $generate-render-queue);
+@include render-queue($generator-color-queue);
+
+//EXAMPLE COMPONENT WITHOUT A SELECTOR..
+.example{
+	//$new-list: coalateCollections(merge-style-key( color-schemes font-size,  $no-selectors-obj) , font-serif dark);
+	//@debug length($new-list);
+	//$new-list:(merge-style-key( color-schemes font-size,  $no-selectors-obj));
+	//$new-list: extend-style-key( color-test-2,$no-selectors-obj);
+
+//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
+	/*********EXAMPLE COMPONENT***********/
+$new-list: extend-style-key( (padding-demo, color-schemes, font-size),$no-selectors-obj);
+$new-list: extend-style-key( $new-list, (sm, dark, sm ), variant-key );
+@include render-queue($new-list);
+}
+
+
+
+/*********PADDING GENERATOR EXAMPLE***********/
+//@include render-queue(padding-demo);
+
 
 //@debug get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),);
 

@@ -78,22 +78,31 @@
 	@return _map($key, get-single-render-style);
 }
 
-
-
+@function extend-collection-all($collection,$childObj) {
+	$new-list: ();
+	@if (_is-map($collection)) {
+		$new-list: _push($new-list, recursive-map-merge($collection, $childObj))
+	} @else {
+		@each $map in $collection {
+			$new-list: _push($new-list, recursive-map-merge($map, $childObj))
+		}
+	}
+	@return $new-list;
+}
 
 @function merge-style-key($keys:false ,$args:()) {
-
+	//@error "MERGR STYLE KEY";
 	// (_is-list($keys)) {
-		$collection: get-render-style($keys);
-	$new-list:();
-	@each $map in $collection{
+	$collection: get-render-style($keys);
+	$new-list: ();
+	@each $map in $collection {
 
 		$new-list: _push($new-list, recursive-map-merge($map, $args))
 	}
 	@return $new-list;
-		//@return _map($collection,$args, merge-single-render-style-props);
+	//@return _map($collection,$args, merge-single-render-style-props);
 
-///	}
+	///	}
 
 	/*@if (_is-list($args)) {
 		$new-queue: (); ///should be a list.
@@ -115,16 +124,15 @@
 	@return false;
 }
 
-
 @function ratio-size($v:1, $base: 1 ) {
 	@if (_is-list($v)) {
-		$new-list:();
-		@each $integer in $v{
-			$new-list: _push($new-list,multiply($integer, $base));
+		$new-list: ();
+		@each $integer in $v {
+			$new-list: _push($new-list, multiply($integer, $base));
 		}
 		@return $new-list;
 	}
-		@if (_is-number($v)) {
+	@if (_is-number($v)) {
 		$v: ($v * $base);
 		@if (has-unit($v) == false) {
 			@warn "ratio size value has no unit----#{$v}";
@@ -164,9 +172,9 @@
 
 @function get-color-contrast($v, $func ) {
 
-	$newmap:();
+	$newmap: ();
 
-	@if (is-color($v)){
+	@if (is-color($v)) {
 		$newmap: map-set($newmap, background, $v);
 		$newmap: map-set($newmap, foreground, choose-contrast-color($v));
 		$newmap: map-set($newmap, border, choose-contrast-color($v));
@@ -175,10 +183,9 @@
 	@return $newmap;
 }
 
-
 //filter function for single numbers...
 @function assign($unit:(),$props:(),$additional-parameters:false) {
-	@warn is-single-item($props) ;
+	//@warn is-single-item($props) ;
 
 	@if is-single-item($props) and is-single-item($unit) {
 		@return map-set((), _to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
@@ -212,7 +219,6 @@
 
 	$new-map: ();
 
-
 	@if is-single-item($props) and is-single-item($unit) {
 		@return map-set((), _to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
 	} @else if (_is-map($unit) and _is-map($props)) {
@@ -222,10 +228,10 @@
 				//@debug "UNIT --#{$key}-#{map-get($unit, $key)}";
 
 				//@if ( _is-map($value)){
-					$new-map: recursive-map-merge($new-map, get-selector-map(map-get($unit, $key), $value...));
+				$new-map: recursive-map-merge($new-map, get-selector-map(map-get($unit, $key), $value...));
 
 				//}@else{
-					//@debug "UNIT --#{$new-map}-#{map-get($unit, $key)}";
+				//@debug "UNIT --#{$new-map}-#{map-get($unit, $key)}";
 
 				//}
 			}
@@ -251,19 +257,18 @@
 	$new-map: ();
 	@each $key, $value in $obj {
 
-	$val : get-current-scheme-color($key, $value, $v );
-		@if ($val ) {
+		$val: get-current-scheme-color($key, $value, $v);
+		@if ($val) {
 			//@debug "COLOR FOUND #{$key} #{$val} #{$v}";
 			$new-map: map-merge($new-map, ($key: $val));
 		}
 
 		@if ($value == true) {
 
-
 			//@if (color($v, $key) ){
-				//$new-map: map-merge($new-map, ($key: color($v, $key)));
-		//	}@else{
-				//@warn "color #{$key} not found";
+			//$new-map: map-merge($new-map, ($key: color($v, $key)));
+			//	}@else{
+			//@warn "color #{$key} not found";
 			//}
 		}
 	}
@@ -304,7 +309,7 @@
 			$map-to-return: map-set($map-to-return, $new-key, $_transform-result);
 		}
 	} @else {
-		@error "BAD DATA OBJECT";
+		@error "BAD DATA OBJECT #{$units}";
 	}
 	@return $map-to-return;
 }
@@ -314,13 +319,10 @@
 
 	$filtered-unit-arr: $units;
 
-
 	@if ($filter==false) {
 		@return $units;
 	}
 	@if (_is-function($filter)) {
-
-
 
 		//TODO USE SASSDASH
 		@each $key, $value in $units {
@@ -357,40 +359,56 @@
 }
 
 @function get-queue($collection: false) {
+
 	@if (is-render-map($collection)) {
 		@return $collection;
 	}
 	@if ($collection != false) {
-		//@warn "HERE#{get-render-style($collection)}";
 		@return get-render-style($collection);
 	}
 	@return false;
 }
 
-///works with collection or map -- extends an ecisting key
-@function extend-style-key($new-key:false ,$args:()) {
-	@if (_is-list($args)) {
-		$new-queue: (); ///should be a list.
-		$queue: $args;
-		@each $obj in $queue {
-			@if (_is-map($obj) and _get($obj,parent)) {
-				$parent-obj: get-render-style(_to-string(map-get($obj, parent)));
-				$new-queue: _push($new-queue, recursive-map-merge($parent-obj, $obj));
+@function coalateCollections($collection,$childCollection:false, $prop: variant-key) {
+
+	$new-collection: ();
+
+	$count: 0;
+
+	@if ($childCollection and _is-iterable($childCollection)) {
+		@each $item in $childCollection {
+			$i: index($childCollection, $item); ///THIS IS BUSTED - WHY??
+			$count: $count + 1;
+
+			@if (_is-map($item)) {
+				$collection-map: recursive-map-merge(nth($collection, $count), $item);
+				$new-collection: _push($new-collection, $collection-map);
+			} @else {
+				$collection-map: recursive-map-merge(nth($collection, $count), ($prop: $item));
+				$new-collection: _push($new-collection, $collection-map);
 			}
 		}
-		@return $new-queue;
-	} @else if (_is-map($args) and _get($args,parent)) {
-		$parent-obj: get-render-style(_to-string(map-get($args, parent)));
-		/* @if (is-render-obj($parent-obj) and $new-key) {
-			 $parent-obj: _set($parent-obj, key, $new-key);
-		 }*/
-		@return recursive-map-merge($parent-obj, $args);
+	} @else {
+		@each $item in $collection {
+			$parent-obj: get-render-style(_to-string(map-get($item, parent)));
+			$collection-map: recursive-map-merge($parent-obj, $item);
+			$new-collection: _push($new-collection, $collection-map);
+		}
 	}
-	@return false;
+	@return $new-collection;
 }
 
+@function extend-style-key($keys:false ,$children:false, $prop :variant-key) {
 
-
+	$collection: get-render-style($keys);
+	$new-collection: ();
+	@if (_is-map($children)) {
+		$new-collection: extend-collection-all($collection, $children);
+	} @else {
+		$new-collection: coalateCollections($collection, $children, $prop);
+	}
+	@return $new-collection;
+}
 
 @function format-selector($selector, $suffix:false, $suffix-key: false) {
 	@if ($selector) {
@@ -443,6 +461,9 @@
 
 /// ways to check the render map
 @function is-render-map($map) {
+	@if (_has($map, parent)) {
+		@return true;
+	}
 	@return ((_has($map, variants)) and (_has($map, render)));
 }
 
