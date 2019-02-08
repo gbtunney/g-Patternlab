@@ -21,52 +21,15 @@ $generate-map: (
 );
 @include init-color-module;
 
-$functional-render-queue: (
-
-		description: "INVERT FUNCTIONAL COLOR ",
-		variant-key: invert-functional,
-		selector:false,
-		parent: color-schemes,
-		render:(suffix:false)
-
+$example-functional-render-queue: (
+	description: "INVERT FUNCTIONAL COLOR ",
+	variant-key: invert-functional,
+	selector:false,
+	parent: color-schemes,
+	render:(suffix:false)
 );
 
-/*,
-(
-description: "FONT SIZING  ",
-variant-key: sm,
-selector:false,
-parent: font-size,
-render:(suffix:false)
-)*/
-
-$generate-render-queue: (
-	(
-		description: "color swatches",
-		selector: '.color-swatches',
-		parent: color-swatches
-	),
-	(
-		description: "color schemes",
-		selector: '.color-schemes',
-		parent: color-schemes,
-		variants:(
-			options: (
-				obj: (
-					background: true,
-					foreground: true,
-					accent:false,
-					border: lighten foreground 10%,
-					fill:foreground,
-					hover-background:true,
-					hover-foreground:true
-				)
-			)
-		)
-	)
-);
-
-$basic-component-render: (
+$example-component-render: (
 	(
 		description: "color schemes",
 		selector: false,
@@ -101,8 +64,34 @@ $basic-component-render: (
 );
 
 
+/*********RENDER OBJECT FOR BASE COLOR SCHEMES + SWATCHES***********/
+$color-module-render-queue: (
+	(
+		description: "color swatches",
+		selector: '.color-swatches',
+		parent: color-swatches
+	),
+	(
+		description: "color schemes",
+		selector: '.color-schemes',
+		parent: color-schemes,
+		variants:(
+			options: (
+				obj: (
+					background: true,
+					foreground: true,
+					accent:false,
+					border: lighten foreground 10%,
+					fill:foreground,
+					hover-background:true,
+					hover-foreground:true
+				)
+			)
+		)
+	)
+);
 
-$no-selectors-obj:(
+$no-selectors:(
 selector: false,
 render:(
 suffix:false,
@@ -119,33 +108,60 @@ $no-selectors-test-obj:(
 ///ADD COLORS
 
 //add something to dictionary
-$test: batch-add-to-style-dictionary( $base-render-color-objs);
+$patternlab: batch-add-to-style-dictionary( $base-render-color-objs);
 
 ///ADD SIZING VALUES
-$test: batch-add-to-style-dictionary( $base-render-objects);
+$patternlab: batch-add-to-style-dictionary( $base-render-objects);
 
 
 //// extend a dictionary item, for the genb  erator etc.
 //@debug coalateCollections(merge-style-key( font-size color-schemes,  $no-selectors-obj), font-serif dark);
 
+/*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
-$generator-color-queue: extend-style-key( $generate-render-queue);
-@include render-queue($generator-color-queue);
 
-//EXAMPLE COMPONENT WITHOUT A SELECTOR..
-.example{
-	//$new-list: coalateCollections(merge-style-key( color-schemes font-size,  $no-selectors-obj) , font-serif dark);
-	//@debug length($new-list);
-	//$new-list:(merge-style-key( color-schemes font-size,  $no-selectors-obj));
-	//$new-list: extend-style-key( color-test-2,$no-selectors-obj);
+$GENERATE-QUEUE: false;
 
-//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
-	/*********EXAMPLE COMPONENT***********/
-$new-list: extend-style-key( (padding-demo, color-schemes, font-size),$no-selectors-obj);
-$new-list: extend-style-key( $new-list, (sm, dark, sm ), variant-key );
-@include render-queue($new-list);
+@if ( $GENERATE-QUEUE ) {
+	/***------COLOR SCHEMES and SWATCHES-----****/
+	$generator-queue: extend-style-key($color-module-render-queue);
+	@include render-queue($generator-queue);
+
+	/***------TYPEOGRAPHY-----****/
+	@include render-queue(typography);
+
+	/***------FONT SIZES-----****/
+	@include render-queue(font-size);
+
+	/***-----PADDING-----****/
+	@include render-queue(base-spacing);
+
+	.example{
+		//$new-list: coalateCollections(merge-style-key( color-schemes font-size,  $no-selectors-obj) , font-serif dark);
+		//@debug length($new-list);
+		//$new-list:(merge-style-key( color-schemes font-size,  $no-selectors-obj));
+		//$new-list: extend-style-key( color-test-2,$no-selectors-obj);
+
+		//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
+		/*********EXAMPLE COMPONENT***********/
+		$new-list: extend-style-key( (base-spacing, color-schemes, font-size),$no-selectors);
+		$new-list: extend-style-key( $new-list, (sm, dark, sm ), variant-key );
+		@include render-queue($new-list);
+	}
+
+
 }
 
+
+//EXAMPLE COMPONENT WITHOUT A SELECTOR..
+
+
+
+.mycomponent{
+	//@debug $example-component-render;
+	@debug extend-collection( font-size font-size);
+	//@include render-queue();
+}
 
 
 /*********PADDING GENERATOR EXAMPLE***********/

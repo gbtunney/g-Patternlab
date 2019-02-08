@@ -219,7 +219,7 @@ $base-render-color-objs:((
 $base-render-objects:(
     (
         key: typography,
-        selector: '.g-typography',
+        selector: '.g-type',
         render:(
             module:size, //dont know??
             suffix: true, //if it is to be generated, use a class suffix before,
@@ -283,7 +283,7 @@ $base-render-objects:(
     ),
     (
         key: font-size,
-        selector: '.u-type-font-size',
+        selector: '.g-type',
         description: "Demo: modularscale size operation.",
         render:(
             module:size, //dont know??
@@ -337,9 +337,9 @@ $base-render-objects:(
         )
     ),
 (
-    key: padding-demo,
-    selector:'.u-padding-demo',
-    description: "Demo: padding demo",
+    key: base-spacing,
+    selector:'.g-padding',
+    description: "Base Padding Values",
     render:(
         module:size, //dont know??
         suffix: true, //if it is to be generated, use a class suffix before,
