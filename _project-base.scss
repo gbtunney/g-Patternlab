@@ -26,7 +26,7 @@ $example-functional-render-queue: (
 	variant-key: invert-functional,
 	selector:false,
 	parent: color-schemes,
-	render:(suffix:false)
+	suffix:false
 );
 
 $example-component-render: (
@@ -35,9 +35,7 @@ $example-component-render: (
 		selector: false,
 		parent: color-schemes,
 		variant-key: dark,
-		render:(
-			suffix:false,
-		),
+		suffix:false,
 		variants:(
 			options: (
 				obj: (
@@ -57,9 +55,7 @@ $example-component-render: (
 		selector: false,
 		parent: font-size,
 		variant-key: xl,
-		render:(
-			suffix:false,
-		)
+		suffix:false,
 	)
 );
 
@@ -73,7 +69,7 @@ $color-module-render-queue: (
 	),
 	(
 		description: "color schemes",
-		selector: '.color-schemes',
+		selector: '.color-schemes-gilliN',
 		parent: color-schemes,
 		variants:(
 			options: (
@@ -93,16 +89,12 @@ $color-module-render-queue: (
 
 $no-selectors:(
 selector: false,
-render:(
-suffix:false,
-)
+	suffix:false,
 );
 
 $no-selectors-test-obj:(
 	selector: true,
-	render:(
 		suffix:true,
-	)
 );
 
 ///ADD COLORS
@@ -150,16 +142,18 @@ $GENERATE-QUEUE: false;
 	}
 
 
+
 }
 
 
+@debug "h!!i";
 //EXAMPLE COMPONENT WITHOUT A SELECTOR..
 
-
-
+@error collectionRouterFunc( font-size $color-module-render-queue);
+//@debug "test-mao #{key-pairs-to-map( testingval , render suffix floral)}";
 .mycomponent{
 	//@debug $example-component-render;
-	@debug extend-collection( font-size font-size);
+	//@debug extend-collection( font-size font-size);
 	//@include render-queue();
 }
 

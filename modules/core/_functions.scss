@@ -38,17 +38,8 @@
 	@return false;
 }
 
-@function get-single-render-style($key, $args...) {
 
-	@if (_($key, is-render-map)) {
-		@return $key;
-	}
-	@if (_get($style-dictionary, $key) == false) {
-		@return false;
-	}
 
-	@return _get($style-dictionary, $key);
-}
 
 //TODO: dont know whaat i should name this
 @function get-single-render-style-props($key,$prop:false, $args...) {
@@ -76,18 +67,6 @@
 		@return (get-single-render-style($key));
 	}
 	@return _map($key, get-single-render-style);
-}
-
-@function extend-collection-all($collection,$childObj) {
-	$new-list: ();
-	@if (_is-map($collection)) {
-		$new-list: _push($new-list, recursive-map-merge($collection, $childObj))
-	} @else {
-		@each $map in $collection {
-			$new-list: _push($new-list, recursive-map-merge($map, $childObj))
-		}
-	}
-	@return $new-list;
 }
 
 @function merge-style-key($keys:false ,$args:()) {
@@ -367,6 +346,190 @@
 		@return get-render-style($collection);
 	}
 	@return false;
+}
+
+@function strTest($str){
+
+	@debug "the function was called. ";
+
+	@return "i am a converted string !!!!!";
+}
+
+@function writeStr($str){
+
+
+}
+
+@function test-map-set($map, $keys, $new) {
+	$orig: $map;
+	$cache: ();
+	$length: length($keys);
+	$last: nth($keys, $length);
+
+	@each $key in $keys {
+
+		@if (map-get($map, $key) ){
+
+			$map: map-get($map, $key);
+
+
+
+		}@else{
+			$map : ($key : ());
+		}
+		@if $key == $last {
+			$map: map-merge($map, $new);
+		}
+		$cache: append($cache, $map);
+
+	}
+
+	$i: $length;
+	@while $i > 1 {
+		$prev: $i - 1;
+		$cache: set-nth($cache, $prev, map-merge(
+				nth($cache, $prev),
+				(nth($keys, $i): nth($cache, $i))
+		));
+		$i: $prev;
+	}
+
+	@return map-merge($orig, (nth($keys, 1): nth($cache, 1)));
+}
+
+
+
+@function key-pairs-to-map($value, $prop-name) {
+	@return ($prop-name: $value);
+}
+@function getDict($str,$testProp){
+@debug "test prop #{$testProp}";
+	@return "i am a converted string !!!!!";
+
+}
+
+@function render-map-merge($base-obj, $obj:()) {
+	@if (_is-map($base-obj) and _is-map($obj)) {
+
+		@if (map-depth($obj) > 1) {
+			@return recursive-map-merge($base-obj, $obj);
+			@error "RECURSIVE MERGE: #{map-depth($obj)} ";
+		} @else {
+			@return map-merge($base-obj, $obj);
+		}
+	} @else {
+		@return false;
+	}
+}
+
+@function get-full-render-map($obj) {
+	//this checks if thr map has a PARENT key, and if so..merges it.
+	@if (is-render-map($obj)) {
+		@if (_get($obj, parent) and  dictionary-item(_get($obj, parent) )) {
+			@debug "PARENT FOUND.#{_get($obj, parent)} ";
+			@return render-map-merge(dictionary-item(_get($obj, parent)), $obj);
+		}
+		@return $obj;
+	} @else {
+		@error "there is an error w your map";
+		@return false;
+	}
+}
+
+@function dictionary-item($key, $args...) {
+	@if (_($key, is-render-map)) {
+		@return $key;
+	}
+	@if (_get($style-dictionary, $key) == false) {
+		@error "Dictionary item not found #{$key}";
+		@return false;
+	}
+	@return _get($style-dictionary, $key);
+}
+
+@function routerFunc( $obj , $condition, $callback:false, $break:false ) {
+	@if ( _($obj,$condition) ){
+		@debug "condition #{$condition}is succesful";
+		@if ( $callback == false){
+			@return $obj;
+		}
+		@return _($obj, $callback);
+	}@else{
+		@debug "condition #{$condition} NOT  succesfu#{$obj}l";
+		//if condition fails, return the object untransformed by callback.
+		@if ( $break ){
+			@return false;
+		}@else{
+			@return $obj;
+		}
+	}
+	@return false;
+}
+
+
+@function collectionRouterFunc( $obj : () ){
+
+	$my-collection: ();
+
+	///these are "chained kinda"
+	$new-item:false;
+	$new-item: routerFunc($obj,_is-string, dictionary-item);
+	$new-item:  routerFunc($new-item,_is-map,get-full-render-map);
+	@if ($new-item){  $my-collection: _push($my-collection,$new-item);}
+
+	@if ( _is-list($obj) ){
+		$collection:$obj;
+		@each $item in $collection{
+			///these are "chained kinda"
+			//@error $item;
+			$new-item:false;
+			$new-item: routerFunc($item,_is-string, dictionary-item);
+			$new-item:  routerFunc($new-item,_is-map,get-full-render-map);
+			@if ($new-item){  $my-collection: _push($my-collection,$new-item);}
+		}
+	}
+	@return $my-collection;
+}
+
+@function override-collections($collection,$overwrite-collection:false, $prop: variant-key, $override-all: true ) {
+
+	@if $overwrite-collection == false {
+		@return $collection;
+	}
+	@if ($overwrite-collection and size($overwrite-collection)==1) {
+		@debug 'overwrite all mode';
+	} @else if (size($overwrite-collection) >= size($collection)) {
+		$new-collection: ();
+		$count: 0;
+
+		//'coalate collections'
+		@each $item in $overwrite-collection {
+			$count: $count + 1;
+			$source-map: nth($collection, $count);
+
+			@if ($item == false) {
+				$new-collection: _push($new-collection, $source-map);
+			} @else if (_is-map($item)) {
+				$new-collection: _push($new-collection, render-map-merge($source-map, $item));
+			} @else {
+				$new-collection: _push($new-collection, render-map-merge($source-map, key-pairs-to-map($item, $prop)));
+			}
+		}
+		@return $new-collection;
+	}
+}
+
+@function extend-collection-all($collection,$overwrite-item,$prop:false) {
+	$new-collection: ();
+	@each $sourcemap in $collection {
+		@if (($prop == false) and _is-map($overwrite-item)) {
+			$new-collection: _push($new-collection, render-map-merge($sourcemap, $overwrite-item));
+		} @else {
+			//key value paids
+			$new-collection: _push(render-map-merge($new-collection, key-pairs-to-map($sourcemap, $prop)))
+		}
+	}
+	@return $new-collection;
 }
 
 @function coalateCollections($collection,$childCollection:false, $prop: variant-key) {
