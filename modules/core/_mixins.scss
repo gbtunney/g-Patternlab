@@ -4,9 +4,8 @@
 
 }
 
-@mixin output-css-declarations($render:get-default($default-module-key render),$variants:get-default($default-module-key variants),$variant-key:false , $selector: false,$key:get-default($default-module-key key),$description:false,$parent:false ) {
+@mixin output-css-declarations($render:get-default($default-module-key render),$variants:get-default($default-module-key variants),$variant-key:false ,$suffix:false, $selector: false,$key:get-default($default-module-key key),$description:false,$parent:false ) {
 
-	$suffix: map-get($render, suffix);
 	$transformed-data-map: transform-data($variants...);
 	$render-data-map: get-rendered-data($transformed-data-map, $render...);
 

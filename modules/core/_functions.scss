@@ -336,18 +336,20 @@
 	}
 	@return _get($style-dictionary, $key);
 }
-@function needs-overwrite( $overwrite-collection:false, $prop: variant-key, $override-all: true ){
-	@return if($overwrite-collection,true, false);
+
+@function needs-overwrite( $overwrite-collection:false, $prop: variant-key, $override-all: true ) {
+	@return if($overwrite-collection, true, false);
 }
+
 @function routerFunc( $obj , $condition, $callback:false, $break:false,$overwrite-collection:false, $prop: variant-key, $override-all: true ) {
 	@if (_($obj, $condition)) {
-	//	@debug "condition #{$condition}is succesful";
+		//	@debug "condition #{$condition}is succesful";
 		@if ($callback == false) {
 			@return $obj;
 		}
 		@return _($obj, $callback);
 	} @else {
-	//	@debug "condition #{$condition} NOT  succesful";
+		//	@debug "condition #{$condition} NOT  succesful";
 		//if condition fails, return the object untransformed by callback.
 		@if ($break) {
 			@return false;
@@ -367,15 +369,13 @@
 	//@return routerFunc($overwrite-collection, needs-overwrite, override-collections);
 }
 
-@function collectionRouterFunc( $obj : (),$overwrite-collection:false, $prop: variant-key, $override-all: true  ) {
+@function get-collection( $obj : (),$overwrite-collection:false, $prop: variant-key, $override-all: true  ) {
 
 	$my-collection: ();
 	$item: get-collection-item($obj);
+	//TODO MIGHT NEED TO REVIEW THIS?
+	$my-collection: if(($item != false and _is-map($item)), _push($my-collection, $item), $my-collection);
 
-	//TODO MIGHT NEED TO READD THIS?
-	//$my-collection: if(($item != false), _push($my-collection, $item), $my-collection);
-
-	//@error "#{$item}jojo";
 	@if (_is-list($item)) {
 		$collection: $obj;
 		@each $_obj in $collection {
@@ -391,8 +391,7 @@
 	@if $overwrite-collection == false {
 		@return $collection;
 	}
-	@debug "collection length: #{length($collection)}overwrite collectionn length:#{length($overwrite-collection)}" ;
-
+	@debug "collection length: #{length($collection)}overwrite collectionn length:#{length($overwrite-collection)}";
 	@each $item in $collection {
 		@if (_is-map($item)) {
 			// "!!!!!!!!!!!!!!!!!!!!!!NEW ITEM";
@@ -401,9 +400,8 @@
 			//@debug "BLANK!!!!!!!!";
 		}
 	}
-
-//*****OVERRITE ALL!
-	@if ($overwrite-collection and  ( length($overwrite-collection)==1 or _is-map($overwrite-collection) ) ) {
+	//*****OVERRITE ALL!
+	@if ($overwrite-collection and  ( length($overwrite-collection)==1 or _is-map($overwrite-collection) )) {
 		@debug '---------overwrite all mode';
 		$new-collection: ();
 
@@ -417,7 +415,6 @@
 		@return $new-collection;
 
 	} @else if (length($overwrite-collection) >= length($collection)) {
-		@debug  "!!!!!!!!!!!!!!!!!!!!!!NEW ITEM";
 		$new-collection: ();
 		$count: 0;
 

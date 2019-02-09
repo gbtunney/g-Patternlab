@@ -7,7 +7,6 @@ $core-module-defaults: (
     color:(
         render:(
             module:color, //dont know??
-            prefix: false, //if it is to be generated, use a class prefix before,
             filter: color,
             props: (),
         ),
@@ -27,7 +26,6 @@ $core-module-defaults: (
     size:(
         render:(
             module:size, //dont know??
-            prefix: false, //if it is to be generated, use a class prefix before,
             filter: assign,
             props: (),
         ),
