@@ -282,18 +282,6 @@
 	@return $filtered-unit-arr;
 }
 
-@function get-queue($collection: false) {
-
-	@if (is-render-map($collection)) {
-		@return $collection;
-	}
-	@if ($collection != false) {
-		@return get-render-style($collection);
-	}
-	@return false;
-
-}
-
 @function key-pairs-to-map($value, $prop-name) {
 	@return ($prop-name: $value);
 }
@@ -360,16 +348,15 @@
 	@return false;
 }
 
-@function get-collection-item($obj:(),$overwrite-collection:false, $prop: variant-key, $override-all: true  ) {
+@function get-collection-item($obj:() ) {
 	///these are "chained kinda"
 	$new-item: false;
 	$new-item: routerFunc($obj, _is-string, dictionary-item);
 	$new-item: routerFunc($new-item, _is-map, get-full-render-map);
 	@return $new-item;
-	//@return routerFunc($overwrite-collection, needs-overwrite, override-collections);
 }
 
-@function get-collection( $obj : (),$overwrite-collection:false, $prop: variant-key, $override-all: true  ) {
+@function get-collection( $obj : (),$overwrite-collection:false, $prop: variant-key) {
 
 	$my-collection: ();
 	$item: get-collection-item($obj);
@@ -383,22 +370,13 @@
 			$my-collection: if(($item != false), _push($my-collection, $item), $my-collection);
 		}
 	}
-	@return $my-collection;
+	@return if(($overwrite-collection != false), overwrite-collections($my-collection, $overwrite-collection, $prop), $my-collection);
 }
 
-@function override-collections($collection,$overwrite-collection:false, $prop: variant-key, $override-all: true ) {
+@function overwrite-collections($collection,$overwrite-collection:false, $prop: variant-key ) {
 
 	@if $overwrite-collection == false {
 		@return $collection;
-	}
-	@debug "collection length: #{length($collection)}overwrite collectionn length:#{length($overwrite-collection)}";
-	@each $item in $collection {
-		@if (_is-map($item)) {
-			// "!!!!!!!!!!!!!!!!!!!!!!NEW ITEM";
-			//@debug $item;
-		} @else {
-			//@debug "BLANK!!!!!!!!";
-		}
 	}
 	//*****OVERRITE ALL!
 	@if ($overwrite-collection and  ( length($overwrite-collection)==1 or _is-map($overwrite-collection) )) {

@@ -1,9 +1,4 @@
 //TODO: use sassdash insteadddd
-
-@function check-render-map($render-data-map:()) {
-
-}
-
 @mixin output-css-declarations($render:get-default($default-module-key render),$variants:get-default($default-module-key variants),$variant-key:false ,$suffix:false, $selector: false,$key:get-default($default-module-key key),$description:false,$parent:false ) {
 
 	$transformed-data-map: transform-data($variants...);
@@ -95,48 +90,15 @@
 
 ///should extend the default?
 @mixin render-queue($collection: false,$unit-key:false,$override-selector: false,$override-suffix:false,$selector:false,$suffix:false) {
-	$queue: get-queue($collection);
 
-	@debug $queue;
+	$queue: $collection;
 
-	@if (is-render-map($queue)) {
-		//@debug $queue;
-
-		@if ($unit-key) {
-			$queue: _set($queue, variant-key, $unit-key);
-		}
-		@if ($override-selector) {
-			$queue: _set($queue, selector, $selector);
-		}
-		@if ($override-suffix) {
-			$queue: _set($queue, render suffix, $suffix);
-		}
-
-		@include output-css-declarations($queue...);
-
-	} @else if ($queue) {
-
-		@each $render-map in $queue {
-			@if is-render-map($render-map) {
-				@include output-css-declarations($render-map...);
-			} @else {
-				@error "RENDER OBJECT ERROR!!!! #{$queue}";
-			}
-		}
-	}
-}
-
-///should extend the default?   TODO
-@mixin render-css-props($collection: false,$unit-key:false,$selector:false) {
-	$queue: get-queue($collection);
-	@if ($queue) {
-		@each $render-map in $queue {
-
-			// @if is-render-map($render-map) {
+	@each $render-map in $queue {
+		@if is-render-map($render-map) {
 			@include output-css-declarations($render-map...);
-			// } @else {
-			// @error "RENDER OBJECT ERROR!!!! #{$render-map}";
-			//}
+		} @else {
+			@error "RENDER OBJECT ERROR!!!! #{$queue}";
 		}
 	}
+
 }

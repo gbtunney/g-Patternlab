@@ -34,20 +34,21 @@ $example-component-render: (
 		description: "color schemes",
 		selector: false,
 		parent: color-schemes,
-		variant-key: dark,
+		variant-key: dark-accent-secondary,
 		suffix:false,
 		variants:(
 			options: (
 				obj: (
 					background: true,
 					foreground: true,
-					accent:false,
+					accent:true,
 					border: lighten foreground 10%,
 					fill:foreground,
 					hover-background:true,
 					hover-foreground:true
 				)
 			)
+
 		)
 	),
 	(
@@ -98,118 +99,47 @@ $no-selectors-test-obj:(
 );
 
 ///ADD COLORS
-
 //add something to dictionary
 $patternlab: batch-add-to-style-dictionary( $base-render-color-objs);
 
 ///ADD SIZING VALUES
 $patternlab: batch-add-to-style-dictionary( $base-render-objects);
 
-
-//// extend a dictionary item, for the genb  erator etc.
-//@debug coalateCollections(merge-style-key( font-size color-schemes,  $no-selectors-obj), font-serif dark);
-
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: false;
+$GENERATE-QUEUE: true;
 
 @if ( $GENERATE-QUEUE ) {
 	/***------COLOR SCHEMES and SWATCHES-----****/
-	$generator-queue: extend-style-key($color-module-render-queue);
-	@include render-queue($generator-queue);
+	@include render-queue(get-collection($color-module-render-queue));
 
 	/***------TYPEOGRAPHY-----****/
-	@include render-queue(typography);
+	@include render-queue(get-collection(typography));
 
 	/***------FONT SIZES-----****/
-	@include render-queue(font-size);
+	@include render-queue(get-collection(font-size));
 
 	/***-----PADDING-----****/
-	@include render-queue(base-spacing);
+	@include render-queue(get-collection(base-spacing));
 
 	.example{
-		//$new-list: coalateCollections(merge-style-key( color-schemes font-size,  $no-selectors-obj) , font-serif dark);
-		//@debug length($new-list);
-		//$new-list:(merge-style-key( color-schemes font-size,  $no-selectors-obj));
-		//$new-list: extend-style-key( color-test-2,$no-selectors-obj);
-
 		//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
 		/*********EXAMPLE COMPONENT***********/
-		$new-list: extend-style-key( (base-spacing, color-schemes, font-size),$no-selectors);
-		$new-list: extend-style-key( $new-list, (sm, dark, sm ), variant-key );
+		$new-list: get-collection( (base-spacing, color-schemes, font-size),$no-selectors);
+		$new-list: overwrite-collections( $new-list, (sm, dark, sm ), variant-key );
 		@include render-queue($new-list);
 	}
-
-
-
+	.example-button{
+		@include render-queue(get-collection($example-component-render));
+	}
 }
 
+//$test-collection: get-collection($color-module-render-queue ,gillian-swatches gillian-colorz, selector);
+//@include render-queue($test-collection);
 
-@debug "h!!i";
-//EXAMPLE COMPONENT WITHOUT A SELECTOR..
-
-@error collectionRouterFunc( font-size $color-module-render-queue);
-//@debug "test-mao #{key-pairs-to-map( testingval , render suffix floral)}";
-.mycomponent{
-	//@debug $example-component-render;
-	//@debug extend-collection( font-size font-size);
-	//@include render-queue();
-}
-
-
-/*********PADDING GENERATOR EXAMPLE***********/
-//@include render-queue(padding-demo);
-
-
-//@debug get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),);
-
-///@debug " transform #{get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),get-single-render-style-props(color-test, render)...)}";
-
-
-//EXAMPLES:::::
-.example1 {
-	//use key "color-test" and render multiple variants within parent selector
-
-
-	  // @include render-queue(extend-style-key( base-component-test,$basic-component-render));
-	// @include render-queue(extend-style-key( color-test-2,$functional-render-queue));
-}
-
-//
-
-
-//$generator-color-queue: extend-style-key( color-test-2,$generate-render-queue);
-
-
-
-//$generator-component-test : extend-style-key( color-test-2,$functional-render-queue);
-
-//@include render-queue( $generator-color-queue);
-//@include render-queue( padding-demo);
-
-
-
-
-
-
-
-//@debug $generator-component-test;
-///@debug "HHHH";
 @debug get-lookup-prop(typography, font-serif, font-family);
 
-//@warn "#{choose-contrast-color(#200379)}";
-.hi {
-
-	//@include render-queue(base-component-test);
-
-
-}
-
 @include block(gbt, utility) {
-
 	//@include render-queue(font-size, sm);
 }
-
-
-//@debug "AVAILABLE STYLES IN DICTIONARY ARE:#{_keys($style-dictionary)}";
