@@ -1,5 +1,5 @@
 //TODO: use sassdash insteadddd
-@mixin output-css-declarations($render:get-default($default-module-key render),$variants:get-default($default-module-key variants),$variant-key:false ,$suffix:false, $selector: false,$key:get-default($default-module-key key),$description:false,$parent:false ) {
+@mixin output-css-declarations($render:get-default($default-module-key render),$variants:get-default($default-module-key variants),$variant-key:false ,$suffix:false, $selector: false,$at-root:false,$key:get-default($default-module-key key),$description:false,$parent:false ) {
 
 	$transformed-data-map: transform-data($variants...);
 	$render-data-map: get-rendered-data($transformed-data-map, $render...);
@@ -9,7 +9,12 @@
 	}
 ;
 	///if you only want one key??
-	@if $variant-key and _has($render-data-map, $variant-key) {
+
+	@if ( $variant-key and _is-list($variant-key) ) {
+		@debug "its a list#{_pick($render-data-map, $variant-key)} ";
+
+		$render-data-map:  _pick($render-data-map, $variant-key);//map-merge((), ($variant-key: _pick($render-data-map, $variant-key))));
+	}@else if $variant-key and _has($render-data-map, $variant-key) {
 		$render-data-map: map-merge((), ($variant-key: (_get($render-data-map, $variant-key))));
 		//   @warn "THIS IS A SINGLE ITEM!!#{$variant-key} after #{$render-data-map}";
 	}
@@ -24,7 +29,8 @@
 			@each $key, $value in $render-data-map {
 				//come up with something less wonky?
 				$declarations: _result($value, default);
-				$at-root: _result($value, at-root);
+
+				$at-root-queue: _result($value, at-root);
 				$_render-map: _omit($value, default, at-root);
 
 				$new-selector: format-selector($selector, $suffix, $key);
@@ -39,9 +45,9 @@
 						}
 						@include _rules($_render-map);
 					}
-					@if ($at-root) {
+					@if ($at-root-queue) {
 						@at-root {
-							@each $__selector, $-declarations in $at-root {
+							@each $__selector, $-declarations in $at-root-queue {
 								#{$new-selector}#{$__selector} {
 									@include _declare($-declarations);
 								}
@@ -52,8 +58,8 @@
 					@include _declare($declarations);
 					@include _rules($_render-map);
 
-					@if ($at-root != null) {
-						@each $__selector, $-declarations in $at-root {
+					@if ($at-root-queue != null) {
+						@each $__selector, $-declarations in $at-root-queue {
 
 							#{&}#{$__selector} {
 								@include _declare($-declarations);
@@ -89,7 +95,7 @@
 }
 
 ///should extend the default?
-@mixin render-queue($collection: false,$unit-key:false,$override-selector: false,$override-suffix:false,$selector:false,$suffix:false) {
+@mixin render-queue($collection: false) {
 
 	$queue: $collection;
 

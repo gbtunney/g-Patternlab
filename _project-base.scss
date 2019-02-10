@@ -23,19 +23,19 @@ $generate-map: (
 
 $example-functional-render-queue: (
 	description: "INVERT FUNCTIONAL COLOR ",
-	variant-key: invert-functional,
-	selector:false,
+	selector: '.-#{&}',
 	parent: color-schemes,
-	suffix:false
+	suffix:true
 );
 
-$example-component-render: (
+
+$example-component-render2:
 	(
 		description: "color schemes",
 		selector: false,
 		parent: color-schemes,
-		variant-key: dark-accent-secondary,
-		suffix:false,
+		variant-key: light dark,
+		suffix:true,
 		variants:(
 			options: (
 				obj: (
@@ -50,6 +50,33 @@ $example-component-render: (
 			)
 
 		)
+
+	);
+
+
+
+
+$example-component-render: (
+	(
+		description: "color schemes",
+		selector:false,
+		parent: color-schemes,
+		suffix:true,
+		variants:(
+			options: (
+				obj: (
+					background: true,
+					foreground: true,
+					accent:true,
+					border: lighten foreground 10%,
+					fill:foreground,
+					hover-background:true,
+					hover-foreground:true
+				)
+			)
+
+		)
+
 	),
 	(
 		description: "font size",
@@ -105,10 +132,11 @@ $patternlab: batch-add-to-style-dictionary( $base-render-color-objs);
 ///ADD SIZING VALUES
 $patternlab: batch-add-to-style-dictionary( $base-render-objects);
 
+
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: true;
+$GENERATE-QUEUE: false;
 
 @if ( $GENERATE-QUEUE ) {
 	/***------COLOR SCHEMES and SWATCHES-----****/
@@ -134,12 +162,76 @@ $GENERATE-QUEUE: true;
 		@include render-queue(get-collection($example-component-render));
 	}
 }
+@debug "hi!hhkk++h";
+
+%button-static{
+	border-radius: 20px;
+
+}
+
+$the-placeholder: button-static;
+
+.testing{
+//	@include render-queue(get-collection($example-component-render2));
+	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
+
+	@extend %#{$the-placeholder};
+}
+////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
+
+
+
+//@debug get-collection(base-margin);
 
 //$test-collection: get-collection($color-module-render-queue ,gillian-swatches gillian-colorz, selector);
 //@include render-queue($test-collection);
 
-@debug get-lookup-prop(typography, font-serif, font-family);
+//@debug get-lookup-prop(typography, font-serif, font-family);
 
+//@debug $style-dictionary;
 @include block(gbt, utility) {
 	//@include render-queue(font-size, sm);
 }
+
+@mixin write-selector($selector: false,$bem-prefix:false) {
+	@if ($selector and $bem-prefix) {
+		@include block($selector, $bem-prefix) {
+
+			--#{&}--{
+
+			background: red;
+		}
+			@content;
+		}
+
+	} @else if ($selector) {
+		#{$selector} {
+			@content;
+		}
+	} @else {
+		@content;
+	}
+}
+
+
+
+
+@mixin render-component($collection, $name, $at-root: false ){
+
+
+	@if ($at-root){
+		@include write-selector($name, component){
+			$self: &;
+			$collection: get-collection($collection);
+			@at-root{
+				@include render-queue(get-collection($collection, #{$self},selector));
+			}
+		}
+	}@else{
+		@include write-selector($name, component){
+				@include render-queue(get-collection($collection));
+		}
+	}
+}
+
+@include render-component($example-component-render, potter-button,true);

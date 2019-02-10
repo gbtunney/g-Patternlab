@@ -337,15 +337,15 @@ $base-render-objects:(
             )
         )
     ),
-(
+    (
     key: base-spacing,
-    selector:'.g-padding',
-    description: "Base Padding Values",
-    suffix: true, //if it is to be generated, use a class suffix before,
+    selector: false,
+    description: "Base SPACING Values",
+    suffix: false, //if it is to be generated, use a class suffix before,
     render:(
         module:size, //dont know??
         filter: assign,
-        props: (padding),
+        props: (padding),  //maybe needs to go??
     ),
     variants:(
         transform: ratio-size,
@@ -383,5 +383,17 @@ $base-render-objects:(
         ),
         key: static-size-demo,
         selector:static-size-demo
-    )
+    ),
+    (
+        key: base-margin,
+        parent: base-spacing,
+        render:(
+            props: (margin)
+        )
+    ),
+    (
+        key: base-padding,
+        parent: base-spacing,
+        description: "Base Padding Values",
+    ),
 );

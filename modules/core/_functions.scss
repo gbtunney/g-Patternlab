@@ -15,7 +15,7 @@
 	@return $_style-dictionary;
 }
 
-@function add-to-style-dictionary($renderObj:(),$key:false,$use-defaults:true, $default-module:size, $_style-dictionary: $style-dictionary ) {
+@function add-to-style-dictionary($renderObj:(),$key:false,$use-defaults:false, $default-module:size, $_style-dictionary: $style-dictionary ) {
 	$new-render-obj: ();
 
 	@if _is-map( $renderObj ) == false {
@@ -24,6 +24,8 @@
 
 	@if ($use-defaults) {
 		$new-render-obj: _assign(get-default($default-module), $renderObj);
+	}@else{
+		$new-render-obj:$renderObj;
 	}
 	@if ($key) {
 		$new-render-obj: map-set($new-render-obj, key, $key);
