@@ -1,10 +1,13 @@
 ////GENERIC DEPENDANCIES
 @import "utilities/vendor/_sassy-cast.scss";
-@import "sass-bem-constructor/stylesheets/bem-constructor";
 @import "utilities/new-utility-mixins/functions";
 @import "utilities/new-utility-mixins/mixins";
 @import "utilities/new-utility-mixins/placeholders";
+
+@import "sass-bem-constructor/stylesheets/bem-constructor";
 @import "sassytester/sass/_SassyTester.scss";
 @import "modularscale-sass/stylesheets/_modularscale.scss";
 @import 'sassdash/scss/sassdash';
+@import "chroma-sass/sass/_chroma.scss";
+@import "compass-mixins/lib/compass/_typography.scss";
 

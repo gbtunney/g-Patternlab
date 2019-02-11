@@ -70,7 +70,7 @@
     @include write-scheme-property(hover-foreground, get-current-scheme-color(hover-foreground, $hover-foreground, $color-scheme), '#{&}:hover', false, false, true);
 
     @include write-scheme-property(hover-fill, get-current-scheme-color(hover-fill, $hover-fill, $color-scheme), '#{&}:hover #{$default-svg-selector}', false, false, true);
-
+@content;
 }
 
 @mixin g-new-simple-color-scheme($color-scheme:$chroma-active-scheme, $props:false ) {
