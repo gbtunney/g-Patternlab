@@ -94,6 +94,21 @@
 	}
 }
 
+
+@mixin write-selector($selector: false,$bem-prefix:false) {
+	@if ($selector and $bem-prefix) {
+		@include block($selector, $bem-prefix) {
+			@content;
+		}
+	} @else if ($selector) {
+		#{$selector} {
+			@content;
+		}
+	} @else {
+		@content;
+	}
+}
+
 ///should extend the default?
 @mixin render-queue($collection: false) {
 

@@ -6,7 +6,7 @@
 @import "modules/colors/module";
 @import "modules/typography/module";
 @import "modules/rhythm-spacing/module";
-//@import "../g-Patternlab/modules/components/module";
+@import "modules/components/module";
 @import "modules/generator/module";
 @import "modules/unit-test/module";
 //typekit
@@ -125,6 +125,10 @@ $no-selectors-test-obj:(
 		suffix:true,
 );
 
+
+@debug "hhj:l";
+
+
 ///ADD COLORS
 //add something to dictionary
 $patternlab: batch-add-to-style-dictionary( $base-render-color-objs);
@@ -132,24 +136,35 @@ $patternlab: batch-add-to-style-dictionary( $base-render-color-objs);
 ///ADD SIZING VALUES
 $patternlab: batch-add-to-style-dictionary( $base-render-objects);
 
+///multilevel "inheritance"
+$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($secondary-objects),parent));
+
+$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects),parent));
+
+
 
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: false;
+$GENERATE-QUEUE: true;
 
 @if ( $GENERATE-QUEUE ) {
 	/***------COLOR SCHEMES and SWATCHES-----****/
-	@include render-queue(get-collection($color-module-render-queue));
+	@include render-queue(get-collection(generator-color-schemes generator-color-swatches));
 
 	/***------TYPEOGRAPHY-----****/
-	@include render-queue(get-collection(typography));
+	@include render-queue(get-collection(generator-typography));
 
 	/***------FONT SIZES-----****/
-	@include render-queue(get-collection(font-size));
+	@include render-queue(get-collection(generator-font-size));
 
 	/***-----PADDING-----****/
-	@include render-queue(get-collection(base-spacing));
+	@include render-queue(get-collection(generator-padding));
+
+	/***-----MARGIN-----****/
+	@debug get-collection(generator-margin);
+
+	@include render-queue(get-collection(generator-margin));
 
 	.example{
 		//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
@@ -162,6 +177,7 @@ $GENERATE-QUEUE: false;
 		@include render-queue(get-collection($example-component-render));
 	}
 }
+
 @debug "hi!hhkk++h";
 
 %button-static{
@@ -173,12 +189,13 @@ $the-placeholder: button-static;
 
 .testing{
 //	@include render-queue(get-collection($example-component-render2));
-	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
+//	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
 
-	@extend %#{$the-placeholder};
+	//@extend %#{$the-placeholder};
 }
 ////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
 
+@debug "hhssjjjj";
 
 
 //@debug get-collection(base-margin);
@@ -193,45 +210,10 @@ $the-placeholder: button-static;
 	//@include render-queue(font-size, sm);
 }
 
-@mixin write-selector($selector: false,$bem-prefix:false) {
-	@if ($selector and $bem-prefix) {
-		@include block($selector, $bem-prefix) {
-
-			--#{&}--{
-
-			background: red;
-		}
-			@content;
-		}
-
-	} @else if ($selector) {
-		#{$selector} {
-			@content;
-		}
-	} @else {
-		@content;
-	}
-}
+//@include _base-component($example-component-render, potter-button,true);
 
 
+@include c-button(button);
 
 
-@mixin render-component($collection, $name, $at-root: false ){
-
-
-	@if ($at-root){
-		@include write-selector($name, component){
-			$self: &;
-			$collection: get-collection($collection);
-			@at-root{
-				@include render-queue(get-collection($collection, #{$self},selector));
-			}
-		}
-	}@else{
-		@include write-selector($name, component){
-				@include render-queue(get-collection($collection));
-		}
-	}
-}
-
-@include render-component($example-component-render, potter-button,true);
+//c-button

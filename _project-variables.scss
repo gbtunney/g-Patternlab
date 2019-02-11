@@ -159,9 +159,9 @@ $base-render-color-objs:((
     key: color-schemes,
     selector: false,
     description: "color object",
+    suffix: false, //if it is to be generated, use a class suffix before,
     render:(
         module:size, //dont know??
-        suffix: true, //if it is to be generated, use a class suffix before,
         filter: assign-map,
         props: (
             background: background-color ,
@@ -195,7 +195,7 @@ $base-render-color-objs:((
     key: color-swatches,
     selector: false,
     description: "color swatches",
-    suffix: true, //if it is to be generated, use a class suffix before,
+    suffix: false, //if it is to be generated, use a class suffix before,
     render:(
         module:size, //dont know??
         filter: assign-map,
@@ -216,11 +216,12 @@ $base-render-color-objs:((
     )
 )
 );
+
 $base-render-objects:(
     (
         key: typography,
-        selector: '.g-type',
-        suffix: true, //if it is to be generated, use a class suffix before,
+        selector: false,
+        suffix: false, //if it is to be generated, use a class suffix before,
         render:(
             module:size, //dont know??
             filter: include,
@@ -240,7 +241,7 @@ $base-render-objects:(
                 size-scale: type,
                 text-transform: none,
                 text-decoration: none,
-                letter-spacing: 10000px,
+                letter-spacing: 1px,
                 word-spacing: -1px,
                 font-weight: normal,
                 font-style: normal
@@ -283,10 +284,9 @@ $base-render-objects:(
     ),
     (
         key: font-size,
-        selector: '.g-type',
+        selector: false,
+        suffix: false, //if it is to be generated, use a class suffix before,
         description: "Demo: modularscale size operation.",
-        suffix: true, //if it is to be generated, use a class suffix before,
-
         render:(
             module:size, //dont know??
             filter: assign,
@@ -295,8 +295,8 @@ $base-render-objects:(
         variants:(
             transform: ms,
             options: (
-                base:36px,
-                ratio:1.4
+                base:16px,
+                ratio:1.2
             ), ///option is the thread is for modular scale
             units: (
                 xxs: -2,
@@ -383,7 +383,12 @@ $base-render-objects:(
         ),
         key: static-size-demo,
         selector:static-size-demo
-    ),
+    )
+);
+
+
+//things with a parent.
+$secondary-objects:(
     (
         key: base-margin,
         parent: base-spacing,
@@ -395,5 +400,61 @@ $base-render-objects:(
         key: base-padding,
         parent: base-spacing,
         description: "Base Padding Values",
+    )
+);
+
+$generator-render-objects: (
+    (
+        key: generator-typography,
+        parent: typography,
+        selector: '.g-type',
+        suffix: true, //if it is to be generated, use a class suffix before,
     ),
+    (
+        key: generator-font-size,
+        parent: font-size,
+        selector: '.g-type',
+        description: "Demo: modularscale size operation.",
+        suffix: true, //if it is to be generated, use a class suffix before,
+    ),
+    (
+        key: generator-padding,
+        parent: base-padding,
+        selector: '.g-padding',
+        description: "padding.",
+        suffix: true, //if it is to be generated, use a class suffix before,
+    ),
+    (
+        key: generator-margin,
+        parent: base-margin,
+        selector: '.g-margin',
+        description: "-margin.",
+        suffix: true, //if it is to be generated, use a class suffix before,
+    ),
+    (   key: generator-color-swatches,
+        description: "color swatches",
+        selector: '.u-color-swatches',
+        parent: color-swatches,
+        suffix: true
+    ),
+    (
+        key: generator-color-schemes,
+        description: "color schemes",
+        selector: '.u-color-schemes',
+        parent: color-schemes,
+        suffix: true,
+        variants:(
+            options: (
+                obj: (
+                    background: true,
+                    foreground: true,
+                    accent:false,
+                    border: lighten foreground 10%,
+                    fill:foreground,
+                    hover-background:true,
+                    hover-foreground:true
+                )
+            )
+        )
+    )
 );

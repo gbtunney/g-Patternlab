@@ -1,157 +1,189 @@
-@mixin c-button( $color-scheme: $chroma-active-scheme,$units:lg,$width:auto,$font:font-san-serif ) {
+%c-button-static-props {
 
-    //this is basically a wrapper for a kabob.
+	max-width: fit-content;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	border-radius: 0;
+	border-width: 1px;
+	border-style: solid;
 
-    $self: &;
-    width: $width;
-    max-width: fit-content;
+	&.--no-background, &.--no-background:hover {
+		background-color: transparent;
+	}
 
-    //TODO: this is kind of messy, fix maybe?
-    @if mixin-exists(dry) {
-        @include dry(c-button, $DRY_ENABLED) {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 0;
-        }
-    } @else {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border-radius: 0;
-    }
+	&.--no-border {
+		border: none;
+	}
 
-    @if (function-exists(get-module-color) and function-exists(color)) {
-        $props: (
-            background: true,
-            foreground: true,
-            border: true,
-            fill:foreground,
-            hover-background:rgba(color($color-scheme, background), .7),
-            hover-foreground:rgba(color($color-scheme, foreground), .7)
-        );
-        @include g-color-scheme($color-scheme, $props...);
+	&.--no-padding {
+		padding: 0;
+	}
+	@extend %u-reset-link-color;
 
-        &.--hover-invert {
-            $props: (
-                background: true,
-                foreground: true,
-                border: true,
-                fill:foreground,
-                hover-background: invert,
-                hover-foreground:invert
-            );
-            @include g-color-scheme($color-scheme, $props...);
+}
 
-        }
-        &.--accent {
-            $props: (
-                background: true,
-                foreground: true,
-                border: true,
-                fill:accent,
-                hover-background:true,
-                hover-foreground:true
-            );
-            @include g-color-scheme($color-scheme, $props...);
-        }
+//get-collection()
+@mixin c-button($name: button, $variant-keys: light font-san-serif md md , $collection:color-schemes typeography font-size base-padding, $placeholder: 'c-button-static-props', $at-root: false  ) {
+	$collection: get-collection($collection, $variant-keys);
+	@include _base-component(get-collection($collection), $name, $placeholder, false);
+}
 
-    } @else {
-        @debug "PLEASE ENABLE COLOR MODULE TO USE COLOR PART OF COMPONENT"
-    }
+@mixin old-c-button( $color-scheme: $chroma-active-scheme,$units:lg,$width:auto,$font:font-san-serif ) {
 
-    @if function-exists(get-g-placeholders-utility) {
-        @extend %u-reset-link-color;
-    } @else {
-        @debug "PLEASE IMPORT utilities/gplaceholder to use u-reset-link-color";
-    }
+	//this is basically a wrapper for a kabob.
 
-    @if (function-exists(get-module-typography)) {
-  //  @include setType( $font,$units, 0);
+	$self: &;
+	width: $width;
+	max-width: fit-content;
 
-        &__center {
-        text-align: center;
-      //  @include setType($font,$units,  0);
-        }
+	//TODO: this is kind of messy, fix maybe?
+	@if mixin-exists(dry) {
+		@include dry(c-button, $DRY_ENABLED) {
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			border-radius: 0;
+		}
+	} @else {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		border-radius: 0;
+	}
 
-        &.--italic {
-            &__center {
-             //   @include setType( font-serif-italic,$units, 1);
-            }
-        }
+	@if (function-exists(get-module-color) and function-exists(color)) {
+		$props: (
+			background: true,
+			foreground: true,
+			border: true,
+			fill:foreground,
+			hover-background:rgba(color($color-scheme, background), .7),
+			hover-foreground:rgba(color($color-scheme, foreground), .7)
+		);
+		@include g-color-scheme($color-scheme, $props...);
 
-    } @else {
-        @debug "PLEASE ENABLE TYPOGRAPHY MODULE TO USE TYPE FUNCTIONS"
-    }
+		&.--hover-invert {
+			$props: (
+				background: true,
+				foreground: true,
+				border: true,
+				fill:foreground,
+				hover-background: invert,
+				hover-foreground:invert
+			);
+			@include g-color-scheme($color-scheme, $props...);
 
-    //selectors without dependencies
-    &.--no-background, &.--no-background:hover {
-        background-color: transparent;
-    }
+		}
+		&.--accent {
+			$props: (
+				background: true,
+				foreground: true,
+				border: true,
+				fill:accent,
+				hover-background:true,
+				hover-foreground:true
+			);
+			@include g-color-scheme($color-scheme, $props...);
+		}
 
-    &.--no-border {
-        border: none;
-    }
+	} @else {
+		@debug "PLEASE ENABLE COLOR MODULE TO USE COLOR PART OF COMPONENT"
+	}
 
-    &.--no-padding {
-        padding: 0;
-    }
+	@if function-exists(get-g-placeholders-utility) {
+		@extend %u-reset-link-color;
+	} @else {
+		@debug "PLEASE IMPORT utilities/gplaceholder to use u-reset-link-color";
+	}
 
-    @if (function-exists(get-module-rhythm-spacing)) {
+	@if (function-exists(get-module-typography)) {
+		//  @include setType( $font,$units, 0);
 
-        padding: rhythm(.5) rhythm(1);
+		&__center {
+			text-align: center;
+			//  @include setType($font,$units,  0);
+		}
 
-        &.--sm-padding {
-            padding: rhythm(.25) rhythm(1);
+		&.--italic {
+			&__center {
+				//   @include setType( font-serif-italic,$units, 1);
+			}
+		}
 
-        }
+	} @else {
+		@debug "PLEASE ENABLE TYPOGRAPHY MODULE TO USE TYPE FUNCTIONS"
+	}
 
-        ///BORDER RADIUS
-        //the default is square button
-        &.--rounded {
-            padding: rhythm(.5);
-            border-radius: rhythm(.5);
-        }
+	//selectors without dependencies
+	&.--no-background, &.--no-background:hover {
+		background-color: transparent;
+	}
 
-        &.--circle {
-            padding: #{rhythm(1) / 6};
-            border-radius: 100%;
-            line-height: 0;
-            height: 100%;
-        }
-        &.--round-right {
-            border-top-right-radius: rhythm(.5);
-            border-bottom-right-radius: rhythm(.5);
-            padding-left: rhythm(.5);
+	&.--no-border {
+		border: none;
+	}
 
-        }
+	&.--no-padding {
+		padding: 0;
+	}
 
-        &__left + &__center {
-            padding-left: rhythm(.5);
-        }
-        &__center + &__right {
-            padding-left: rhythm(.5);
-        }
+	@if (function-exists(get-module-rhythm-spacing)) {
 
-    } @else {
-        //TODO: switch to internal padding function.
-        @debug "PLEASE ENABLE TYPE MODULE TO USE PADDING PART OF COMPONENT"
-    }
+		padding: rhythm(.5) rhythm(1);
 
-    @if mixin-exists(o-icon-svg) {
-        &__icon {
-            @include o-icon-svg(false, $units);
+		&.--sm-padding {
+			padding: rhythm(.25) rhythm(1);
 
-        }
+		}
 
-        &__left, &__right {
-            @include o-icon-svg(false, $units - 1);
-        }
-    } @else {
-        @debug "PLEASE ENABLE OBJECTS TO USE ICONS"
-    }
+		///BORDER RADIUS
+		//the default is square button
+		&.--rounded {
+			padding: rhythm(.5);
+			border-radius: rhythm(.5);
+		}
 
-    @content;
+		&.--circle {
+			padding: #{rhythm(1) / 6};
+			border-radius: 100%;
+			line-height: 0;
+			height: 100%;
+		}
+		&.--round-right {
+			border-top-right-radius: rhythm(.5);
+			border-bottom-right-radius: rhythm(.5);
+			padding-left: rhythm(.5);
+
+		}
+
+		&__left + &__center {
+			padding-left: rhythm(.5);
+		}
+		&__center + &__right {
+			padding-left: rhythm(.5);
+		}
+
+	} @else {
+		//TODO: switch to internal padding function.
+		@debug "PLEASE ENABLE TYPE MODULE TO USE PADDING PART OF COMPONENT"
+	}
+
+	@if mixin-exists(o-icon-svg) {
+		&__icon {
+			@include o-icon-svg(false, $units);
+
+		}
+
+		&__left, &__right {
+			@include o-icon-svg(false, $units - 1);
+		}
+	} @else {
+		@debug "PLEASE ENABLE OBJECTS TO USE ICONS"
+	}
+
+	@content;
 }

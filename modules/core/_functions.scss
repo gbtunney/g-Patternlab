@@ -15,6 +15,14 @@
 	@return $_style-dictionary;
 }
 
+@function clean-collection($collection,$arg: key , $func: _omit ){
+	$new-collection:();
+	@each $item in $collection{
+		$new-collection: _push($new-collection,_omit($item ,$arg) );
+		//@debug "CLEANING!! #{_omit($item ,$arg) }";
+	}
+	@return $new-collection;
+}
 @function add-to-style-dictionary($renderObj:(),$key:false,$use-defaults:false, $default-module:size, $_style-dictionary: $style-dictionary ) {
 	$new-render-obj: ();
 
@@ -416,15 +424,15 @@
 	@return false;
 }
 
-@function format-selector($selector, $suffix:false, $suffix-key: false) {
+@function format-selector($selector, $suffix:false, $suffix-key: false, $_class-seperator:$class-seperator) {
 	@if ($selector) {
 		$_new-selector: $selector;
 		@if ($suffix) {
-			$_new-selector: #{$_new-selector}-#{$suffix-key}; //_concat($_new-selector, $suffix);
+			$_new-selector: #{$_new-selector}#{$_class-seperator}#{$suffix-key}; //_concat($_new-selector, $suffix);
 		}
 		@return $_new-selector;
 	} @else if ($selector== false and $suffix==true) {
-		@return #{&}-#{$suffix-key};
+		@return #{&}#{$_class-seperator}#{$suffix-key};
 	}
 	@return false;
 }

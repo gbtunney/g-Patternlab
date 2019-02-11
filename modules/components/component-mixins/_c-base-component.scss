@@ -8,7 +8,34 @@
     );*/
 
 ////************SIMPLE COMPONENT!!!!
-@mixin _base-component( $color:(scheme: dark,
+
+@mixin _base-component($collection, $name, $placeholder: false, $at-root: false ){
+    @if ($at-root){
+        @include write-selector($name, component){
+            $self: &;
+            $collection: get-collection($collection);
+            @at-root{
+                @include render-queue(get-collection($collection, #{$self},selector));
+            }
+            @if ($placeholder){
+                @error "placehooder #{$placeholder}";
+                @extend #{$placeholder};
+            }
+        }
+    }@else{
+        @include write-selector($name, component){
+            @include render-queue(get-collection($collection));
+            @if ($placeholder){
+                @extend %#{$placeholder};
+            }
+        }
+    }
+}
+
+
+
+
+@mixin old_base-component( $color:(scheme: dark,
 props: (
             background: true,
             foreground: true,
