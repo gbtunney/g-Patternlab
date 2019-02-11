@@ -314,7 +314,6 @@
 	//this checks if thr map has a PARENT key, and if so..merges it.
 	@if (is-render-map($obj)) {
 		@if (_get($obj, parent) and  dictionary-item(_get($obj, parent) )) {
-			@debug "PARENT FOUND.#{_get($obj, parent)} ";
 			@return render-map-merge(dictionary-item(_get($obj, parent)), $obj);
 		}
 		@return $obj;
@@ -473,6 +472,31 @@
 	}
 	@return $new-list;
 }
+
+@function get-collection-prop($collection:false,$variant-key:false, $prop: false ) {
+	@if ($collection and $variant-key){
+		$collection: get-collection($collection,$variant-key);
+	}
+
+	@debug "collection TYPE IS #{type-of($collection)}";
+
+
+	$new-list: "";
+
+	/*$transformed-data-map: transform-data($variants...);
+
+
+	//TODO: make this work with multiple sub props
+	@each $key in $variant-key {
+
+		$new-list: _push($new-list, _get($transformed-data-map, $key));
+	}
+	@if ($prop) {
+		@return _get($transformed-data-map, ($variant-key, $prop));
+	}*/
+	@return $new-list;
+}
+
 
 /// ways to check the render map
 @function is-render-map($map) {
