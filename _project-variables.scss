@@ -312,6 +312,37 @@ $base-render-objects:(
         )
     ),
     (
+        key: rhythm-units,
+        selector: false,
+        suffix: false, //if it is to be generated, use a class suffix before,
+        description: "DEMO Rhythm function",
+        render:(
+            module:size, //dont know??
+            filter: assign,
+            props: (padding),
+        ),
+        variants:(
+            transform: rhythm,
+            var: lines,
+            options:
+            (
+                font-size: 16px,
+                offset: 0
+                ),
+            units: (
+                xxs: .25,
+                xs: .5,
+                sm: .75,
+                base:1,
+                md: 1,
+                lg: 2,
+                xl: 3,
+                xxl: 4,
+                xxxl: 5
+            )
+        )
+    ),
+    (
         key: ratio-size-demo,
         selector:ratio-size-demo,
         description: "Demo: ratio size operation.",
@@ -341,7 +372,7 @@ $base-render-objects:(
     (
     key: base-spacing,
     selector: false,
-    description: "Base SPACING Values",
+    description: "Ration Size Base SPACING Values",
     suffix: false, //if it is to be generated, use a class suffix before,
     render:(
         module:size, //dont know??
@@ -400,14 +431,14 @@ xl: 2
 $secondary-objects:(
     (
         key: base-margin,
-        parent: base-spacing,
+        parent: rhythm-units,
         render:(
             props: (margin)
         )
     ),
     (
         key: base-padding,
-        parent: base-spacing,
+        parent: rhythm-units,
         description: "Base Padding Values",
     )
 );

@@ -125,10 +125,6 @@ $no-selectors-test-obj:(
 		suffix:true,
 );
 
-
-@debug "hhj:l";
-
-
 ///ADD COLORS
 //add something to dictionary
 $patternlab: batch-add-to-style-dictionary( $base-render-color-objs);
@@ -143,12 +139,10 @@ $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($gene
 
 $test: init-typography-module();
 
-
-
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: false;
+$GENERATE-QUEUE: true;
 
 @if ( $GENERATE-QUEUE ) {
 
