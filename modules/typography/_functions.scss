@@ -28,7 +28,7 @@
     @return false;
 };
 
-@function get-type-prop($prop, $variant:$default-typography-variant,$key:$default-typography-key  ) {
+@function get-type($prop, $variant:$default-typography-variant,$key:$default-typography-key  ) {
     @return get-lookup-prop($key, $variant, $prop);
 }
 

@@ -1,41 +1,22 @@
 //built on top of modular scale, compass vertical rhythm.
 //*** THESE ARE THE CORE BREAKPOINT WRAPPER
 //*** Dependencies: Modular Scale  | Compass Vertical Rhythm. | Sass DRY | Sass Toolkit
-$DRY_ENABLED:false!default;
-@mixin setType($_font-key: default,$_scale-unit: $default-type-scale-value-key/*replace w default*/, $-rhyhm-lines:1, $_css-props:$required-font-props,$_font-size-flag:true ) {
+@mixin set-type(  $font-size-variant: $default-font-size-variant,$type-variant:$default-typography-variant,$lines: 1, $font-size-collection: $default-font-size-key, $type-collection: $default-typography-key ) {
     //TODO : fix
-
-//get the font map
-
-    $_font-map:false;
-    //skip if already a map
-    @if (type-of($_font-key)==map ) {
-        $_font-map: $_font-key;
-    }@else {
-        $_font-map: get-font-map($_font-key);  ///this is a font slug, not a scale key
-    }
 
 
     //write properties....
-    $font-size-to-write:false;
+    $font-size-to-write:get-font-size($font-size-variant);
 
-    @if ($_font-map){
-        $font-size-to-write : get-font-size(map-get($_font-map, size-scale), $_scale-unit);
-       // $font-size-to-write: get-font-size(map-get(get-font-map(font-serif-italic), size-scale), sm);
-        @debug "going to write font#{$_font-key} #{$font-size-to-write}";
-    }
-//get-font-size(map-get(get-font-map(font-serif-italic), size-scale), sm);
+    //to-size, lines, from-size
+    @include adjust-font-size-to($font-size-to-write, $lines);
 
-
-    @if ($_font-size-flag){
-     //   @include adjust-font-size-to(get-font-size($_font-key,$_scale-unit),$-rhyhm-lines );
+    @debug #{$type-collection}-#{$type-variant}-#{$font-size-variant};
+    @include dry(#{$type-variant}-#{$font-size-variant},$DRY_ENABLED) {
+        @include render-queue(get-collection($type-collection,$type-variant ));
     }
 
-//todo: resetup dry
-    @if ($_font-map and $_css-props) {
-        @include write-font-static-props($_font-map,$_css-props);
-    }
-
+@content;
 }
 
 @mixin write-font-static-props(  $_font-map, $_css-props){

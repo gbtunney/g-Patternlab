@@ -182,6 +182,8 @@ $GENERATE-QUEUE: true;
 
 $the-placeholder: button-static;
 
+
+
 .testing{
 //	@include render-queue(get-collection($example-component-render2));
 //	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
@@ -190,7 +192,7 @@ $the-placeholder: button-static;
 }
 ////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
 
-//@debug get-collection(base-margin);
+@debug get-collection(base-margin);
 
 //$test-collection: get-collection($color-module-render-queue ,gillian-swatches gillian-colorz, selector);
 
@@ -204,5 +206,7 @@ $the-placeholder: button-static;
 
 @include c-button(button);
 
+gillianexample{@include set-type();
+}
 
 //c-button

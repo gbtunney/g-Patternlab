@@ -20,7 +20,7 @@
 }
 
 %u-reset-link-color {
-	a,a:hover {
+	a,a:hover,a:visited,a:active {
 		color: inherit;
 		text-decoration: none;
 	}

@@ -99,6 +99,7 @@ Settings
 @mixin font-smoothing($bool: true) {
     @if ($bool) {
         font-smoothing: antialiased;
+        -webkit-text-size-adjust: 100%;
 
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;

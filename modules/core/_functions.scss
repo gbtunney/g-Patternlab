@@ -464,11 +464,19 @@
 
 //TODO: remove this function?
 ///this would be used for fonts?
-@function get-lookup-prop($variants:(),$variant-key:false, $prop: false ) {
-
-	@if (is-render-key($variants)) {
-		$variants: get-single-render-style-props($variants, variants);
+@function get-lookup-prop($collection:(),$variant-key:false, $prop: false ) {
+	$collection:get-collection($collection);
+	@if (  _is-list($collection) and length($collection)==1  ){
+		$collection: _first(get-collection($collection));
+	}@else{
+		$collection:get-collection($collection);
 	}
+	$variants:();
+
+	@if (_is-map($collection) and  _has($collection, variants)){
+		$variants: map-get($collection, variants);
+	}
+
 	$transformed-data-map: transform-data($variants...);
 
 	//TODO: make this work with multiple sub props
@@ -476,6 +484,8 @@
 	@each $key in $variant-key {
 		$new-list: _push($new-list, _get($transformed-data-map, $key));
 	}
+
+	//@debug $new-list;
 	@if (length($new-list)== 1 and _is-map(_first($new-list)) == false) {
 		//@debug " NEW IST:: #{_is-map(_first($new-list))}";
 		@return _first($new-list);

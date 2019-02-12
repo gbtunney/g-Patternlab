@@ -47,7 +47,7 @@ $component-name: 'Gallery-Card';
 	}
 	&__title {
 	@extend %u-reset-rhythm;
-		@include setType(2, font-san-serif);
+		@include set-type(2, font-san-serif);
 		@include trailing-border();
 		@include leader(1);
 		@include trailer(1);
@@ -55,7 +55,7 @@ $component-name: 'Gallery-Card';
 	&__subtitle {
 		@extend %u-reset-rhythm;
 
-		@include setType(0, font-serif);
+		@include set-type(0, font-serif);
 
 		@include leader(1);
 		@include trailer(1);

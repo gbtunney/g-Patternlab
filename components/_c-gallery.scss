@@ -10,7 +10,7 @@ $child-component-name: 'Gallery-Card';
   //  @include color-scheme($color-scheme, true, false);
     &__caption{
 
-        @include setType(-1, font-san-serif);
+        @include set-type(-1, font-san-serif);
 
     }
 

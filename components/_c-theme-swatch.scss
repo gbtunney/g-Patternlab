@@ -10,7 +10,7 @@ $component-name: '.g_Theme_Swatch';
         //wrapper
     }
     &__label {
-        @include setType(2, font-san-serif);
+        @include set-type(2, font-san-serif);
         @include trailing-border();
         @include trailer(2);
     }

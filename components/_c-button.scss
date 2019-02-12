@@ -151,16 +151,16 @@ $button-render: (
     }
 
     @if (function-exists(get-module-typography)) {
-    @include setType($units, $font, 0);
+    @include set-type($units, $font, 0);
 
         &__center {
         text-align: center;
-        @include setType($units, $font, 0);
+        @include set-type($units, $font, 0);
         }
 
         &.--italic {
             &__center {
-                @include setType($units, font-serif-italic, 1);
+                @include set-type($units, font-serif-italic, 1);
             }
         }
 

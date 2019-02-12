@@ -72,10 +72,10 @@
     @each $key, $unit in $scale-units {
 
         &.--#{$key} &__center{
-            @include setType( $unit,$font,1)
+            @include set-type( $unit,$font,1)
         }
         &.--italic#{&}.--#{$key} &__center{
-            @include setType( $unit,font-serif-italic,1)
+            @include set-type( $unit,font-serif-italic,1)
         }
     }
 

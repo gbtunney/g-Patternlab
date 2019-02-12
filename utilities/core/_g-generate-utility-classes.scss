@@ -104,11 +104,11 @@ Styleguide 2.1.3.
     @each $unit-key, $unit-value in $scale-lookup-units {
         ///TODO: reimplement dry?
         @include utility(get-utility-prefix(type, #{$font-key}#{$utility-seperator}#{$unit-key})) {
-            @include setType($unit-value, $font-key);
+            @include set-type($unit-value, $font-key);
         }
         @if ($unit-key == $default-scale-unit) {
             @include utility(get-utility-prefix(type, #{$font-key})) {
-                @include setType($unit-value, $font-key);
+                @include set-type($unit-value, $font-key);
             }
         }
     }

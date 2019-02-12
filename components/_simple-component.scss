@@ -17,7 +17,7 @@
         @include dry($name, $DRY_ENABLED) {
 
             @if ( $font ){
-                @include setType($base-font-unit, $font, 0);
+                @include set-type($base-font-unit, $font, 0);
             }
 
             //todo : some sort of variable for this

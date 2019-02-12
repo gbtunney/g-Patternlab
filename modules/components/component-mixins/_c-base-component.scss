@@ -62,7 +62,7 @@ props: (
         @if (validate-scale-definition-key($_font-key)) {
             //use scale instead
         } @else {
-            @include setType($_font-key, $_value, 2);
+            @include set-type($_font-key, $_value, 2);
         }
     }
     @if ($spacing) {

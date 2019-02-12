@@ -50,6 +50,15 @@ $button-color-schemes: (
 	}
 }
 
+//get-collection()
+@mixin c-input($name: false, $variant-keys: light font-san-serif md lg , $collection:color-schemes typeography font-size base-padding, $placeholder: 'c-button-static-props', $at-root: false  ) {
+
+	$collection: get-collection($collection, $variant-keys);
+	@include _base-component(get-collection($collection), $name, $placeholder, false) {
+	}
+}
+
+
 @mixin old-c-button( $color-scheme: $chroma-active-scheme,$units:lg,$width:auto,$font:font-san-serif ) {
 
 	//this is basically a wrapper for a kabob.

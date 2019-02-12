@@ -241,7 +241,7 @@ $base-render-objects:(
                 size-scale: type,
                 text-transform: none,
                 text-decoration: none,
-                letter-spacing: 1px,
+                letter-spacing: 0px,
                 word-spacing: -1px,
                 font-weight: normal,
                 font-style: normal
@@ -326,8 +326,8 @@ $base-render-objects:(
             var: lines,
             options:
             (
-                font-size: 16px,
-                offset: 0
+                font-size: 26px,
+                offset: 2
                 ),
             units: (
                 xxs: .25,
