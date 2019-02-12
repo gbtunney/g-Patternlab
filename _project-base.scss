@@ -175,8 +175,6 @@ $GENERATE-QUEUE: true;
 	}
 }
 
-@debug "hi!hhkk++h";
-
 %button-static{
 	border-radius: 20px;
 
@@ -192,15 +190,9 @@ $the-placeholder: button-static;
 }
 ////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
 
-@debug "hhssjjjj";
-
-
 //@debug get-collection(base-margin);
 
 //$test-collection: get-collection($color-module-render-queue ,gillian-swatches gillian-colorz, selector);
-//@include render-queue($test-collection);
-
-//@debug get-lookup-prop(typography, font-serif, font-family);
 
 //@debug $style-dictionary;
 @include block(gbt, utility) {
