@@ -301,7 +301,8 @@ $base-render-objects:(
             units: (
                 xxs: -2,
                 xs: -1,
-                sm: 2,
+                sm: -1,
+                base:0,
                 md: 1,
                 lg: 2,
                 xl: 3,
@@ -350,15 +351,15 @@ $base-render-objects:(
     variants:(
         transform: ratio-size,
         options: (
-            base:20px
+            base: 16px
         ), ///option is the thread is for modular scale
         units: (
-            xs: .25,
-            sm: .5,
-            md: 1 1 ,
+            xs: .15,
+            sm: .25,
+            md: .5 ,
             md2: .5 1 ,
-            lg: 1.5,
-            xl: 2
+            lg: 1,
+            xl: 1.5
         )
     )
 ),
@@ -386,6 +387,14 @@ $base-render-objects:(
     )
 );
 
+/*units: (
+xs: .25,
+sm: .5,
+md: 1 1 ,
+md2: .5 1 ,
+lg: 1.5,
+xl: 2
+)*/
 
 //things with a parent.
 $secondary-objects:(
@@ -458,3 +467,4 @@ $generator-render-objects: (
         )
     )
 );
+$bem-throw-errors:false;

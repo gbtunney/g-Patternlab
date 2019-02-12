@@ -25,6 +25,7 @@
     }@else{
         @include write-selector($name, component){
             @include render-queue(get-collection($collection));
+            @content;
             @if ($placeholder){
                 @extend %#{$placeholder};
             }

@@ -1,5 +1,6 @@
 %c-button-static-props {
 
+	$self: &;
 	max-width: fit-content;
 	display: flex;
 	align-items: center;
@@ -9,25 +10,46 @@
 	border-width: 1px;
 	border-style: solid;
 
-	&.--no-background, &.--no-background:hover {
-		background-color: transparent;
-	}
-
-	&.--no-border {
-		border: none;
-	}
-
-	&.--no-padding {
-		padding: 0;
-	}
 	@extend %u-reset-link-color;
 
 }
 
+$button-color-schemes: (
+	description: "INVERT FUNCTIONAL COLOR ",
+	parent: font-size,
+	suffix: _modifier
+);
+
 //get-collection()
 @mixin c-button($name: button, $variant-keys: light font-san-serif md md , $collection:color-schemes typeography font-size base-padding, $placeholder: 'c-button-static-props', $at-root: false  ) {
 	$collection: get-collection($collection, $variant-keys);
-	@include _base-component(get-collection($collection), $name, $placeholder, false);
+	@include _base-component(get-collection($collection), $name, $placeholder, false){
+		&__icon {
+			@include u-icon-svg(false, 1em);
+			@include u-reflect-X();
+
+		}
+			&.--no-background, &.--no-background:hover {
+				background-color: transparent;
+			}
+
+			&.--no-border {
+				border: none;
+			}
+
+			&.--no-padding {
+				padding: 0;
+			}
+
+		//@at-root {
+
+			@include render-queue(get-collection($button-color-schemes));
+		//};
+
+	}
+
+	//temp: hack for variants.
+
 }
 
 @mixin old-c-button( $color-scheme: $chroma-active-scheme,$units:lg,$width:auto,$font:font-san-serif ) {

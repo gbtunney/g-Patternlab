@@ -12,16 +12,26 @@
     );
 }
 
-@function init-typography-module($_font-maps:$font-maps, $_default-font-map: $default-font-map){
+@function init-typography-module() {
+    $BASE_FONT_SIZE: get-font-size(base);
+    $BASE_LINE_HEIGHT: 1.2;
 
-    //@error #{$_font-maps};
+    //convert unitless lineheight
 
-
-   // $_font-maps : map-values(  init-font-maps($_font-maps,$_default-font-map));
-
-     //@return add-definition-map($_font-maps,type);
+    @if (has-unit($BASE_LINE_HEIGHT)) {
+    } @else {
+        $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
+    }
+    $base-font-size: $BASE_FONT_SIZE !global;
+    $base-line-height: $BASE_LINE_HEIGHT !global;
+    $relative-font-sizing: false !global;
     @return false;
-}
+};
+
 @function get-type-prop($prop, $variant:$default-typography-variant,$key:$default-typography-key  ) {
     @return get-lookup-prop($key, $variant, $prop);
+}
+
+@function get-font-size($variant:$default-font-size-variant,$key:$default-font-size-key ){
+    @return get-lookup-prop($key, $variant);
 }

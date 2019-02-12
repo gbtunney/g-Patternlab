@@ -5,6 +5,7 @@
 @import "modules/core/module";
 @import "modules/colors/module";
 @import "modules/typography/module";
+@import "modules/responsive/module";
 @import "modules/rhythm-spacing/module";
 @import "modules/components/module";
 @import "modules/generator/module";
@@ -20,7 +21,6 @@ $generate-map: (
 	components:false
 );
 @include init-color-module;
-
 $example-functional-render-queue: (
 	description: "INVERT FUNCTIONAL COLOR ",
 	selector: '.-#{&}',
@@ -141,14 +141,17 @@ $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($seco
 
 $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects),parent));
 
+$test: init-typography-module();
+
 
 
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: true;
+$GENERATE-QUEUE: false;
 
 @if ( $GENERATE-QUEUE ) {
+
 	/***------COLOR SCHEMES and SWATCHES-----****/
 	@include render-queue(get-collection(generator-color-schemes generator-color-swatches));
 

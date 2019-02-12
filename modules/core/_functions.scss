@@ -15,14 +15,15 @@
 	@return $_style-dictionary;
 }
 
-@function clean-collection($collection,$arg: key , $func: _omit ){
-	$new-collection:();
-	@each $item in $collection{
-		$new-collection: _push($new-collection,_omit($item ,$arg) );
+@function clean-collection($collection,$arg: key , $func: _omit ) {
+	$new-collection: ();
+	@each $item in $collection {
+		$new-collection: _push($new-collection, _omit($item, $arg));
 		//@debug "CLEANING!! #{_omit($item ,$arg) }";
 	}
 	@return $new-collection;
 }
+
 @function add-to-style-dictionary($renderObj:(),$key:false,$use-defaults:false, $default-module:size, $_style-dictionary: $style-dictionary ) {
 	$new-render-obj: ();
 
@@ -32,8 +33,8 @@
 
 	@if ($use-defaults) {
 		$new-render-obj: _assign(get-default($default-module), $renderObj);
-	}@else{
-		$new-render-obj:$renderObj;
+	} @else {
+		$new-render-obj: $renderObj;
 	}
 	@if ($key) {
 		$new-render-obj: map-set($new-render-obj, key, $key);
@@ -427,10 +428,19 @@
 	@if ($selector) {
 		$_new-selector: $selector;
 		@if ($suffix) {
+
 			$_new-selector: #{$_new-selector}#{$_class-seperator}#{$suffix-key}; //_concat($_new-selector, $suffix);
 		}
 		@return $_new-selector;
+	} @else if ($selector== false and $suffix!=false and _is-function($suffix)) {
+
+		//TODO: look into this bem sass
+		//$_new-selector:call(get-function(_modifier), $suffix-key);
+		//@debug "!!TYPE IS #{&} #{$suffix} #{$suffix-key} #{_is-function($suffix)}";
+		//@return $_new-selector;
+		@return #{&}#{$_class-seperator}#{$suffix-key};
 	} @else if ($selector== false and $suffix==true) {
+
 		@return #{&}#{$_class-seperator}#{$suffix-key};
 	}
 	@return false;
@@ -462,11 +472,16 @@
 	$transformed-data-map: transform-data($variants...);
 
 	//TODO: make this work with multiple sub props
-	$new-list: "";
+	$new-list: ();
 	@each $key in $variant-key {
-
 		$new-list: _push($new-list, _get($transformed-data-map, $key));
 	}
+	@if (length($new-list)== 1 and _is-map(_first($new-list)) == false) {
+		//@debug " NEW IST:: #{_is-map(_first($new-list))}";
+		@return _first($new-list);
+		//TODO : fix this..
+	}
+
 	@if ($prop) {
 		@return _get($transformed-data-map, ($variant-key, $prop));
 	}
@@ -474,13 +489,10 @@
 }
 
 @function get-collection-prop($collection:false,$variant-key:false, $prop: false ) {
-	@if ($collection and $variant-key){
-		$collection: get-collection($collection,$variant-key);
+	@if ($collection and $variant-key) {
+		$collection: get-collection($collection, $variant-key);
 	}
-
 	@debug "collection TYPE IS #{type-of($collection)}";
-
-
 	$new-list: "";
 
 	/*$transformed-data-map: transform-data($variants...);
@@ -496,7 +508,6 @@
 	}*/
 	@return $new-list;
 }
-
 
 /// ways to check the render map
 @function is-render-map($map) {
