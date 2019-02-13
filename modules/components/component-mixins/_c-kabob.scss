@@ -1,0 +1,248 @@
+%c-kabob-static-props{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+$kabob-color-schemes: (
+    description: "INVERT FUNCTIONAL COLOR ",
+    parent: color-schemes,
+    suffix: true,
+);
+
+
+@mixin c-kabob( $color-scheme: $chroma-active-scheme,$schemeProps:false,$reflect: false, $width: auto, $unit: sm, $font: font-san-serif) {
+    $self: &;
+
+    @include dry(c-kabob, $DRY_ENABLED){
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    width: $width;
+
+    @if ($schemeProps and type-of($schemeProps) == map){
+        @include g-color-scheme($color-scheme,$schemeProps...);
+    }@else{
+        $props: (
+            background: false,
+            foreground: true,
+            border: false,
+            fill:accent,
+            hover-foreground:rgba( color($color-scheme,foreground), .8 ),
+            hover-fill: adjust-hue(color($color-scheme,accent),-10%),
+
+        );
+        @include g-color-scheme($color-scheme,$props...);
+    }
+
+    &.--monochrome{
+        $props: (
+            background: false,
+            foreground: true,
+            border: false,
+            fill:foreground,
+            hover-foreground:rgba( color($color-scheme,foreground), .7 )
+        );
+        @include g-color-scheme($color-scheme,$props...);
+    }
+
+
+
+    &__center{
+        // @include setType(get-scale-units($unit), $font);
+    }
+
+    @if ($reflect) {
+        &__right {
+            @include u-reflect-X();
+        }
+    }
+    .--reflect &__right {
+        @include u-reflect-X();
+    }
+
+    &__left, &__right {
+        @include u-icon-svg(false,1em);
+    }
+    .--monochrome &__left, .--monochrome &__right {
+        //@include o-icon-svg(color($color-scheme, foreground), $unit);
+    }
+
+    //@each $key, $unit in $scale-units {
+    //   // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
+    //
+    //    &.--#{$key} &__right,&.--#{$key} &__left{
+    //       @include o-icon-svg(false, $key);
+    //    }
+    //    &.--monochrome.--#{$key} &__right,&.--monochrome.--#{$key} &__left{
+    //     // @include o-icon-svg(color($color-scheme, foreground), $key);
+    //    }
+    //}
+    //@each $key, $unit in $scale-units {
+    //
+    //    &.--#{$key} &__center{
+    //        @include setType( $unit,$font)
+    //    }
+    //}
+
+    @content;
+}
+
+
+
+@mixin c-kabob-scratch($name: kabob,$reflect: true, $props:false,$color-scheme: light, $variant-keys: font-san-serif md md , $collection: typeography font-size base-padding, $placeholder: 'c-kabob-static-props') {
+
+    //@error get-color-collection($props,light-alt);
+
+
+    $color-collection: get-color-collection($props,$color-scheme);
+
+
+
+
+    @include _base-component(get-collection($collection,$variant-keys ), $name, false, false) {
+
+        background: orange;
+        $self: &;
+
+        @at-root {
+            @include render-queue(get-collection($kabob-color-schemes, '#{$self}.', selector));
+        };
+
+        @if ($reflect) {
+            &__right {
+                @include u-reflect-X();
+            }
+        }
+        .--reflect &__right {
+            @include u-reflect-X();
+        }
+
+        &__left, &__right {
+            @include u-icon-svg(false,1em);
+        }
+
+    }
+
+
+
+
+
+        //   @include dry(c-kabob, $DRY_ENABLED){
+
+   // }
+
+    ///width: $width;
+
+   /* @if ($schemeProps and type-of($schemeProps) == map){
+        @include g-color-scheme($color-scheme,$schemeProps...);
+    }@else{
+        $props: (
+            background: false,
+            foreground: true,
+            border: false,
+            fill:accent,
+            hover-foreground:rgba( color($color-scheme,foreground), .8 ),
+            hover-fill: adjust-hue(color($color-scheme,accent),-10%),
+
+        );
+        @include g-color-scheme($color-scheme,$props...);
+    }
+
+    &.--monochrome{
+        $props: (
+            background: false,
+            foreground: true,
+            border: false,
+            fill:foreground,
+            hover-foreground:rgba( color($color-scheme,foreground), .7 )
+        );
+        @include g-color-scheme($color-scheme,$props...);
+    }
+*/
+
+
+    &__center{
+       // @include setType(get-scale-units($unit), $font);
+    }
+
+
+    &__center {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+
+        .--monochrome & {
+            &:after {
+                 background: red;
+               // background: color($color-scheme, foreground);
+            }
+        }
+
+        &:after {
+            display: block;
+            width: 100%;
+            // height: ms(get-scale-units()) * .1;
+            //background: color($color-scheme, foreground);
+            content: " ";
+
+            /*  $multiplier: .1; ///size the line
+
+			  .--xs & {
+				  height: ms(get-scale-units(xs))  * $multiplier;
+			  }
+			  .--sm & {
+				  height: ms(get-scale-units(sm))  * $multiplier;
+			  }
+			  .--md & {
+				  height: ms(get-scale-units(md))  * $multiplier;
+			  }
+			  .--lg & {
+				  height: ms(get-scale-units(lg))  * $multiplier;
+			  }
+			  .--xl & {
+				  height: ms(get-scale-units(xl)) * $multiplier;
+			  }*/
+            .--no-divider & {
+                content: " ";
+                height: 0;
+                display: none;
+            }
+        }
+    }
+
+
+    .--monochrome &__left, .--monochrome &__right {
+       //@include o-icon-svg(color($color-scheme, foreground), $unit);
+    }
+    //@each $key, $unit in $scale-units {
+    //   // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
+    //
+    //    &.--#{$key} &__right,&.--#{$key} &__left{
+    //       @include o-icon-svg(false, $key);
+    //    }
+    //    &.--monochrome.--#{$key} &__right,&.--monochrome.--#{$key} &__left{
+    //     // @include o-icon-svg(color($color-scheme, foreground), $key);
+    //    }
+    //}
+    //@each $key, $unit in $scale-units {
+    //
+    //    &.--#{$key} &__center{
+    //        @include setType( $unit,$font)
+    //    }
+    //}
+
+    @content;
+}
+
+
+
+@mixin c-divider-stratch($name: kabob,$reflect: true, $props:false,$color-scheme: light, $variant-keys: font-san-serif md md , $collection: typeography font-size base-padding, $placeholder: 'c-kabob-static-props'){
+
+
+}

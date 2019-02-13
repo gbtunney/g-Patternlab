@@ -1,6 +1,7 @@
 $active-scheme : functional!default;
-//$generate-scheme-classes:true;
-//$generate-swatch-classes: false;
+
+$default-color-scheme-key: color-schemes !default;
+$default-color-scheme-variant: $chroma-active-scheme!default;
 
 // Color scheme / theme module
 //

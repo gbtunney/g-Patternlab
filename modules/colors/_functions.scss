@@ -18,6 +18,26 @@
 
 }
 
+@function get-color-collection($props:false, $scheme:$chroma-active-scheme, $color-key: $default-color-scheme-key) {
+
+
+    $new-collection: get-collection($color-key, $scheme);
+    @if ( $props== false){
+        @return $new-collection;
+    }
+    $merged-collection: ();
+    @each $item in $new-collection {
+        @if (map-deep-get($item, variants, options, obj)) {
+            @if (length($new-collection) ==1) {
+                @return map-deep-set($item, (variants, options, obj), $props);
+            } @else {
+                $merged-collection: _push($merged-collection, map-deep-set($item, (variants, options, obj), $props));
+            }
+        }
+    }
+    @return $merged-collection;
+}
+
 @function get-current-scheme-color-by-string($color-key, $value, $color-scheme:$chroma-active-scheme ) {
 
     //check to see if string is the name of a color scheme OR a key to color in the current one...

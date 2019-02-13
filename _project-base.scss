@@ -142,7 +142,7 @@ $test: init-typography-module();
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: true;
+$GENERATE-QUEUE: false;
 
 @if ( $GENERATE-QUEUE ) {
 
@@ -205,6 +205,27 @@ $the-placeholder: button-static;
 
 
 @include c-button(button);
+
+
+@include block(divider,component){
+
+	@each $key in $scheme-list {
+		@include modifier($key){
+			@include c-divider($key);
+		}
+	}
+	background: red;
+
+}
+//OLD WAY
+
+//@include write-selector('dividergilian',false){
+//		@include c-divider($key);
+
+
+
+//@error "";
+
 
 gillianexample{@include set-type();
 }

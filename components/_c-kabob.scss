@@ -53,7 +53,7 @@
     }
 
     &__left, &__right {
-        @include o-icon-svg(false,$unit);
+        @include o-icon-svg(false,1em);
     }
     .--monochrome &__left, .--monochrome &__right {
        //@include o-icon-svg(color($color-scheme, foreground), $unit);

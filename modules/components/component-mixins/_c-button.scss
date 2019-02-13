@@ -17,7 +17,7 @@
 $button-color-schemes: (
 	description: "INVERT FUNCTIONAL COLOR ",
 	parent: color-schemes,
-	suffix: _modifier,
+	suffix: false,
 );
 
 //get-collection()
@@ -26,8 +26,6 @@ $button-color-schemes: (
 	@include _base-component(get-collection($collection), $name, $placeholder, false) {
 		&__icon {
 			@include u-icon-svg(false, 1em);
-			@include u-reflect-X();
-
 		}
 		&.--no-background, &.--no-background:hover {
 			background-color: transparent;
@@ -41,12 +39,30 @@ $button-color-schemes: (
 			padding: 0;
 		}
 
+		&.--circle{
+			border-radius: 100%;
+			padding: get-lookup-prop(base-padding,xs);
+		}
 		$self: &;
-		//TODO : temp: hack for variants.
+	}
 
-		@at-root {
-			@include render-queue(get-collection($button-color-schemes, '#{$self}.', selector));
-		};
+	//TODO : temp: hack for variants.
+	///TODO - switch to new format???????~~?
+	@include block($name,component){
+		@each $key in $scheme-list {
+			@include modifier($key){
+			//	@include render-queue(get-collection($key));
+				$props: (
+					background: true,
+					foreground: true,
+					border: true,
+					fill:foreground,
+					hover-background:rgba(color($key, background), .7),
+					hover-foreground:rgba(color($key, foreground), .7)
+				);
+				@include g-color-scheme($key, $props...);
+			}
+		}
 	}
 }
 
@@ -159,6 +175,8 @@ $button-color-schemes: (
 	&.--no-padding {
 		padding: 0;
 	}
+
+
 
 	@if (function-exists(get-module-rhythm-spacing)) {
 

@@ -1,3 +1,4 @@
+//TODO - FIX THESE TO FOLLOW NEW FORMAT!!!
 @mixin c-divider($color-scheme: $chroma-active-scheme, $width: 100%){
 
     @include c-kabob( $color-scheme,false,true,  100%){
@@ -18,26 +19,26 @@
             &:after {
                 display: block;
                 width: 100%;
-                height: ms(get-scale-units()) * .1;
+               // height: ms(get-scale-units()) * .1;
                 background: color($color-scheme, foreground);
                 content: " ";
 
                 $multiplier: .1; ///size the line
 
                 .--xs & {
-                    height: ms(get-scale-units(xs))  * $multiplier;
+                    //height: ms(get-scale-units(xs))  * $multiplier;
                 }
                 .--sm & {
-                    height: ms(get-scale-units(sm))  * $multiplier;
+                   // height: ms(get-scale-units(sm))  * $multiplier;
                 }
                 .--md & {
-                    height: ms(get-scale-units(md))  * $multiplier;
+                    //height: ms(get-scale-units(md))  * $multiplier;
                 }
                 .--lg & {
-                    height: ms(get-scale-units(lg))  * $multiplier;
+                    //height: ms(get-scale-units(lg))  * $multiplier;
                 }
                 .--xl & {
-                    height: ms(get-scale-units(xl)) * $multiplier;
+                   // height: ms(get-scale-units(xl)) * $multiplier;
                 }
                 .--no-divider & {
                     content: " ";
