@@ -4,9 +4,20 @@
 @mixin set-type(  $font-size-variant: $default-font-size-variant,$type-variant:$default-typography-variant,$lines: 1, $font-size-collection: $default-font-size-key, $type-collection: $default-typography-key ) {
     //TODO : fix
 
+    $font-size-to-write:false;
 
     //write properties....
+@if (_is-number($font-size-variant)){
+//@error $font-size-variant;
+    $font-size-to-write:$font-size-variant;
+
+}@else{
     $font-size-to-write:get-font-size($font-size-variant);
+
+}
+
+
+
 
     //to-size, lines, from-size
     @include adjust-font-size-to($font-size-to-write, $lines);

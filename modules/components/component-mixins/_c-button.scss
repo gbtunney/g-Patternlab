@@ -20,6 +20,18 @@ $button-color-schemes: (
 	suffix: false,
 );
 
+$button-padding-flags: (
+	description: "INVERT FUNCTIONAL COLOR ",
+	parent: base-padding,
+	suffix:true
+);
+
+$font-flags: (
+	description: "INVERT FUNCTIONAL COLOR ",
+	parent: font-size,
+	suffix:true
+);
+
 //get-collection()
 @mixin c-button($name: button, $variant-keys: light font-san-serif md md , $collection:color-schemes typeography font-size base-padding, $placeholder: 'c-button-static-props', $at-root: false  ) {
 	$collection: get-collection($collection, $variant-keys);
@@ -43,7 +55,24 @@ $button-color-schemes: (
 			border-radius: 100%;
 			padding: get-lookup-prop(base-padding,xs);
 		}
+		&.--rounded {
+			border-radius:get-lookup-prop(base-padding,sm);
+		}
+		&.--round-right {
+			border-top-right-radius: get-lookup-prop(base-padding,sm);
+			border-bottom-right-radius: get-lookup-prop(base-padding,sm);
+			//padding-left: rhythm(.5);
+
+		}
 		$self: &;
+		@at-root {
+			@include render-queue(get-collection($font-flags, '#{$self}.font', selector));
+		}
+
+		@at-root {
+			@include render-queue(get-collection($button-padding-flags, '#{$self}.padding',selector ));
+		}
+
 	}
 
 	//TODO : temp: hack for variants.
@@ -64,6 +93,8 @@ $button-color-schemes: (
 			}
 		}
 	}
+
+
 }
 
 //get-collection()

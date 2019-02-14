@@ -1,4 +1,13 @@
+$base-line-height:20px;
+ $relative-font-sizing: false !global;
+
 @import "dependencies";
+
+
+
+//  $base-line-height: $BASE_LINE_HEIGHT !global;
+// $relative-font-sizing: false !global;
+
 @import "project-variables";
 //todo: fix this
 @import "objects/objects";
@@ -142,7 +151,7 @@ $test: init-typography-module();
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: false;
+$GENERATE-QUEUE: true;
 
 @if ( $GENERATE-QUEUE ) {
 
@@ -182,8 +191,6 @@ $GENERATE-QUEUE: false;
 
 $the-placeholder: button-static;
 
-
-
 .testing{
 //	@include render-queue(get-collection($example-component-render2));
 //	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
@@ -191,21 +198,7 @@ $the-placeholder: button-static;
 	//@extend %#{$the-placeholder};
 }
 ////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
-
-@debug get-collection(base-margin);
-
-//$test-collection: get-collection($color-module-render-queue ,gillian-swatches gillian-colorz, selector);
-
-//@debug $style-dictionary;
-@include block(gbt, utility) {
-	//@include render-queue(font-size, sm);
-}
-
-//@include _base-component($example-component-render, potter-button,true);
-
-
 @include c-button(button);
-
 
 @include block(divider,component){
 
@@ -223,7 +216,7 @@ $the-placeholder: button-static;
 
 	@each $key in $scheme-list {
 		@include modifier($key){
-			@include c-divider($key);
+			//@include c-divider($key);
 
 			$props: (
 				background: true,
@@ -234,20 +227,26 @@ $the-placeholder: button-static;
 			@include g-color-scheme($key, $props...){
 				@include u-icon-svg(false,1em);
 			}
-
-			.--reflect{
-				@include u-reflect-X();
-			}
-			&.--no-border {
-				border: none;
-			}
 		}
+
 	}
-	//background: red;
+	&.--reflect{
+		@include u-reflect-X();
+	}
+	&.--no-border {
+		border: none;
+	}
+	&.--rounded {
+		border-radius:get-spacing(.5);
+	}
+	&.--round-right {
+		border-top-right-radius: get-spacing(.5);
+		border-bottom-right-radius: get-spacing(.5);
+		//padding-left: rhythm(.5);
 
-}@debug "jhsssh";
 
-gillianexample{@include set-type();
+	}
 }
-
-//c-button
+gillianexample{
+	@include set-type();
+}

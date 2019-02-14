@@ -271,8 +271,10 @@ $base-render-objects:(
                     font-weight: 700
                 ),
                 font-small-caps:(
-                    font-family: "adobe-garamond-pro",
-                    text-transform: "uppercase",
+                    font-family: "cronos-pro-display",
+                    text-transform: uppercase,
+                    letter-spacing: 1px,
+
                     title: 'Accent, Small Caps : Mrs Eaves Roman Small Caps'
                 ),
                 font-test:(

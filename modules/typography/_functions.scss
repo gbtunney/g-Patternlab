@@ -13,8 +13,8 @@
 }
 
 @function init-typography-module() {
-    $BASE_FONT_SIZE: get-font-size(base);
-    $BASE_LINE_HEIGHT: 1.2;
+    $BASE_FONT_SIZE: 8px;//get-font-size(base);
+    $BASE_LINE_HEIGHT: 1.4;
 
     //convert unitless lineheight
 
@@ -22,9 +22,9 @@
     } @else {
         $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
     }
-    $base-font-size: $BASE_FONT_SIZE !global;
-    $base-line-height: $BASE_LINE_HEIGHT !global;
-    $relative-font-sizing: false !global;
+  //  $base-font-size: $BASE_FONT_SIZE !global;
+  //  $base-line-height: $BASE_LINE_HEIGHT !global;
+   // $relative-font-sizing: false !global;
     @return false;
 };
 
