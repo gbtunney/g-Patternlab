@@ -5,3 +5,11 @@
     @return (
     );
 }
+@function get-spacing( $units: 1, $variant:$default-spacing-variant,$key:$default-spacing-key  ) {
+
+    @return $units * get-lookup-prop($key, $variant, false);
+}
+
+@function get-font-size($variant:$default-font-size-variant,$key:$default-font-size-key ){
+    @return get-lookup-prop($key, $variant);
+}

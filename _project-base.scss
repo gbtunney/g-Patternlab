@@ -142,7 +142,7 @@ $test: init-typography-module();
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: false;
+$GENERATE-QUEUE: true;
 
 @if ( $GENERATE-QUEUE ) {
 
@@ -217,6 +217,32 @@ $the-placeholder: button-static;
 	background: red;
 
 }
+
+
+@include block(icon,component){
+
+	@each $key in $scheme-list {
+		@include modifier($key){
+			@include c-divider($key);
+
+			$props: (
+				background: true,
+				foreground: true,
+				border: true,
+				fill:foreground
+			);
+			@include g-color-scheme($key, $props...){
+				@include u-icon-svg(false,1em);
+			}
+
+		}
+	}
+	//background: red;
+
+}@debug "jhh";
+
+
+
 //OLD WAY
 
 //@include write-selector('dividergilian',false){
