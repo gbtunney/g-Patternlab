@@ -142,7 +142,7 @@ $test: init-typography-module();
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: true;
+$GENERATE-QUEUE: false;
 
 @if ( $GENERATE-QUEUE ) {
 
@@ -217,7 +217,7 @@ $the-placeholder: button-static;
 	background: red;
 
 }
-
+//OLD WAY
 
 @include block(icon,component){
 
@@ -235,23 +235,17 @@ $the-placeholder: button-static;
 				@include u-icon-svg(false,1em);
 			}
 
+			.--reflect{
+				@include u-reflect-X();
+			}
+			&.--no-border {
+				border: none;
+			}
 		}
 	}
 	//background: red;
 
-}@debug "jhh";
-
-
-
-//OLD WAY
-
-//@include write-selector('dividergilian',false){
-//		@include c-divider($key);
-
-
-
-//@error "";
-
+}@debug "jhsssh";
 
 gillianexample{@include set-type();
 }
