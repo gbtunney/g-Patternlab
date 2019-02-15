@@ -477,6 +477,9 @@
 		$variants: map-get($collection, variants);
 	}
 
+	@if ( $variant-key == false and _has($variants,units) ){
+		@return _get($variants,units);
+	}
 	$transformed-data-map: transform-data($variants...);
 
 	//TODO: make this work with multiple sub props

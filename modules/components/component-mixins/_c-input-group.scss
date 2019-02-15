@@ -1,0 +1,133 @@
+$example-input-group-render: (
+	(
+		description: "color scheme - input",
+		parent: color-schemes,
+		suffix:true,
+		variants:(
+			options: (
+				obj: (
+					background: true,
+					foreground: true,
+					accent:false,
+					border:true,
+					fill:foreground,
+					hover-background:true,
+					hover-foreground:true
+				)
+			)
+
+		)
+
+	),
+	(
+		description: "font size",
+		parent: font-size,
+		variant-key: md,
+		suffix:false,
+	),
+(
+	description: "padding",
+	parent: base-padding,
+	variant-key: sm,
+	suffix:false,
+)
+);
+
+@mixin c-input-group($name: false,$collection:$example-input-group-render){
+	@include block($name, component){
+		$self:&;
+
+		//$collection: get-collection($collection,#{$self}, selector);
+	//	@include render-queue($collection);
+
+
+		//@include _base-component(get-collection($collection), $name, false, false) ;
+		width : 100%;
+		display: flex;
+
+		&__input{
+			width: 100%;
+			@include input-placeholder{
+			//	color:
+			}
+		}
+		&__icon{
+			//@extend %u-placeholder-icon-svg;
+		}
+
+	}
+}
+
+@mixin c-input($name: input, $variant-keys: light font-serif md sm , $collection:color-schemes typography font-size base-padding, $placeholder:false, $at-root: false  ) {
+	$collection: get-collection($collection, $variant-keys);
+	@include _base-component(get-collection($collection), $name, $placeholder, false) {
+		&__icon {
+			@include u-icon-svg(false, 1em);
+		}
+		&.--no-background, &.--no-background:hover {
+			background-color: transparent;
+		}
+
+		&.--no-border {
+			border: none;
+		}
+
+		&.--no-padding {
+			padding: 0;
+		}
+
+		&.--circle{
+			@include u-round(100%);
+			padding: get-lookup-prop(base-padding,xs);
+		}
+		&.--rounded {
+			@include u-round(get-lookup-prop(base-padding,sm),all);
+
+		}
+		&.--round-right {
+			@include u-round(get-lookup-prop(base-padding,sm),right);
+		}
+		$self: &;
+		@at-root {
+			@include render-queue(get-collection($font-flags, '#{$self}.font', selector));
+		}
+
+		@at-root {
+			@include render-queue(get-collection($button-padding-flags, '#{$self}.padding',selector ));
+		}
+
+	}
+
+	//TODO : temp: hack for variants.
+	///TODO - switch to new format???????~~?
+	@include block($name,component){
+		@each $key in $scheme-list {
+			@include modifier($key){
+				//	@include render-queue(get-collection($key));
+				$props: (
+					background: true,
+					foreground: true,
+					accent:false,
+					border:true,
+					fill:foreground,
+					hover-background:true,
+					hover-foreground:true
+				);
+
+				@include g-color-scheme($key, $props...);
+
+				$self : &;
+				@at-root {
+					@include input-placeholder($self) {
+						color: color($key,placeholder);
+					}
+				}
+			;
+
+			}
+			/*@include input-placeholder(){
+				color: color($key,placeholder);
+			}*/
+		}
+	}
+}

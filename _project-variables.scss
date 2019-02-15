@@ -39,11 +39,12 @@ $schemes: (
         description: 'The main light on dark theme.',
         parent: false,
         colors:(
-            foreground: fuScous_gray,
+            foreground: fuscous-gray,
             background: white,
             accent: gum-leaf,
             border: fuscous_gray,
-            link: gum-leaf
+            link: gum-leaf,
+            placeholder:rgba(#555,.9)
         )
     ),
     light-alt: (
@@ -88,7 +89,9 @@ $schemes: (
         description: 'inverted',
         parent: light,
         transform:inverted,
-        colors:()
+        colors:(
+            placeholder:rgba(white,.8)
+        )
     ),
     dark-accent-default:(
         key: dark-accent-default,
@@ -136,7 +139,8 @@ $schemes: (
             accent: orange,
             border: purple,
             link: orange,
-            link-focus:  link
+            link-focus:  link,
+            placeholder:blue
         )
     ),
     invert-functional: (
@@ -418,7 +422,31 @@ $base-render-objects:(
         ),
         key: static-size-demo,
         selector:static-size-demo
-    )
+    ),
+(
+    description: "Relative Icon Sizes for inline - based on current font settings. ",
+    render:(
+        module:size, //dont know??
+        filter: assign,
+        props: (width),
+    ),
+    suffix: false, //if it is to be generated, use a class suffix before,
+    variants:(
+        transform: no-transformation,
+        options: (
+
+        ), ///option is the thread is for modular scale
+        units: (
+            sm: .5em,
+            base: 1em,
+            md: 1.5em,
+            lg: 2em,
+            xl:3em
+        )
+    ),
+    key: relative-icon-size,
+    selector:false
+)
 );
 
 /*units: (

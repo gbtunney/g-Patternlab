@@ -89,11 +89,20 @@ Settings
     transform: scale(1, -1);
 }
 
-@mixin input-placeholder {
-    ::-webkit-input-placeholder {@content}
-    :-moz-placeholder           {@content}
-    ::-moz-placeholder          {@content}
-    :-ms-input-placeholder      {@content}
+@mixin input-placeholder($self: false) {
+
+    @if ( $self){
+        #{$self}::-webkit-input-placeholder {@content}
+        #{$self}:-moz-placeholder           {@content}
+        #{$self}::-moz-placeholder          {@content}
+        #{$self}:-ms-input-placeholder      {@content}
+    }@else{
+        ::-webkit-input-placeholder {@content}
+        :-moz-placeholder           {@content}
+        ::-moz-placeholder          {@content}
+        :-ms-input-placeholder      {@content}
+    }
+
 }
 
 @mixin font-smoothing($bool: true) {

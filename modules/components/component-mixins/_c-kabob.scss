@@ -10,8 +10,38 @@ $kabob-color-schemes: (
     suffix: true,
 );
 
+///kabob color parts.
+@mixin c-kabob-color( $color-scheme: $chroma-active-scheme,$accent: false,$divider: false,$schemeProps:false) {
+    $self: &;
 
-@mixin c-kabob( $color-scheme: $chroma-active-scheme,$schemeProps:false,$reflect: false, $width: auto, $unit: sm, $font: font-san-serif) {
+    @if ($schemeProps and type-of($schemeProps) == map) {
+        @include g-color-scheme($color-scheme, $schemeProps...);
+    } @else {
+        ///DEFAULT TO MONOCHROME.
+        $props: (
+            background: false,
+            foreground: true,
+            border: false,
+            fill:foreground,
+            hover-foreground: false,
+            hover-fill: false,
+        );
+        @if ( $accent ){
+            $props: map-set($props,accent,true);
+        }
+        @include g-color-scheme($color-scheme, $props...);
+    }
+
+    &__center {
+            &:after {
+                background: color($color-scheme, foreground);
+            }
+    }
+    @content;
+}
+
+
+@mixin c-kabob( $color-scheme: $chroma-active-scheme,$schemeProps:false,$reflect: false, $type-collection:( (font-size typography),(md font-serif)) , $width: auto) {
     $self: &;
 
     @include dry(c-kabob, $DRY_ENABLED){
@@ -23,36 +53,38 @@ $kabob-color-schemes: (
 
     width: $width;
 
-    @if ($schemeProps and type-of($schemeProps) == map){
-        @include g-color-scheme($color-scheme,$schemeProps...);
-    }@else{
+    //type props, also the size of icon
+    $collection: get-collection($type-collection...);
+    @include render-queue($collection);
+
+    @if ($schemeProps and type-of($schemeProps) == map) {
+        @include g-color-scheme($color-scheme, $schemeProps...);
+    } @else {
         $props: (
             background: false,
             foreground: true,
             border: false,
             fill:accent,
-            hover-foreground:rgba( color($color-scheme,foreground), .8 ),
-            hover-fill: adjust-hue(color($color-scheme,accent),-10%),
-
+            hover-foreground:rgba(color($color-scheme, foreground), .8),
+            hover-fill: adjust-hue(color($color-scheme, accent), -10%),
         );
-        @include g-color-scheme($color-scheme,$props...);
+        @include g-color-scheme($color-scheme, $props...);
     }
 
-    &.--monochrome{
+    &.--monochrome {
         $props: (
             background: false,
             foreground: true,
             border: false,
             fill:foreground,
-            hover-foreground:rgba( color($color-scheme,foreground), .7 )
+            hover-foreground:rgba(color($color-scheme, foreground), .7),
+            hover-fill: false,
         );
-        @include g-color-scheme($color-scheme,$props...);
+        @include g-color-scheme($color-scheme, $props...);
     }
 
-
-
     &__center{
-        // @include setType(get-scale-units($unit), $font);
+
     }
 
     @if ($reflect) {
@@ -67,30 +99,127 @@ $kabob-color-schemes: (
     &__left, &__right {
         @include u-icon-svg(false,1em);
     }
+
+
+    //  &.--lg #{&}__left, &.--lg #{&}__right {
+    //@include u-icon-svg(false,6em);
+
+
+    // }
+
+    // @include write-flags()
+
+    /*
+		@include write-flags(relative-icon-size,width,'#{&}__right');
+		@include write-flags(relative-icon-size,height,'#{&}__right');
+		@include write-flags(relative-icon-size,width,'#{&}__left');
+		@include write-flags(relative-icon-size,height,'#{&}__left');
+	*/
+
     .--monochrome &__left, .--monochrome &__right {
         //@include o-icon-svg(color($color-scheme, foreground), $unit);
     }
 
-    //@each $key, $unit in $scale-units {
-    //   // @debug 'kabob scale-sizes-#{$key} units #{ms($unit)}';
-    //
-    //    &.--#{$key} &__right,&.--#{$key} &__left{
-    //       @include o-icon-svg(false, $key);
-    //    }
-    //    &.--monochrome.--#{$key} &__right,&.--monochrome.--#{$key} &__left{
-    //     // @include o-icon-svg(color($color-scheme, foreground), $key);
-    //    }
-    //}
-    //@each $key, $unit in $scale-units {
-    //
-    //    &.--#{$key} &__center{
-    //        @include setType( $unit,$font)
-    //    }
-    //}
+    @content;
+}
+
+@mixin c-kabob-oold( $color-scheme: $chroma-active-scheme,$schemeProps:false,$reflect: false, $type-collection:( (font-size typography),(md font-serif)) , $width: auto) {
+    $self: &;
+
+    @include dry(c-kabob, $DRY_ENABLED){
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    width: $width;
+
+    //type props, also the size of icon
+    $collection: get-collection($type-collection...);
+    @include render-queue($collection);
+
+    @if ($schemeProps and type-of($schemeProps) == map) {
+        @include g-color-scheme($color-scheme, $schemeProps...);
+    } @else {
+        $props: (
+            background: false,
+            foreground: true,
+            border: false,
+            fill:accent,
+            hover-foreground:rgba(color($color-scheme, foreground), .8),
+            hover-fill: adjust-hue(color($color-scheme, accent), -10%),
+        );
+        @include g-color-scheme($color-scheme, $props...);
+    }
+
+    &.--monochrome {
+        $props: (
+            background: false,
+            foreground: true,
+            border: false,
+            fill:foreground,
+            hover-foreground:rgba(color($color-scheme, foreground), .7),
+            hover-fill: false,
+        );
+        @include g-color-scheme($color-scheme, $props...);
+    }
+
+    &__center{
+
+    }
+
+    @if ($reflect) {
+        &__right {
+            @include u-reflect-X();
+        }
+    }
+    .--reflect &__right {
+        @include u-reflect-X();
+    }
+
+    &__left, &__right {
+        @include u-icon-svg(false,1em);
+    }
+
+
+      //  &.--lg #{&}__left, &.--lg #{&}__right {
+            //@include u-icon-svg(false,6em);
+
+
+    // }
+
+   // @include write-flags()
+
+/*
+    @include write-flags(relative-icon-size,width,'#{&}__right');
+    @include write-flags(relative-icon-size,height,'#{&}__right');
+    @include write-flags(relative-icon-size,width,'#{&}__left');
+    @include write-flags(relative-icon-size,height,'#{&}__left');
+*/
+
+    .--monochrome &__left, .--monochrome &__right {
+        //@include o-icon-svg(color($color-scheme, foreground), $unit);
+    }
 
     @content;
 }
 
+@mixin write-flags($key: font-size,$prop: false , $selector:false ){
+$variants: get-lookup-prop($key);
+
+    @each $variant-key,$value in $variants{
+        ///toodo : something with render queue elswise
+        @if ($prop and $selector){
+
+           &.--#{$variant-key} #{$selector}{
+
+           #{$prop}: get-lookup-prop($key,$variant-key);
+
+           }
+        }
+    }
+}
 
 
 @mixin c-kabob-scratch($name: kabob,$reflect: true, $props:false,$color-scheme: light, $variant-keys: font-san-serif md md , $collection: typeography font-size base-padding, $placeholder: 'c-kabob-static-props') {

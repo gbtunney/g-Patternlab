@@ -1,9 +1,7 @@
 $base-line-height:20px;
- $relative-font-sizing: false !global;
+ $relative-font-sizing: true!global;
 
 @import "dependencies";
-
-
 
 //  $base-line-height: $BASE_LINE_HEIGHT !global;
 // $relative-font-sizing: false !global;
@@ -151,7 +149,7 @@ $test: init-typography-module();
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: true;
+$GENERATE-QUEUE: false!default;
 
 @if ( $GENERATE-QUEUE ) {
 
@@ -200,16 +198,27 @@ $the-placeholder: button-static;
 ////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
 @include c-button(button);
 
+@include c-input(input);
+
+
 @include block(divider,component){
 
 	@each $key in $scheme-list {
 		@include modifier($key){
-			@include c-divider($key);
+		///	@include c-divider($key);
 		}
 	}
-	background: red;
-
 }
+
+@include block(kabob,component){
+
+	@each $key in $scheme-list {
+		@include modifier($key){
+				@include c-kabob-color($key);
+		}
+	}
+}
+
 //OLD WAY
 
 @include block(icon,component){
@@ -228,7 +237,6 @@ $the-placeholder: button-static;
 				@include u-icon-svg(false,1em);
 			}
 		}
-
 	}
 	&.--reflect{
 		@include u-reflect-X();
@@ -243,10 +251,18 @@ $the-placeholder: button-static;
 		border-top-right-radius: get-spacing(.5);
 		border-bottom-right-radius: get-spacing(.5);
 		//padding-left: rhythm(.5);
-
-
 	}
-}
-gillianexample{
-	@include set-type();
+
+	&.--lg{
+		width: get-lookup-prop(relative-icon-size,lg);
+		height: get-lookup-prop(relative-icon-size,lg);
+	}
+	&.--md{
+		width: get-lookup-prop(relative-icon-size,md);
+		height: get-lookup-prop(relative-icon-size,md);
+	}
+	&.-sm{
+		width: get-lookup-prop(relative-icon-size,sm);
+		height: get-lookup-prop(relative-icon-size,sm);
+	}
 }
