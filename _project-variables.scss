@@ -428,7 +428,7 @@ $base-render-objects:(
     render:(
         module:size, //dont know??
         filter: assign,
-        props: (width),
+        props: (width,height),
     ),
     suffix: false, //if it is to be generated, use a class suffix before,
     variants:(
@@ -437,16 +437,40 @@ $base-render-objects:(
 
         ), ///option is the thread is for modular scale
         units: (
-            sm: .5em,
+            sm: .75em,
             base: 1em,
-            md: 1.5em,
-            lg: 2em,
-            xl:3em
+            md: 1.25em,
+            lg: 1.5em,
+            xl: 2em
         )
     ),
     key: relative-icon-size,
     selector:false
-)
+),
+    (
+        key: icon-new-sizes,
+        selector: false,
+        description: "Ration Size Base SPACING Values",
+        suffix: false, //if it is to be generated, use a class suffix before,
+        render:(
+            module:size, //dont know??
+            filter: assign,
+            props: (width,height),  //maybe needs to go??
+        ),
+        variants:(
+            transform: no-transformation,
+            options: (
+
+            ), ///option is the thread is for modular scale
+            units: (
+                sm: 10px,
+                base: 16px,
+                md:  25px,
+                lg: 50px,
+                xl:100px
+            )
+        )
+    )
 );
 
 /*units: (
@@ -471,7 +495,16 @@ $secondary-objects:(
         key: base-padding,
         parent: rhythm-units,
         description: "Base Padding Values",
-    )
+    ),
+
+(
+    key: icon-sizes,
+    parent: rhythm-units,
+    description: "Base Padding Values",
+    render:(
+        props: (width,height),
+    ),
+)
 );
 
 $generator-render-objects: (
@@ -530,3 +563,4 @@ $generator-render-objects: (
     )
 );
 $bem-throw-errors:false;
+$include-helper-classes:true!default;

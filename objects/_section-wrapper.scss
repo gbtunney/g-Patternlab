@@ -1,0 +1,13 @@
+.o-section{
+
+
+	@include u-make-container(80%);
+
+	@include breakpoint-range(sm,"<="){
+		@include u-make-container(95%);
+
+	}
+}
+
+
+@error

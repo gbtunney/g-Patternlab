@@ -17,7 +17,9 @@ $base-line-height:20px;
 @import "modules/components/module";
 @import "modules/generator/module";
 @import "modules/unit-test/module";
+@import "utilities/core/u-scheme-helper-classes";
 //typekit
+
 @import url('https://use.typekit.net/kxg6qeb.css');
 $generate-map: (
 	scheme-classes: false,
@@ -211,6 +213,9 @@ $the-placeholder: button-static;
 }
 
 @include block(kabob,component){
+@debug "jjj";
+
+	@include c-kabob();
 
 	@each $key in $scheme-list {
 		@include modifier($key){

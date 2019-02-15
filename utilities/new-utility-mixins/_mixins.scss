@@ -60,7 +60,7 @@ Settings
     }
     @include breakpoint-range(sm, "<=") {
         float: none;
-        @include center-align-horz;
+       // @include center-align-horz;
         margin: rhythm(1) 0;
     }
 }

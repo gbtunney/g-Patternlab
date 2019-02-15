@@ -1,44 +1,51 @@
 @if ($include-helper-classes) {
-    .u-trailing-border, .u-underline {
+    .--trailing-border, .---underline {
         @include trailing-border();
     }
-    .u-left-border {
+    .--left-border {
         @include apply-side-rhythm-border(left);
     }
-    .u-right-border {
+    .--right-border {
         @include apply-side-rhythm-border(right);
     }
     //rhthm float left
-    .u-float-left {
-        @include u-float-rhythm(left);
+    .--float-left {
+       // @include u-float-rhythm(left);
     }
     //rhthm float right
-    .u-float-right {
-        @include u-float-rhythm(right);
+    .--float-right {
+      //  @include u-float-rhythm(right);
     }
-    .u-rhythm-padding {
-        padding: rhythm(2) rhythm(2);
+    .--rhythm-padding {
+      //  @debug get-spacing(2);
+        // padding: get-spacing(2) get-spacing(2);
     }
-    .u-rhythm-margin {
-        margin: rhythm(2) rhythm(2);
+    .--rhythm-margin {
+     //   margin:  get-spacing(2) get-spacing(2);
         //TODO: FIX THIS
     }
-    .u-leader {
-        @include leader(1);
+    .--leader-margin {
+        @include leader();
     }
-    .u-leader-2 {
+    .--leader-margin-2 {
         @include leader(2);
     }
-    .u-trailer {
+    .--leader {
+        @include padding-leader(1)
+    }
+    .--leader-2 {
+        @include padding-leader(2);
+    }
+    .--trailer {
         @include trailer(1);
     }
-    .u-trailer2 {
+    .--trailer-2 {
         @include trailer(2);
     }
-    .u-indent {
-        padding-left: rhythm(1);
+    .--indent {
+     // padding-left: get-spacing(1);
     }
-    .u-indent-2 {
-        padding-left: rhythm(2);
+    .--indent-2 {
+    // padding-left: get-spacing(2);
     }
 }

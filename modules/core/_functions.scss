@@ -100,8 +100,8 @@
 
 ///move to general utilitisz
 @function is-single-item($value) {
-
-	@return (type-of($value) != map and ( length($value) >= 1 ));
+////NOTE: changed this? posibly bad?
+	@return (type-of($value) != map and ( length($value) <= 1 ));
 }
 
 ///remap merges values with option maps
@@ -140,14 +140,20 @@
 @function assign($unit:(),$props:(),$additional-parameters:false) {
 	//@warn is-single-item($props) ;
 
+
+
 	@if is-single-item($props) and is-single-item($unit) {
 		@return map-set((), _to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
 	} @else if (_is-map($unit) and is-single-item($props)) {
 		// @error "HI";
 		@return map-set((), _to-string($props), map-values($unit)); ///if there are additional options, item needs to be put in map instead of returned
 
-	} @else {
-
+	}@else if (is-single-item($props) == false) {
+		$new-map: ();
+		@each $prop in $props{
+			$new-map: map-set($new-map,$prop, $unit);
+		}
+		@return $new-map;
 	}
 	@return false;
 }

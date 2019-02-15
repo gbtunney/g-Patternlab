@@ -61,6 +61,7 @@ $font-flags: (
 		}
 		&.--round-right {
 			@include u-round(get-lookup-prop(base-padding,sm),right);
+			border-left-width:0px;
 		}
 
 		&__icon{
@@ -236,7 +237,8 @@ $font-flags: (
 			border-top-right-radius: rhythm(.5);
 			border-bottom-right-radius: rhythm(.5);
 			padding-left: rhythm(.5);
-
+			border-left-width:5px;
+			border:5px solid red;
 		}
 
 		&__left + &__center {
