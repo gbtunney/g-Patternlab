@@ -1,0 +1,68 @@
+//TODO: Move this somewhere better???
+//OLD WAY - ICON COMPONENT!
+///*****TEMPORARY COMPONENT: ICON!!!!
+@include block(icon,component){
+
+	@each $key in $scheme-list {
+		@include modifier($key){
+			$props: (
+				background: true,
+				foreground: true,
+				border: true,
+				fill:foreground
+			);
+			@include g-color-scheme($key, $props...){
+				@include u-icon-svg(false,1em);
+			}
+		}
+	}
+	&.--reflect{
+		@include u-reflect-X();
+	}
+	&.--no-border {
+		border: none;
+	}
+	&.--rounded {
+		border-radius:get-spacing(.5);
+	}
+	&.--round-right {
+		border-top-right-radius: get-spacing(.5);
+		border-bottom-right-radius: get-spacing(.5);
+		//padding-left: rhythm(.5);
+	}
+
+	&.--lg{
+		width: get-lookup-prop(relative-icon-size,lg);
+		height: get-lookup-prop(relative-icon-size,lg);
+	}
+	&.--md{
+		width: get-lookup-prop(relative-icon-size,md);
+		height: get-lookup-prop(relative-icon-size,md);
+	}
+	&.-sm{
+		width: get-lookup-prop(relative-icon-size,sm);
+		height: get-lookup-prop(relative-icon-size,sm);
+	}
+}
+
+
+///*****TEMPORARY COMPONENT: KABOB!!
+
+@include block(kabob,component){
+
+	@include c-kabob();
+
+	@each $key in $scheme-list {
+		@include modifier($key){
+			@include c-kabob-color($key);
+		}
+	}
+}
+
+////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
+
+
+///*****TEMPORARY COMPONENT: BUTTON - NEWER METHOD!!
+@include c-button(button);
+
+@include c-input(input);

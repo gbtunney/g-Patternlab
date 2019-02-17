@@ -36,7 +36,6 @@ $example-input-group-render: (
 @mixin c-input-group($name: false,$collection:$example-input-group-render){
 	@include block($name, component){
 		$self:&;
-
 		//$collection: get-collection($collection,#{$self}, selector);
 	//	@include render-queue($collection);
 
@@ -119,7 +118,7 @@ $example-input-group-render: (
 				$self : &;
 				@at-root {
 					@include input-placeholder($self) {
-						color: color($key,placeholder);
+						color: rgba(color($key,foreground),.9);
 					}
 				}
 			;
