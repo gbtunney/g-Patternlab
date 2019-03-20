@@ -1,5 +1,4 @@
 @function get-default( $module-name : size,$_core-module-defaults:$core-module-defaults) {
-	// @warn _get($core-module-defaults,$module-name);
 	@if _get($core-module-defaults, $module-name) {
 		@return _get($core-module-defaults, $module-name);
 	} @else {
@@ -19,7 +18,6 @@
 	$new-collection: ();
 	@each $item in $collection {
 		$new-collection: _push($new-collection, _omit($item, $arg));
-		//@debug "CLEANING!! #{_omit($item ,$arg) }";
 	}
 	@return $new-collection;
 }
@@ -42,7 +40,7 @@
 		$key: map-get($new-render-obj, key);
 	}
 	@if (_get($_style-dictionary, $key)) {
-		@warn "ALREADY ADDED #{$key}";
+		///@warn "ALREADY ADDED #{$key}";
 	} @else {
 		$style-dictionary: map-set($style-dictionary, $key, $new-render-obj) !global;
 	}
@@ -65,7 +63,6 @@
 }
 
 @function times-three($n, $args...) {
-	@debug $args;
 	@return $n * 3;
 }
 
@@ -88,11 +85,11 @@
 	@if (_is-number($v)) {
 		$v: ($v * $base);
 		@if (has-unit($v) == false) {
-			@warn "ratio size value has no unit----#{$v}";
+			//@warn "ratio size value has no unit----#{$v}";
 		}
 		@return $v;
 	} @else {
-		@warn "trying to do a ratio-size on non integer: #{$v}";
+		//@warn "trying to do a ratio-size on non integer: #{$v}";
 		@return $v;
 	}
 	@return false;
@@ -100,7 +97,7 @@
 
 ///move to general utilitisz
 @function is-single-item($value) {
-////NOTE: changed this? posibly bad?
+	////NOTE: changed this? posibly bad?
 	@return (type-of($value) != map and ( length($value) <= 1 ));
 }
 
@@ -132,26 +129,21 @@
 		$newmap: map-set($newmap, foreground, choose-contrast-color($v));
 		$newmap: map-set($newmap, border, choose-contrast-color($v));
 	}
-
 	@return $newmap;
 }
 
 //filter function for single numbers...
 @function assign($unit:(),$props:(),$additional-parameters:false) {
-	//@warn is-single-item($props) ;
-
-
-
 	@if is-single-item($props) and is-single-item($unit) {
 		@return map-set((), _to-string($props), $unit); ///if there are additional options, item needs to be put in map instead of returned
 	} @else if (_is-map($unit) and is-single-item($props)) {
 		// @error "HI";
 		@return map-set((), _to-string($props), map-values($unit)); ///if there are additional options, item needs to be put in map instead of returned
 
-	}@else if (is-single-item($props) == false) {
+	} @else if (is-single-item($props) == false) {
 		$new-map: ();
-		@each $prop in $props{
-			$new-map: map-set($new-map,$prop, $unit);
+		@each $prop in $props {
+			$new-map: map-set($new-map, $prop, $unit);
 		}
 		@return $new-map;
 	}
@@ -184,19 +176,9 @@
 
 		@each $key, $value in $props {
 			@if (map-get($unit, $key)) {
-				//@debug "UNIT --#{$key}-#{map-get($unit, $key)}";
-
-				//@if ( _is-map($value)){
 				$new-map: recursive-map-merge($new-map, get-selector-map(map-get($unit, $key), $value...));
-
-				//}@else{
-				//@debug "UNIT --#{$new-map}-#{map-get($unit, $key)}";
-
-				//}
 			}
 		}
-		//@debug $new-map;
-
 		@return $new-map;
 	}
 	@return false;
@@ -217,17 +199,9 @@
 
 		$val: get-current-scheme-color($key, $value, $v);
 		@if ($val) {
-			//@debug "COLOR FOUND #{$key} #{$val} #{$v}";
 			$new-map: map-merge($new-map, ($key: $val));
 		}
-
 		@if ($value == true) {
-
-			//@if (color($v, $key) ){
-			//$new-map: map-merge($new-map, ($key: color($v, $key)));
-			//	}@else{
-			//@warn "color #{$key} not found";
-			//}
 		}
 	}
 	@return $new-map;
@@ -256,7 +230,6 @@
 			}
 			$new-value: remap-value($new-value, $options, $var);
 			/// @warn "TRYING TO TRANSFORM key: #{_is-function($transform)} value: #{$new-value}";
-
 			@if (_is-function($transform)) {
 				$_transform-result: call(get-function($transform), $new-value...);
 				// $_transform-result:  _map($new-value, $transform);
@@ -294,7 +267,6 @@
 			$filtered-unit-arr: map-set($filtered-unit-arr, $key, $transformed-val);
 		}
 	} @else {
-		@debug "NOT A FUNCTION";
 	}
 	@return $filtered-unit-arr;
 }
@@ -347,13 +319,11 @@
 
 @function routerFunc( $obj , $condition, $callback:false, $break:false,$overwrite-collection:false, $prop: variant-key, $override-all: true ) {
 	@if (_($obj, $condition)) {
-		//	@debug "condition #{$condition}is succesful";
 		@if ($callback == false) {
 			@return $obj;
 		}
 		@return _($obj, $callback);
 	} @else {
-		//	@debug "condition #{$condition} NOT  succesful";
 		//if condition fails, return the object untransformed by callback.
 		@if ($break) {
 			@return false;
@@ -373,7 +343,6 @@
 }
 
 @function get-collection( $obj : (),$overwrite-collection:false, $prop: variant-key) {
-
 	$my-collection: ();
 	$item: get-collection-item($obj);
 	//TODO MIGHT NEED TO REVIEW THIS?
@@ -396,7 +365,6 @@
 	}
 	//*****OVERRITE ALL!
 	@if ($overwrite-collection and  ( length($overwrite-collection)==1 or _is-map($overwrite-collection) )) {
-		@debug '---------overwrite all mode';
 		$new-collection: ();
 
 		@each $item in $collection {
@@ -411,7 +379,6 @@
 	} @else if (length($overwrite-collection) >= length($collection)) {
 		$new-collection: ();
 		$count: 0;
-
 		//'coalate collections'
 		@each $item in $overwrite-collection {
 			$count: $count + 1;
@@ -434,16 +401,11 @@
 	@if ($selector) {
 		$_new-selector: $selector;
 		@if ($suffix) {
-
 			$_new-selector: #{$_new-selector}#{$_class-seperator}#{$suffix-key}; //_concat($_new-selector, $suffix);
 		}
 		@return $_new-selector;
 	} @else if ($selector== false and $suffix!=false and _is-function($suffix)) {
-
 		//TODO: look into this bem sass
-		//$_new-selector:call(get-function(_modifier), $suffix-key);
-		//@debug "!!TYPE IS #{&} #{$suffix} #{$suffix-key} #{_is-function($suffix)}";
-		//@return $_new-selector;
 		@return #{&}#{$_class-seperator}#{$suffix-key};
 	} @else if ($selector== false and $suffix==true) {
 
@@ -471,20 +433,20 @@
 //TODO: remove this function?
 ///this would be used for fonts?
 @function get-lookup-prop($collection:(),$variant-key:false, $prop: false ) {
-	$collection:get-collection($collection);
-	@if (  _is-list($collection) and length($collection)==1  ){
+	$collection: get-collection($collection);
+	@if (_is-list($collection) and length($collection)==1) {
 		$collection: _first(get-collection($collection));
-	}@else{
-		$collection:get-collection($collection);
+	} @else {
+		$collection: get-collection($collection);
 	}
-	$variants:();
+	$variants: ();
 
-	@if (_is-map($collection) and  _has($collection, variants)){
+	@if (_is-map($collection) and  _has($collection, variants)) {
 		$variants: map-get($collection, variants);
 	}
 
-	@if ( $variant-key == false and _has($variants,units) ){
-		@return _get($variants,units);
+	@if ($variant-key == false and _has($variants,units)) {
+		@return _get($variants, units);
 	}
 	$transformed-data-map: transform-data($variants...);
 
@@ -493,14 +455,10 @@
 	@each $key in $variant-key {
 		$new-list: _push($new-list, _get($transformed-data-map, $key));
 	}
-
-	//@debug $new-list;
 	@if (length($new-list)== 1 and _is-map(_first($new-list)) == false) {
-		//@debug " NEW IST:: #{_is-map(_first($new-list))}";
 		@return _first($new-list);
 		//TODO : fix this..
 	}
-
 	@if ($prop) {
 		@return _get($transformed-data-map, ($variant-key, $prop));
 	}
@@ -511,13 +469,9 @@
 	@if ($collection and $variant-key) {
 		$collection: get-collection($collection, $variant-key);
 	}
-	@debug "collection TYPE IS #{type-of($collection)}";
 	$new-list: "";
-
 	/*$transformed-data-map: transform-data($variants...);
-
-
-	//TODO: make this work with multiple sub props
+//TODO: make this work with multiple sub props
 	@each $key in $variant-key {
 
 		$new-list: _push($new-list, _get($transformed-data-map, $key));

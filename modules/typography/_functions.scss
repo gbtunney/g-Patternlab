@@ -1,37 +1,37 @@
 @function get-module-typography() {
-    @return true;
+	@return true;
 }
 
 @function get-dependancies-typography() {
-    @return (
-            (adjust-font-size-to): true,
-            (setting):true,
-            (dry):true, //dry
-            (ms):true, ///modular scale,
-            (get-enabled-g-functions):true
-    );
+	@return (
+			(adjust-font-size-to): true,
+			(setting):true,
+			(dry):true, //dry
+			(ms):true, ///modular scale,
+			(get-enabled-g-functions):true
+	);
 }
 
 @function init-typography-module() {
-    $BASE_FONT_SIZE: 8px;//get-font-size(base);
-    $BASE_LINE_HEIGHT: 1.4;
+	$BASE_FONT_SIZE: 8px; //get-font-size(base);
+	$BASE_LINE_HEIGHT: 1.4;
 
-    //convert unitless lineheight
+	//convert unitless lineheight
 
-    @if (has-unit($BASE_LINE_HEIGHT)) {
-    } @else {
-        $BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
-    }
-  //  $base-font-size: $BASE_FONT_SIZE !global;
-  //  $base-line-height: $BASE_LINE_HEIGHT !global;
-   // $relative-font-sizing: false !global;
-    @return false;
+	@if (has-unit($BASE_LINE_HEIGHT)) {
+	} @else {
+		$BASE_LINE_HEIGHT: $BASE_LINE_HEIGHT * $BASE_FONT_SIZE;
+	}
+	//  $base-font-size: $BASE_FONT_SIZE !global;
+	//  $base-line-height: $BASE_LINE_HEIGHT !global;
+	// $relative-font-sizing: false !global;
+	@return false;
 };
 
 @function get-type($prop, $variant:$default-typography-variant,$key:$default-typography-key  ) {
-    @return get-lookup-prop($key, $variant, $prop);
+	@return get-lookup-prop($key, $variant, $prop);
 }
 
-@function get-font-size($variant:$default-font-size-variant,$key:$default-font-size-key ){
-    @return get-lookup-prop($key, $variant);
+@function get-font-size($variant:$default-font-size-variant,$key:$default-font-size-key ) {
+	@return get-lookup-prop($key, $variant);
 }

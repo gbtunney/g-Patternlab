@@ -2,37 +2,25 @@
 //*** THESE ARE THE CORE BREAKPOINT WRAPPER
 //*** Dependencies: Modular Scale  | Compass Vertical Rhythm. | Sass DRY | Sass Toolkit
 @mixin set-type(  $font-size-variant: $default-font-size-variant,$type-variant:$default-typography-variant,$lines: 1, $font-size-collection: $default-font-size-key, $type-collection: $default-typography-key ) {
-    //TODO : fix
-
-    $font-size-to-write:false;
-
-    //write properties....
-@if (_is-number($font-size-variant)){
-//@error $font-size-variant;
-    $font-size-to-write:$font-size-variant;
-
-}@else{
-    $font-size-to-write:get-font-size($font-size-variant);
-
+	//TODO : fix
+	$font-size-to-write: false;
+	//write properties....
+	@if (_is-number($font-size-variant)) {
+		$font-size-to-write: $font-size-variant;
+	} @else {
+		$font-size-to-write: get-font-size($font-size-variant);
+	}
+	//to-size, lines, from-size
+	@include adjust-font-size-to($font-size-to-write, $lines);
+	//    @debug #{$type-collection}-#{$type-variant}-#{$font-size-variant};
+	@include dry(#{$type-variant}-#{$font-size-variant}, $DRY_ENABLED) {
+		@include render-queue(get-collection($type-collection, $type-variant));
+	}
+	@content;
 }
 
-
-
-
-    //to-size, lines, from-size
-    @include adjust-font-size-to($font-size-to-write, $lines);
-
-    @debug #{$type-collection}-#{$type-variant}-#{$font-size-variant};
-    @include dry(#{$type-variant}-#{$font-size-variant},$DRY_ENABLED) {
-        @include render-queue(get-collection($type-collection,$type-variant ));
-    }
-
-@content;
-}
-
-@mixin write-font-static-props(  $_font-map, $_css-props){
-
-        @for $i from 1 through length($_css-props) {
-            #{nth($_css-props, $i)}: map-get($_font-map, nth($_css-props, $i));
-        }
+@mixin write-font-static-props(  $_font-map, $_css-props) {
+	@for $i from 1 through length($_css-props) {
+		#{nth($_css-props, $i)}: map-get($_font-map, nth($_css-props, $i));
+	}
 }

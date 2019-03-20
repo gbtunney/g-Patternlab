@@ -1,7 +1,7 @@
 //TODO: Move this somewhere better???
 //OLD WAY - ICON COMPONENT!
 ///*****TEMPORARY COMPONENT: ICON!!!!
-@if ( $GENERATE-QUEUE ) {
+@if ($GENERATE-QUEUE) {
 
 	@include block(icon, component) {
 
@@ -59,11 +59,8 @@
 			}
 		}
 	}
-
 	////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
-
 	///*****TEMPORARY COMPONENT: BUTTON - NEWER METHOD!!
 	@include c-button(button);
-
 	@include c-input(input);
 }

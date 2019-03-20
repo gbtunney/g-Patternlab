@@ -114,10 +114,8 @@
 
             $new-color-key: _first($rest-of-list);
             @if (chroma-has-color($new-color-key, $color-scheme)) {
-
-
-               // $rest-of-list : _splice($rest-of-list, 1,1,color($color-scheme, $color-key));
-                @warn "ITS A FUNCTION!!: #{$color-scheme}  #{$new-color-key}--- #{color($color-scheme, $color-key)}";
+             // $rest-of-list : _splice($rest-of-list, 1,1,color($color-scheme, $color-key));
+                //@warn "ITS A FUNCTION!!: #{$color-scheme}  #{$new-color-key}--- #{color($color-scheme, $color-key)}";
                 @return _exec($func,color($color-scheme, $new-color-key),_rest($rest-of-list)...);
 
             } @else {
@@ -194,7 +192,6 @@
         ////TRANSFORMATION
         ///check to see if source map has both key and value in its keys
         @if (map-get($source-map,$value) and map-get($source-map,$key)) {
-
             $-newmap: map-set($-newmap, $key, map-get($source-map, $value));
         }
     }
@@ -223,7 +220,6 @@
     $schemes-with-transforms: ();
     @each $key, $scheme in $_schemes {
         @if (map-get($scheme, transform)) {
-            //  @debug "FOUND!";
             $schemes-with-transforms: map-set($schemes-with-transforms, $key, $scheme);
         }
     }
@@ -250,11 +246,11 @@
     @if (_is-integer($v)) {
         $v: ($v * $base);
         @if (has-unit($v) == false) {
-            @warn "ratio size value has no unit----#{$v}";
+           // @warn "ratio size value has no unit----#{$v}";
         }
         @return $v;
     } @else {
-        @warn "trying to do a ratio-size on non integer: #{$v}";
+       // @warn "trying to do a ratio-size on non integer: #{$v}";
         @return $v;
     }
     @return false;

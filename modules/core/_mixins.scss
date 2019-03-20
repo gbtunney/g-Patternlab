@@ -5,18 +5,15 @@
 	$render-data-map: get-rendered-data($transformed-data-map, $render...);
 
 	@if $description {
-		@debug "RENDERING OBJECT WITH DESCRIPTION #{$description}"
+		//@debug "RENDERING OBJECT WITH DESCRIPTION #{$description}"
 	}
 ;
 	///if you only want one key??
 
-	@if ( $variant-key and _is-list($variant-key) ) {
-		@debug "its a list#{_pick($render-data-map, $variant-key)} ";
-
-		$render-data-map:  _pick($render-data-map, $variant-key);//map-merge((), ($variant-key: _pick($render-data-map, $variant-key))));
-	}@else if $variant-key and _has($render-data-map, $variant-key) {
+	@if ($variant-key and _is-list($variant-key)) {
+		$render-data-map: _pick($render-data-map, $variant-key); //map-merge((), ($variant-key: _pick($render-data-map, $variant-key))));
+	} @else if $variant-key and _has($render-data-map, $variant-key) {
 		$render-data-map: map-merge((), ($variant-key: (_get($render-data-map, $variant-key))));
-		//   @warn "THIS IS A SINGLE ITEM!!#{$variant-key} after #{$render-data-map}";
 	}
 
 	///TODO : probably fix this somehow.
@@ -39,9 +36,8 @@
 					#{$new-selector} {
 						@if ($declarations and _is-map($declarations)) {
 							@include _declare($declarations);
-
 						} @else {
-							@warn "DECLARATIONS IS NOT A MAP";
+							//@warn "DECLARATIONS IS NOT A MAP";
 						}
 						@include _rules($_render-map);
 					}
@@ -66,7 +62,6 @@
 							}
 						}
 					}
-
 				}
 			}
 		} @else {
@@ -93,7 +88,6 @@
 		}
 	}
 }
-
 
 @mixin write-selector($selector: false,$bem-prefix:false) {
 	@if ($selector and $bem-prefix) {

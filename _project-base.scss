@@ -1,5 +1,5 @@
-$base-line-height:20px;
- $relative-font-sizing: true!global;
+$base-line-height: 20px;
+$relative-font-sizing: true !global;
 
 @import "dependencies";
 
@@ -20,7 +20,6 @@ $base-line-height:20px;
 @import "utilities/core/u-scheme-helper-classes";
 //typekit
 
-
 @import url('https://use.typekit.net/kxg6qeb.css');
 $generate-map: (
 	scheme-classes: false,
@@ -38,33 +37,26 @@ $example-functional-render-queue: (
 	suffix:true
 );
 
-
-$example-component-render2:
-	(
-		description: "color schemes",
-		selector: false,
-		parent: color-schemes,
-		variant-key: light dark,
-		suffix:true,
-		variants:(
-			options: (
-				obj: (
-					background: true,
-					foreground: true,
-					accent:true,
-					border: lighten foreground 10%,
-					fill:foreground,
-					hover-background:true,
-					hover-foreground:true
-				)
+$example-component-render2: (
+	description: "color schemes",
+	selector: false,
+	parent: color-schemes,
+	variant-key: light dark,
+	suffix:true,
+	variants:(
+		options: (
+			obj: (
+				background: true,
+				foreground: true,
+				accent:true,
+				border: lighten foreground 10%,
+				fill:foreground,
+				hover-background:true,
+				hover-foreground:true
 			)
-
 		)
-
-	);
-
-
-
+	)
+);
 
 $example-component-render: (
 	(
@@ -84,9 +76,7 @@ $example-component-render: (
 					hover-foreground:true
 				)
 			)
-
 		)
-
 	),
 	(
 		description: "font size",
@@ -96,7 +86,6 @@ $example-component-render: (
 		suffix:false,
 	)
 );
-
 
 /*********RENDER OBJECT FOR BASE COLOR SCHEMES + SWATCHES***********/
 $color-module-render-queue: (
@@ -125,30 +114,29 @@ $color-module-render-queue: (
 	)
 );
 
-$no-selectors:(
-selector: false,
+$no-selectors: (
+	selector: false,
 	suffix:false,
 );
 
-$no-selectors-test-obj:(
+$no-selectors-test-obj: (
 	selector: true,
-		suffix:true,
+	suffix:true,
 );
 
 ///ADD COLORS
 //add something to dictionary
-$patternlab: batch-add-to-style-dictionary( $base-render-color-objs);
+$patternlab: batch-add-to-style-dictionary($base-render-color-objs);
 
 ///ADD SIZING VALUES
-$patternlab: batch-add-to-style-dictionary( $base-render-objects);
+$patternlab: batch-add-to-style-dictionary($base-render-objects);
 
 ///multilevel "inheritance"
-$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($secondary-objects),parent));
+$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($secondary-objects), parent));
 
-$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects),parent));
+$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects), parent));
 
 $test: init-typography-module();
-
 
 //TODO: move ths
 @import "project-components";
@@ -156,9 +144,9 @@ $test: init-typography-module();
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: false!default;
+$GENERATE-QUEUE: false !default;
 
-@if ( $GENERATE-QUEUE ) {
+@if ($GENERATE-QUEUE) {
 
 	/***------COLOR SCHEMES and SWATCHES-----****/
 	@include render-queue(get-collection(generator-color-schemes generator-color-swatches));
@@ -173,42 +161,35 @@ $GENERATE-QUEUE: false!default;
 	@include render-queue(get-collection(generator-padding));
 
 	/***-----MARGIN-----****/
-	@debug get-collection(generator-margin);
-
 	@include render-queue(get-collection(generator-margin));
 
-	.example{
+	.example {
 		//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
 		/*********EXAMPLE COMPONENT***********/
-		$new-list: get-collection( (base-spacing, color-schemes, font-size),$no-selectors);
-		$new-list: overwrite-collections( $new-list, (sm, dark, sm ), variant-key );
+		$new-list: get-collection((base-spacing, color-schemes, font-size), $no-selectors);
+		$new-list: overwrite-collections($new-list, (sm, dark, sm), variant-key);
 		@include render-queue($new-list);
 	}
-	.example-button{
+	.example-button {
 		@include render-queue(get-collection($example-component-render));
 	}
 }
 
-%button-static{
+%button-static {
 	border-radius: 20px;
-
 }
 
 $the-placeholder: button-static;
 
-.testing{
-//	@include render-queue(get-collection($example-component-render2));
-//	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
-
-	//@extend %#{$the-placeholder};
+.testing {
+	//	@include render-queue(get-collection($example-component-render2));
+	//	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
 }
-@include block(divider,component){
 
+@include block(divider, component) {
 	@each $key in $scheme-list {
-		@include modifier($key){
-		///	@include c-divider($key);
+		@include modifier($key) {
+			///	@include c-divider($key);
 		}
 	}
 }
-
-

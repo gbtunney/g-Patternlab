@@ -15,9 +15,7 @@ $example-input-group-render: (
 					hover-foreground:true
 				)
 			)
-
 		)
-
 	),
 	(
 		description: "font size",
@@ -25,35 +23,27 @@ $example-input-group-render: (
 		variant-key: md,
 		suffix:false,
 	),
-(
-	description: "padding",
-	parent: base-padding,
-	variant-key: sm,
-	suffix:false,
-)
+	(
+		description: "padding",
+		parent: base-padding,
+		variant-key: sm,
+		suffix:false,
+	)
 );
 
-@mixin c-input-group($name: false,$collection:$example-input-group-render){
-	@include block($name, component){
-		$self:&;
-		//$collection: get-collection($collection,#{$self}, selector);
-	//	@include render-queue($collection);
-
-
-		//@include _base-component(get-collection($collection), $name, false, false) ;
-		width : 100%;
+@mixin c-input-group($name: false,$collection:$example-input-group-render) {
+	@include block($name, component) {
+		$self: &;
+		width: 100%;
 		display: flex;
-
-		&__input{
+		&__input {
 			width: 100%;
-			@include input-placeholder{
-			//	color:
+			@include input-placeholder {
 			}
 		}
-		&__icon{
+		&__icon {
 			//@extend %u-placeholder-icon-svg;
 		}
-
 	}
 }
 
@@ -75,16 +65,16 @@ $example-input-group-render: (
 			padding: 0;
 		}
 
-		&.--circle{
+		&.--circle {
 			@include u-round(100%);
-			padding: get-lookup-prop(base-padding,xs);
+			padding: get-lookup-prop(base-padding, xs);
 		}
 		&.--rounded {
-			@include u-round(get-lookup-prop(base-padding,sm),all);
+			@include u-round(get-lookup-prop(base-padding, sm), all);
 
 		}
 		&.--round-right {
-			@include u-round(get-lookup-prop(base-padding,sm),right);
+			@include u-round(get-lookup-prop(base-padding, sm), right);
 		}
 		$self: &;
 		@at-root {
@@ -92,16 +82,16 @@ $example-input-group-render: (
 		}
 
 		@at-root {
-			@include render-queue(get-collection($button-padding-flags, '#{$self}.padding',selector ));
+			@include render-queue(get-collection($button-padding-flags, '#{$self}.padding', selector));
 		}
 
 	}
 
 	//TODO : temp: hack for variants.
 	///TODO - switch to new format???????~~?
-	@include block($name,component){
+	@include block($name, component) {
 		@each $key in $scheme-list {
-			@include modifier($key){
+			@include modifier($key) {
 				//	@include render-queue(get-collection($key));
 				$props: (
 					background: true,
@@ -115,10 +105,10 @@ $example-input-group-render: (
 
 				@include g-color-scheme($key, $props...);
 
-				$self : &;
+				$self: &;
 				@at-root {
 					@include input-placeholder($self) {
-						color: rgba(color($key,foreground),.9);
+						color: rgba(color($key, foreground), .9);
 					}
 				}
 			;
