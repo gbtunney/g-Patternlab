@@ -5,9 +5,6 @@
 @include breakpoint-range(sm, md) {  } applied when browser window width is inside and between the sm and md slices 'between(sm,md)'
 @include breakpoint-range(sm) {  } or @include breakpoint(sm) {  } applied when width is inside the sm slice 'at(sm)'
  */
-@import "breakpoint-sass/stylesheets/breakpoint";
-@import "breakpoint-slicer/stylesheets/breakpoint-slicer";
-
 @import "variables";
 @import "mixins";
 @import "functions";

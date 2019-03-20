@@ -4,11 +4,13 @@
 @import "utilities/new-utility-mixins/mixins";
 @import "utilities/new-utility-mixins/placeholders";
 
-@import "sass-bem-constructor/stylesheets/bem-constructor";
-@import "sassytester/sass/_SassyTester.scss";
-@import "modularscale-sass/stylesheets/_modularscale.scss";
-@import 'sassdash/scss/sassdash';
-@import 'sass-dry/dry';
-@import "chroma-sass/sass/_chroma.scss";
-@import "compass-mixins/lib/compass/_typography.scss";
+@import "~sass-bem-constructor/stylesheets/bem-constructor";
+@import "~sassytester/sass/_SassyTester.scss";
+@import "~modularscale-sass/stylesheets/_modularscale.scss";
+@import '~sassdash/scss/sassdash';
+@import '~sass-dry/dry';
+@import "~chroma-sass/sass/_chroma.scss";
+@import "~compass-mixins/lib/compass/_typography.scss";
+@import "~breakpoint-sass/stylesheets/_breakpoint.scss";
+@import "~breakpoint-slicer/stylesheets/_breakpoint-slicer.sass";
 
