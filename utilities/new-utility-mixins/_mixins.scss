@@ -18,7 +18,11 @@ Settings
 'absolute center fixed horizontal': 0%
 'absolute center fixed horizontal midpoint': 50% (horizontal midpoint for fixed position item)
 */
+@mixin dimensions($width: 50px,$height:$width){
 
+    width : $width;
+    $height: $height;
+}
 @mixin u-stick-to( $sides:bottom left,$selector: '*:last-child', $reset-child-rhythm: true ) {
     position: relative;
 
@@ -118,4 +122,7 @@ Settings
         -webkit-font-smoothing: subpixel-antialiased;
         -moz-osx-font-smoothing: auto;
     }
+}
+@mixin border-single-side($side: top, $size:1px) {
+ border-#{$side}-width: $size;
 }

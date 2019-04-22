@@ -32,6 +32,11 @@
 		text-decoration: none;
 	}
 }
+
+%no-border {
+	border-width: 0px;
+}
+
 @function get-g-placeholders-utility(){
 	@return true;
 }

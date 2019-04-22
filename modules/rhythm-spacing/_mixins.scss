@@ -1,7 +1,49 @@
-@mixin rhythm-padding($horizontal-proportion: 1,$vertical-proportion: 1, $unit: $base-spacing-unit) {
-   // padding: rhythm-spacing($horizontal-proportion, $unit) rhythm-spacing($vertical-proportion, $unit);
+
+
+
+
+@function  rhythm-spacing($key:$default-spacing-variant, $prop: $default-spacing-key ){
+	@return get-lookup-prop( $prop, $key);
 }
 
-@mixin rhythm-margin($horizontal-proportion: 1,$vertical-proportion: 1, $unit: $base-spacing-unit) {
-   // margin: rhythm-spacing($horizontal-proportion, $unit) rhythm-spacing($vertical-proportion, $unit);
+
+@mixin u-spacing( $value : #{rhythm-spacing($default-spacing-variant,$default-spacing-key)} ,$type: padding, $side:false ){
+	@if ($side ){
+		#{$type}-#{$side}:  #{$value}
+	}@else{
+		#{$type}: #{$value};
+	}
+}
+
+@mixin rhythm-padding($prop: $default-padding-variant ,$all:false, $key:$default-padding-key) {
+	@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
+
+	@if ($all){
+		@include u-spacing(rhythm-spacing($prop,$key), padding,false);
+	}@else{
+		@include u-spacing(rhythm-spacing($prop,$key), padding,top);
+		@include u-spacing(rhythm-spacing($prop,$key), padding,bottom);
+	}
+}
+
+@mixin rhythm-margin($key:$default-padding-key, $all:false,$prop: $default-padding-variant) {
+	@if ($all){
+		@include u-spacing(rhythm-spacing($prop,$key), padding,false);
+	}@else{
+		@include u-spacing(rhythm-spacing($prop,$key), padding,top);
+		@include u-spacing(rhythm-spacing($prop,$key), padding,bottom);
+	}}
+
+@mixin u-trailer-padding($key:$default-padding-key, $prop: $default-padding-variant){
+	@include u-spacing(rhythm-spacing($prop,$key), padding,bottom);
+}
+@mixin u-trailer($key:$default-margin-key, $prop: $default-margin-variant){
+	@include u-spacing(rhythm-spacing($prop,$key), margin,bottom);
+}
+@mixin u-leader-padding($key:$default-padding-key, $prop: $default-padding-variant){
+
+	@include u-spacing(rhythm-spacing(  $prop, $key), padding,top);
+}
+@mixin u-leader($key:$default-margin-key, $prop: $default-margin-variant){
+	@include u-spacing(rhythm-spacing($prop,$key), margin,top);
 }

@@ -15,11 +15,9 @@ $relative-font-sizing: true !global;
 @import "modules/responsive/module";
 @import "modules/rhythm-spacing/module";
 @import "modules/components/module";
-@import "modules/generator/module";
 @import "modules/unit-test/module";
 @import "utilities/core/u-scheme-helper-classes";
 //typekit
-
 @import url('https://use.typekit.net/kxg6qeb.css');
 $generate-map: (
 	scheme-classes: false,
@@ -139,41 +137,10 @@ $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($gene
 $test: init-typography-module();
 
 //TODO: move ths
-@import "project-components";
 
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
 
-$GENERATE-QUEUE: false !default;
-
-@if ($GENERATE-QUEUE) {
-
-	/***------COLOR SCHEMES and SWATCHES-----****/
-	@include render-queue(get-collection(generator-color-schemes generator-color-swatches));
-
-	/***------TYPEOGRAPHY-----****/
-	@include render-queue(get-collection(generator-typography));
-
-	/***------FONT SIZES-----****/
-	@include render-queue(get-collection(generator-font-size));
-
-	/***-----PADDING-----****/
-	@include render-queue(get-collection(generator-padding));
-
-	/***-----MARGIN-----****/
-	@include render-queue(get-collection(generator-margin));
-
-	.example {
-		//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
-		/*********EXAMPLE COMPONENT***********/
-		$new-list: get-collection((base-spacing, color-schemes, font-size), $no-selectors);
-		$new-list: overwrite-collections($new-list, (sm, dark, sm), variant-key);
-		@include render-queue($new-list);
-	}
-	.example-button {
-		@include render-queue(get-collection($example-component-render));
-	}
-}
 
 %button-static {
 	border-radius: 20px;

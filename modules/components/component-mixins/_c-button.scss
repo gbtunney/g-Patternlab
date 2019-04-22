@@ -33,9 +33,12 @@ $font-flags: (
 );
 
 //get-collection()
-@mixin c-button($name: button, $variant-keys: light font-san-serif md md , $collection:color-schemes typography font-size base-padding, $placeholder: 'c-button-static-props', $at-root: false  ) {
+@mixin c-button($name: button, $variant-keys: dark font-san-serif md md , $collection:color-schemes typography font-size base-padding, $placeholder: 'c-button-static-props', $at-root: false  ) {
 	$collection: get-collection($collection, $variant-keys);
 	@include _base-component(get-collection($collection), $name, $placeholder, false) {
+
+		$self : &;
+
 		&__icon {
 			@include u-icon-svg(false, 1em);
 		}
@@ -59,7 +62,7 @@ $font-flags: (
 			@include u-round(get-lookup-prop(base-padding,sm),all);
 
 		}
-		&.--round-right {
+		#{$self}.--round-right {
 			@include u-round(get-lookup-prop(base-padding,sm),right);
 			border-left-width:0px;
 		}
