@@ -26,21 +26,24 @@
 	}
 }
 
-@mixin rhythm-margin($key:$default-padding-key, $all:false,$prop: $default-padding-variant) {
-	@if ($all){
-		@include u-spacing(rhythm-spacing($prop,$key), padding,false);
-	}@else{
-		@include u-spacing(rhythm-spacing($prop,$key), padding,top);
-		@include u-spacing(rhythm-spacing($prop,$key), padding,bottom);
-	}}
+@mixin rhythm-margin($prop: $default-padding-variant ,$all:false, $key:$default-padding-key) {
+	@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
 
-@mixin u-trailer-padding($key:$default-padding-key, $prop: $default-padding-variant){
+	@if ($all) {
+		@include u-spacing(rhythm-spacing($prop, $key), margin, false);
+	} @else {
+		@include u-spacing(rhythm-spacing($prop, $key), margin, top);
+		@include u-spacing(rhythm-spacing($prop, $key), margin, bottom);
+	}
+}
+
+@mixin u-trailer-padding($prop: $default-padding-variant,$key:$default-padding-key){
 	@include u-spacing(rhythm-spacing($prop,$key), padding,bottom);
 }
-@mixin u-trailer($key:$default-margin-key, $prop: $default-margin-variant){
+@mixin u-trailer( $prop: $default-margin-variant, $key:$default-margin-key){
 	@include u-spacing(rhythm-spacing($prop,$key), margin,bottom);
 }
-@mixin u-leader-padding($key:$default-padding-key, $prop: $default-padding-variant){
+@mixin u-leader-padding($prop: $default-padding-variant,$key:$default-padding-key){
 
 	@include u-spacing(rhythm-spacing(  $prop, $key), padding,top);
 }
