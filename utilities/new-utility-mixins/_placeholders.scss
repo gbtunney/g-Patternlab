@@ -33,9 +33,42 @@
 	}
 }
 
+
+
+%container-vlist-natural-children-width{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+%container-vlist-100-children-width{
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+%u-reflect{
+	@include u-reflect-X();
+}
+
 %no-border {
 	border-width: 0px;
+	border: none;
 }
+
+%u-circle {
+	border-radius:100%;
+}
+
+%u-placeholder-icon-svg {
+	display: inline-block;
+
+	svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+}
+
 
 @function get-g-placeholders-utility(){
 	@return true;

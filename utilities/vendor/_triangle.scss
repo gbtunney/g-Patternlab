@@ -1,0 +1,134 @@
+
+/**
+* Sass CSS triangle mixin, create any kind of triangles with ease
+
+* Use:
+* @include triangle(direction,width,height,color);
+
+* Example:
+* $square: 50px;
+* $color: red;
+* selector {
+*	 @include triangle(bottomright,$square,$square,$color);
+* }
+
+* Forked from https://github.com/juanbrujo/triangle-mixin.less
+*/
+
+@mixin triangle($direction, $sizeH, $sizeV, $color){
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	-moz-transform: scale(.9999);
+
+	@if $direction == top {
+		border-width: 0 $sizeV $sizeH $sizeV;
+		border-color: transparent transparent $color transparent;
+	}
+	@if $direction == bottom{
+		border-width: $sizeV $sizeH 0 $sizeV;
+		border-color: $color transparent transparent transparent;
+	}
+	@if $direction == left{
+		border-width: $sizeV $sizeH $sizeV 0;
+		border-color: transparent $color transparent transparent;
+	}
+	@if $direction == right{
+		border-width: $sizeV 0 $sizeV $sizeH;
+		border-color: transparent transparent transparent $color;
+	}
+	@if $direction == topright{
+		border-width: 0 $sizeH $sizeV 0;
+		border-color: transparent $color transparent transparent;
+	}
+	@if $direction == bottomright{
+		border-width: 0 0 $sizeH $sizeV;
+		border-color: transparent transparent $color transparent;
+	}
+	@if $direction == bottomleft{
+		border-width: $sizeH 0 0 $sizeV;
+		border-color: transparent transparent transparent $color;
+	}
+	@if $direction == topleft{
+		border-width: $sizeH $sizeV 0 0;
+		border-color: $color transparent transparent transparent;
+	}
+}
+
+/**
+* Use
+*/
+
+$square: 60px;
+$color: #ecf0f1;
+
+// BASIC
+.top {
+	@include triangle(top,$square,$square,$color);
+}
+.left {
+	@include triangle(left,$square/2 ,$square*3,$color);
+}
+.bottom {
+	@include triangle(bottom,$square,$square,$color);
+}
+.right {
+	@include triangle(right,$square,$square,$color);
+}
+.topright{
+	@include triangle(topright,$square,$square,$color);
+}
+.topleft{
+	@include triangle(topleft,$square,$square,$color);
+}
+.bottomright{
+	@include triangle(bottomright,$square,$square,$color);
+}
+.bottomleft{
+	@include triangle(bottomleft,$square,$square,$color);
+}
+
+// ADVANCED
+.top-scalene {
+	@include triangle(top,$square*2,$square/2,$color);
+}
+.bottomright-scalene {
+	@include triangle(bottomright,$square*2,$square,$color);
+}
+.weird {
+	width: $square*2;
+	height: $square;
+	line-height: $square;
+	background-color: $color;
+	color: black;
+	position: relative;
+	text-align: center;
+	text-shadow: none;
+	cursor: pointer;
+
+	&:after {
+		position: absolute;
+		left: 0;
+		top: -$square;
+		@include triangle(top,$square,$square,$color);
+	}
+	&:before {
+		position: absolute;
+		left: 0;
+		top: $square;
+		@include triangle(topleft,$square*2,$square*2,$color);
+	}
+	&:hover {
+		background-color: darken($color,10%);
+
+		&:after {
+			@include triangle(top,$square,$square,darken($color,10%));
+		}
+		&:before {
+			@include triangle(topleft,$square*2,$square*2,darken($color,10%));
+		}
+	}
+}
+

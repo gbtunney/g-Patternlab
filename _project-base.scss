@@ -6,17 +6,19 @@ $relative-font-sizing: true !global;
 //  $base-line-height: $BASE_LINE_HEIGHT !global;
 // $relative-font-sizing: false !global;
 
-@import "project-variables";
+//@import "project-variables";
+
+
 //todo: fix this
-@import "objects/objects";
+
 @import "modules/core/module";
 @import "modules/colors/module";
 @import "modules/typography/module";
 @import "modules/responsive/module";
 @import "modules/rhythm-spacing/module";
 @import "modules/components/module";
-@import "modules/unit-test/module";
-@import "utilities/core/u-scheme-helper-classes";
+//@import "modules/unit-test/module";
+//@import "utilities/core/u-scheme-helper-classes";
 //typekit
 @import url('https://use.typekit.net/kxg6qeb.css');
 $generate-map: (
@@ -134,12 +136,13 @@ $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($seco
 
 $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects), parent));
 
-$test: init-typography-module();
+//$test: init-typography-module();
 
+/*
 //TODO: move ths
 
-/*****************************************/
-/*********EXAMPLE GENERTE QUEUE***********/
+!*****************************************!
+!*********EXAMPLE GENERTE QUEUE***********!
 
 
 %button-static {
@@ -159,4 +162,4 @@ $the-placeholder: button-static;
 			///	@include c-divider($key);
 		}
 	}
-}
+}*/
