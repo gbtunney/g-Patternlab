@@ -3,12 +3,8 @@ $relative-font-sizing: true !global;
 
 @import "dependencies";
 
-//  $base-line-height: $BASE_LINE_HEIGHT !global;
-// $relative-font-sizing: false !global;
-
 @import "project-variables";
 //todo: fix this
-//@import "objects/objects";
 @import "modules/core/module";
 @import "modules/colors/module";
 @import "modules/typography/module";
@@ -140,19 +136,17 @@ $test: init-typography-module();
 
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
-
+/*
+.testing {
+	@include render-queue(get-collection($example-component-render2));
+	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
+}
 
 %button-static {
 	border-radius: 20px;
 }
 
 $the-placeholder: button-static;
-
-.testing {
-	@include render-queue(get-collection($example-component-render2));
-	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
-}
-
 @include block(divider, component) {
 	@each $key in $scheme-list {
 		@include modifier($key) {
@@ -160,3 +154,7 @@ $the-placeholder: button-static;
 		}
 	}
 }
+*/
+
+
+

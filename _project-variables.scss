@@ -174,7 +174,7 @@ $base-render-color-objs:((
             foreground: ( prop-to-write: color),
             border: border-color,
             link: color,
-            fill: ( prop-to-write: fill,selector: 'path, g,circle'),
+            fill: ( prop-to-write: fill,selector: 'path,rect, g,circle'),
             hover-background: ( prop-to-write: background-color,selector: ':hover', at-root:true) ,
             hover-foreground: ( prop-to-write: color,selector: ':hover', at-root:true) ,
             hover-fill: ( prop-to-write: fill,selector: ':hover', at-root:true)
@@ -237,7 +237,8 @@ $base-render-objects:(
                 text-transform,
                 text-decoration,
                 font-style,
-                font-weight
+                font-weight,
+                line-height
             ),
         ),
         variants:(
@@ -249,7 +250,8 @@ $base-render-objects:(
                 letter-spacing: 0px,
                 word-spacing: -1px,
                 font-weight: normal,
-                font-style: normal
+                font-style: normal,
+                line-height:1.4
             ),
             units: (
                 default:(
@@ -318,6 +320,7 @@ $base-render-objects:(
             )
         )
     ),
+
     (
         key: rhythm-units,
         selector: false,
@@ -389,14 +392,13 @@ $base-render-objects:(
     variants:(
         transform: ratio-size,
         options: (
-            base: 16px
+            base: 1em,
         ), ///option is the thread is for modular scale
         units: (
             xxs: .15,
             xs: .20,
             sm: .25,
             md: .5 ,
-            md2: .5 1 ,
             lg: 1,
             xl: 1.5
         )
@@ -440,9 +442,9 @@ $base-render-objects:(
         units: (
             sm: .75em,
             base: 1em,
-            md: 1.25em,
-            lg: 1.5em,
-            xl: 2em
+            md: 1.5em,
+            lg: 2em,
+            xl: 3em
         )
     ),
     key: relative-icon-size,
@@ -487,20 +489,20 @@ xl: 2
 $secondary-objects:(
     (
         key: base-margin,
-        parent: rhythm-units,
+        parent: base-spacing,
         render:(
             props: (margin)
         )
     ),
     (
         key: base-padding,
-        parent: rhythm-units,
+        parent: base-spacing,
         description: "Base Padding Values",
     ),
 
 (
     key: icon-sizes,
-    parent: rhythm-units,
+    parent: relative-icon-size,
     description: "Base Padding Values",
     render:(
         props: (width,height),

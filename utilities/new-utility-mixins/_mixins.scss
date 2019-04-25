@@ -83,6 +83,7 @@ Settings
 //***EFFECTS
 ////*******************
 
+
 @mixin u-transition($what: all, $time: 0.2s, $how: ease-in-out) {
     -webkit-transition: $what $time $how;
     -moz-transition:    $what $time $how;
@@ -197,8 +198,12 @@ Settings
 ///*******************
 
 @mixin u-icon-svg($color:red,$width: 100%,$height:$width) {
-    width: $width;
-    height: $height;
+    @if ($width!=false) {
+        width: $width;
+    }
+    @if ($height!=false) {
+        height: $height;
+    }
     display: inline-block;
 
     svg {
