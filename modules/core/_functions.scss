@@ -207,6 +207,12 @@
 	@return $new-map;
 }
 
+@function extend-collection-item($collectionitemkey, $keys /*list*/,$value){
+	@if (get-collection-item($collectionitemkey)){
+		@return map-deep-set( get-collection-item($collectionitemkey), $keys, $value );
+	}
+}
+
 @function transform-data($units : () , $options:false,$transform:false,$var:v /* transformed ones variable name if it neds one*/
 ) {
 	$map-to-return: ();

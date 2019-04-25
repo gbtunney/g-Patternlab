@@ -154,6 +154,14 @@ $the-placeholder: button-static;
 		}
 	}
 }
+///sexample of how to extend a single collection item
+$valuetest: extend-collection-item(vue-generator-margin, render props,(margin-top margin-bottom) ); //map-deep-set( get-collection-item(vue-generator-margin), render props,  (margin-top margin-bottom) );
+
+@debug $valuetest;
+.rendertest{
+	@include output-css-declarations($valuetest...);
+}
+
 */
 
 

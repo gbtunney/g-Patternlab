@@ -7,97 +7,23 @@
     @include init-cm($baseColors,$schemes);
 }
 
+/*
+exAMPLE usage:
 
-//TODO: not a thing yet.
-@function get-scheme-property($property: foreground, $value: false,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
+@include pl-colorscheme(dark-accent-secondary,(
+    background: true,
+    foreground: true,
+    accent:true,
+    border: true,
+    fill:true
+) )*/
 
-    $property-to-write: get-lookup-property($property);
-
-    $value-to-write: $value;
-
-    @if ($value-to-write and type-of($colorfunc)== string  and function-exists($colorfunc) and $colorfuncArgs != false) {
-        $value-to-write: call(get-function($colorfunc), $value-to-write, $colorfuncArgs);
-    }
-
-
-   @return ($property-to-write:$value-to-write);
+@mixin g-color-scheme( $scheme-variant-key, $props:() ){
+    $schemeItem: extend-collection-item(color-schemes, variants options obj,$props );
+    @include output-css-declarations($schemeItem..., $variant-key:$scheme-variant-key);
+    @content;
 }
 
-@mixin write-scheme-property($property: foreground, $value: false,  $selector: false, $colorfunc: false, $colorfuncArgs:false, $selector-at-root: false  ) {
-
-    $property-to-write: get-lookup-property($property);
-
-    $value-to-write: $value;
-
-    @if ($value-to-write and type-of($colorfunc)== string  and function-exists($colorfunc) and $colorfuncArgs != false) {
-        $value-to-write: call(get-function($colorfunc), $value-to-write, $colorfuncArgs);
-    }
-
-    @if ($selector-at-root and $selector  and $value-to-write and $property-to-write) {
-        @at-root {
-            #{$selector} {
-                #{$property-to-write} : #{$value-to-write};
-                @content;
-            }
-        }
-
-    } @else if ($selector  and $value-to-write and $property-to-write) {
-        #{$selector} {
-            #{$property-to-write} : #{$value-to-write};
-            @content;
-        }
-    } @else if ($value-to-write and $property-to-write) {
-        #{$property-to-write} : #{$value-to-write};
-        @content;
-    }
-}
-@mixin g-color-scheme($color-scheme:$chroma-active-scheme, $background:true, $foreground:true,$accent:false, $border:false,$hover-background:false,$hover-foreground:false,$hover-fill:false, $fill:false, $stroke:false,$accent-selector:$default-accent-selector, $border-size: 1px ) {
-
-    @include write-scheme-property(background, get-current-scheme-color(background, $background, $color-scheme));
-
-    @include write-scheme-property(foreground, get-current-scheme-color(foreground, $foreground, $color-scheme));
-
-    @include write-scheme-property(accent, get-current-scheme-color(accent, $accent, $color-scheme), $accent-selector);
-
-    @include write-scheme-property(border, get-current-scheme-color(border, $border, $color-scheme)) {
-        @extend %border-defaults;
-    }
-    @include write-scheme-property(fill, get-current-scheme-color(fill, $fill, $color-scheme), $default-svg-selector);
-
-    ///******HOVER FUNCTIONS>
-    @include write-scheme-property(hover-background, get-current-scheme-color(hover-background, $hover-background, $color-scheme), '#{&}:hover', false, false, true);
-
-    @include write-scheme-property(hover-foreground, get-current-scheme-color(hover-foreground, $hover-foreground, $color-scheme), '#{&}:hover', false, false, true);
-
-    @include write-scheme-property(hover-fill, get-current-scheme-color(hover-fill, $hover-fill, $color-scheme), '#{&}:hover #{$default-svg-selector}', false, false, true);
-@content;
-}
-
-@mixin g-new-simple-color-scheme($color-scheme:$chroma-active-scheme, $props:false ) {
-
-    @if (type-of($color-scheme) == "map") {
-        //true "quick mode"
-        $quick-color-scheme-map: $color-scheme;
-        @each $key, $value in $quick-color-scheme-map {
-            @debug $key;
-            @debug '#{$key} :: #{ get-color-value($value) }';
-            @include write-scheme-property($key, get-color-value($value), $default-svg-selector);
-        }
-    } @else {
-
-        @if (chroma-has-scheme($color-scheme)) {
-            @if ($props and type-of($props) == "map") {
-
-                @debug 'gonna send props';
-                @include g-color-scheme($color-scheme,$props...);
-
-            } @else {
-                @include g-color-scheme($color-scheme);
-            }
-        }
-
-    }
-}
 @mixin init-cm($_baseColors,$_schemes,$additional-schemes:false,$allow-unregistered:false) {
 
     $chroma: define-default-color-scheme('Branding color names for use by "functional" color names below.');
