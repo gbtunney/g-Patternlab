@@ -105,7 +105,7 @@ $font-flags: (
 					hover-background:rgba(color($key, background), .7),
 					hover-foreground:rgba(color($key, foreground), .7)
 				);
-				@include g-color-scheme($key, $props...);
+				@include g-color-scheme($key, $props);
 			}
 		}
 	}

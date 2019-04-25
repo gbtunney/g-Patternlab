@@ -103,7 +103,7 @@ $example-input-group-render: (
 					hover-foreground:true
 				);
 
-				@include g-color-scheme($key, $props...);
+				@include g-color-scheme($key, $props);
 
 				$self: &;
 				@at-root {

@@ -13,7 +13,7 @@
 					border: true,
 					fill:foreground
 				);
-				@include g-color-scheme($key, $props...) {
+				@include g-color-scheme($key, $props) {
 					@include u-icon-svg(false, 1em);
 				}
 			}

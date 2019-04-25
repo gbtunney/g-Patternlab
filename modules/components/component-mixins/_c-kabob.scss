@@ -28,17 +28,8 @@
 		@include g-color-scheme($color-scheme, $props);
 
 		&.--accent {
-			$props: (
-				background: false,
-				foreground: false,
-				accent:false,
-				border: false,
-				fill:accent,
-				hover-foreground: false,
-				hover-fill: false,
-			);
+			$props: map-set($props, fill, accent);
 			@include g-color-scheme($color-scheme, $props);
-
 		}
 	}
 
