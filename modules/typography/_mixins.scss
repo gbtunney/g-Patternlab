@@ -1,3 +1,11 @@
+@mixin g-typeset($font-size-key: $default-font-size-variant, $typography-key: $default-typography-variant,$collection: $default-font-size-key $default-typography-key ) {
+	$typeset-collection: get-collection($collection, $font-size-key $typography-key);
+	@include render-queue($typeset-collection);
+	@content;
+}
+
+
+/////DEPRECATED I THINK.
 //built on top of modular scale, compass vertical rhythm.
 //*** THESE ARE THE CORE BREAKPOINT WRAPPER
 //*** Dependencies: Modular Scale  | Compass Vertical Rhythm. | Sass DRY | Sass Toolkit
