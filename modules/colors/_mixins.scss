@@ -18,9 +18,14 @@ exAMPLE usage:
     fill:true
 ) )*/
 
-@mixin g-color-scheme( $scheme-variant-key, $props:() ){
+@mixin g-color-scheme( $scheme-variant-key, $props:(background:true,foreground:true,border:false, accent:false) ){
     $schemeItem: extend-collection-item(color-schemes, variants options obj,$props );
     @include output-css-declarations($schemeItem..., $variant-key:$scheme-variant-key);
+
+    @if ( map-get($props, border) ){
+      @extend %border-defaults;
+    }
+
     @content;
 }
 
