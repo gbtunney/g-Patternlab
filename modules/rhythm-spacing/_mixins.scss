@@ -1,28 +1,23 @@
-
-
-
-
-@function  rhythm-spacing($key:$default-spacing-variant, $prop: $default-spacing-key ){
-	@return get-lookup-prop( $prop, $key);
+@function rhythm-spacing($key:$default-spacing-variant, $prop: $default-spacing-key ) {
+	@return get-lookup-prop($prop, $key);
 }
 
-
-@mixin u-spacing( $value : #{rhythm-spacing($default-spacing-variant,$default-spacing-key)} ,$type: padding, $side:false ){
-	@if ($side ){
-		#{$type}-#{$side}:  #{$value}
-	}@else{
+@mixin u-spacing( $value : #{rhythm-spacing($default-spacing-variant,$default-spacing-key)} ,$type: padding, $side:false ) {
+	@if ($side) {
+		#{$type}-#{$side}: #{$value}
+	} @else {
 		#{$type}: #{$value};
 	}
 }
 
 @mixin rhythm-padding($prop: $default-padding-variant ,$all:false, $key:$default-padding-key) {
-//	@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
+	//	@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
 
-	@if ($all){
-		@include u-spacing(rhythm-spacing($prop,$key), padding,false);
-	}@else{
-		@include u-spacing(rhythm-spacing($prop,$key), padding,top);
-		@include u-spacing(rhythm-spacing($prop,$key), padding,bottom);
+	@if ($all) {
+		@include u-spacing(rhythm-spacing($prop, $key), padding, false);
+	} @else {
+		@include u-spacing(rhythm-spacing($prop, $key), padding, top);
+		@include u-spacing(rhythm-spacing($prop, $key), padding, bottom);
 	}
 }
 
@@ -35,6 +30,7 @@
 	}
 
 }
+
 @mixin rhythm-margin-sides($sides:false, $prop: $default-padding-variant , $key:$default-padding-key) {
 	//@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
 	@if (is-list($sides)) {
@@ -42,7 +38,6 @@
 			@include u-spacing(rhythm-spacing($prop, $key), margin, $side);
 		}
 	}
-
 }
 
 @mixin rhythm-margin($prop: $default-padding-variant ,$all:false, $key:$default-padding-key) {
@@ -56,16 +51,19 @@
 	}
 }
 
-@mixin u-trailer-padding($prop: $default-padding-variant,$key:$default-padding-key){
-	@include u-spacing(rhythm-spacing($prop,$key), padding,bottom);
+@mixin u-trailer-padding($prop: $default-padding-variant,$key:$default-padding-key) {
+	@include u-spacing(rhythm-spacing($prop, $key), padding, bottom);
 }
-@mixin u-trailer( $prop: $default-margin-variant, $key:$default-margin-key){
-	@include u-spacing(rhythm-spacing($prop,$key), margin,bottom);
-}
-@mixin u-leader-padding($prop: $default-padding-variant,$key:$default-padding-key){
 
-	@include u-spacing(rhythm-spacing(  $prop, $key), padding,top);
+@mixin u-trailer( $prop: $default-margin-variant, $key:$default-margin-key) {
+	@include u-spacing(rhythm-spacing($prop, $key), margin, bottom);
 }
-@mixin u-leader( $prop: $default-margin-variant,$key:$default-margin-key){
-	@include u-spacing(rhythm-spacing($prop,$key), margin,top);
+
+@mixin u-leader-padding($prop: $default-padding-variant,$key:$default-padding-key) {
+
+	@include u-spacing(rhythm-spacing($prop, $key), padding, top);
+}
+
+@mixin u-leader( $prop: $default-margin-variant,$key:$default-margin-key) {
+	@include u-spacing(rhythm-spacing($prop, $key), margin, top);
 }
