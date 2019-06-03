@@ -16,7 +16,7 @@
 }
 
 @mixin rhythm-padding($prop: $default-padding-variant ,$all:false, $key:$default-padding-key) {
-	@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
+//	@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
 
 	@if ($all){
 		@include u-spacing(rhythm-spacing($prop,$key), padding,false);
@@ -26,8 +26,27 @@
 	}
 }
 
+@mixin rhythm-padding-sides($sides:false, $prop: $default-padding-variant , $key:$default-padding-key) {
+	//@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
+	@if (is-list($sides)) {
+		@each $side in $sides {
+			@include u-spacing(rhythm-spacing($prop, $key), padding, $side);
+		}
+	}
+
+}
+@mixin rhythm-margin-sides($sides:false, $prop: $default-padding-variant , $key:$default-padding-key) {
+	//@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
+	@if (is-list($sides)) {
+		@each $side in $sides {
+			@include u-spacing(rhythm-spacing($prop, $key), margin, $side);
+		}
+	}
+
+}
+
 @mixin rhythm-margin($prop: $default-padding-variant ,$all:false, $key:$default-padding-key) {
-	@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
+	//@debug "rhythm  #{$key}   prop: #{$prop} lookup: #{rhythm-spacing($prop,$key)} ";
 
 	@if ($all) {
 		@include u-spacing(rhythm-spacing($prop, $key), margin, false);
@@ -47,6 +66,6 @@
 
 	@include u-spacing(rhythm-spacing(  $prop, $key), padding,top);
 }
-@mixin u-leader($key:$default-margin-key, $prop: $default-margin-variant){
+@mixin u-leader( $prop: $default-margin-variant,$key:$default-margin-key){
 	@include u-spacing(rhythm-spacing($prop,$key), margin,top);
 }

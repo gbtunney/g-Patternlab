@@ -67,8 +67,12 @@
 
 	//TODO: make more consise.
 	//type props, also the size of icon
-	$collection: get-collection($type-collection...);
-	@include render-queue($collection);
+
+	@if ($type-collection){
+		$collection: get-collection($type-collection...);
+		@include render-queue($collection);
+	}
+
 
 	&__left, &__right {
 		$collection: get-collection($icon-collection, base);

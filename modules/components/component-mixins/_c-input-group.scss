@@ -50,7 +50,9 @@ $example-input-group-render: (
 @mixin c-input($name: input, $variant-keys: light font-serif md sm , $collection:color-schemes typography font-size base-padding, $placeholder:false, $at-root: false  ) {
 	$collection: get-collection($collection, $variant-keys);
 	@include _base-component(get-collection($collection), $name, $placeholder, false) {
-		&__icon {
+
+		//display: none;
+				&__icon {
 			@include u-icon-svg(false, 1em);
 		}
 		&.--no-background, &.--no-background:hover {
@@ -58,7 +60,15 @@ $example-input-group-render: (
 		}
 
 		&.--no-border {
-			border: none;
+			//border: none;
+
+			border: 0px solid white;
+		}
+
+		&.--bottom-border {
+			border-width: 0px ;
+			border-bottom-width: 1px;
+		;
 		}
 
 		&.--no-padding {

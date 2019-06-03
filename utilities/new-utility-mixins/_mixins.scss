@@ -22,6 +22,9 @@ Settings
 ////*******************
 ///LAYOUT - STICK AND FLOAT
 ////*******************
+@mixin box-shadow($x-axis: 0, $y-axis: 1px, $blur: 2px, $color: $default) {
+    box-shadow: $x-axis $y-axis $blur $color;
+}
 
 @mixin u-stick-to( $sides:bottom left,$selector: '*:last-child', $reset-child-rhythm: true ) {
     position: relative;
@@ -79,17 +82,22 @@ Settings
     }
 }
 
+@mixin u-vcenter( $margin:rhythm(.5) ,$align-items: center) {
+    display: flex;
+    align-items: $align-items;
+}
+
 ////*******************
 //***EFFECTS
 ////*******************
 
 
 @mixin u-transition($what: all, $time: 0.2s, $how: ease-in-out , $delay: 0) {
-    -webkit-transition: $what $time $how;
-    -moz-transition:    $what $time $how ;
-    -ms-transition:     $what $time $how ;
-    -o-transition:      $what $time $how ;
-    transition:         $what $time $how ;
+    -webkit-transition: $what $time $how $delay;
+    -moz-transition:    $what $time $how $delay;
+    -ms-transition:     $what $time $how $delay;
+    -o-transition:      $what $time $how $delay;
+    transition:         $what $time $how $delay;
 }
 
 @mixin u-reflect-X(){
@@ -179,7 +187,7 @@ Settings
     min-height: $min-height;
 }
 
-@mixin u-make-container($percent: $content-boxed-indent, $max: $content-max-width) {
+@mixin u-make-container($percent: 100%, $max: none) {
     max-width: $max;
     margin: 0 auto;
     width: $percent;
@@ -211,13 +219,14 @@ Settings
         width: 100%;
         height: 100%;
 
+      //  @debug "icon ddebug #{get-collection(props)}";
         $props: (
             background: false,
             foreground:false,
-            fill: $color
+            fill: true
         );
         @if ($color!=false) {
-            @include g-color-scheme($props...);
+            @include g-color-scheme($color);
         }
     }
 }

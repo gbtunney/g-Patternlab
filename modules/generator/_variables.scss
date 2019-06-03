@@ -1,94 +1,26 @@
 //*** GENERATOR DEFAULTS
 //*** Dependancies: Chroma Sass
 
-$GENERATOR_ON: false!default;
+$GENERATOR_ON: true!default;
+$utility-seperator: '-' !default;
+
+$utility-prefixes: (
+    swatch: "swatch-color",
+    scheme: "scheme",
+    spacing: "spacing",
+    type: "type") !default;
+
 
 //TODO :: get rid of theses
+//this is for the padding utility
+$default-scale-unit: sm !default;
 
-$patternlab-render-objects: (
-	(
-		key: generator-color-schemes,
-		description: "COLOR SCHEME CLASSES",
-		selector: '.g-scheme',
-		parent: color-schemes,
-		suffix: true,
-		variants:(
-			options: (
-				obj: (
-					background: true,
-					foreground: true,
-					accent:false,
-					border: true,
-					fill:true
-				)
-			)
-		)
-	),
-	(
-		key: generator-size-abs,
-		parent:   absolute-size,
-		selector: '.g-size-abs',
-		description: "-margin.",
-		suffix: true, //if it is to be generated, use a class suffix before,
-	),
-	(
-		key: generator-size-rel,
-		parent:  relative-size,
-		selector: '.g-size-rel',
-		description: "-margin.",
-		suffix: true, //if it is to be generated, use a class suffix before,
-	),
-
-	(   key: generator-color-swatches,
-		description: "color swatches",
-		selector: '.u-color-swatches',
-		parent: color-swatches,
-		suffix: true
-	),
-	(
-		key: generator-typography,
-		description: "TYPEOGRAPHY STYLES",
-		parent: typography,
-		selector: '.g-type',
-		suffix: true, //if it is to be generated, use a class suffix before,
-	),
-	(
-		key: generator-font-size,
-		description: "FONT SIZE CLASSES!!",
-		parent: font-size,
-		selector: '.g-font',
-		suffix: true, //if it is to be generated, use a class suffix before,
-	),
-	(
-		key: generator-padding,
-		description: "PADDING CLASSES",
-		parent: base-padding,
-		selector: '.g-padding',
-		suffix: true, //if it is to be generated, use a class suffix before,
-	),
-	(
-		key: generator-margin,
-		description: "-MARGIN CLASSES.",
-		parent: base-margin,
-		selector: '.g-margin',
-		suffix: true, //if it is to be generated, use a class suffix before,
-	),
-	(
-		key: generator-color-schemes-hover,
-		description: "color schemes",
-		selector: '.--scheme-hover.g-scheme',
-		parent: color-schemes,
-		suffix: true,
-		variants:(
-			options: (
-				obj: (
-					background: true,
-					foreground: true,
-					fill:foreground,
-					hover-background:lighten background 8%,
-					hover-foreground:lighten foreground 8%,
-				)
-			)
-		)
-	)
+$generate-map: (
+    scheme-classes: false,
+    swatch-classes: false,
+    type-classes:false,
+    rhythm-spacing:false,
+    utility-static:false,
+    components:false
 )!default;
+

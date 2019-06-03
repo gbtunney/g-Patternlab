@@ -3,38 +3,32 @@
 
 //*** swatch, colorscheme requires color module
 //*** utility padding requires type module
+
+
 @import "functions";
 @import "variables";
 @import "mixins";
 
 @if ($GENERATE-QUEUE) {
-	@include init-generator;
 
-}@else{
-	@debug "QUEUE NOT BEING GENERATED";
-}
-
-/*
-@if ($GENERATE-QUEUE) {
-
-	!***------COLOR SCHEMES and SWATCHES-----****!
+	/***------COLOR SCHEMES and SWATCHES-----****/
 	@include render-queue(get-collection(generator-color-schemes generator-color-swatches));
 
-	!***------TYPEOGRAPHY-----****!
+	/***------TYPEOGRAPHY-----****/
 	@include render-queue(get-collection(generator-typography));
 
-	!***------FONT SIZES-----****!
+	/***------FONT SIZES-----****/
 	@include render-queue(get-collection(generator-font-size));
 
-	!***-----PADDING-----****!
+	/***-----PADDING-----****/
 	@include render-queue(get-collection(generator-padding));
 
-	!***-----MARGIN-----****!
+	/***-----MARGIN-----****/
 	@include render-queue(get-collection(generator-margin));
 
 	.example {
 		//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
-		!*********EXAMPLE COMPONENT***********!
+		/*********EXAMPLE COMPONENT***********/
 		$new-list: get-collection((base-spacing, color-schemes, font-size), $no-selectors);
 		$new-list: overwrite-collections($new-list, (sm, dark, sm), variant-key);
 		@include render-queue($new-list);
@@ -42,5 +36,16 @@
 	.example-button {
 		@include render-queue(get-collection($example-component-render));
 	}
+}
+
+
+/*
+//various debug modes.
+@if ($GENERATOR_ON == force){
+    $generate-map:set-generate-map(true);
+}@else if ($GENERATOR_ON == false){
+    $generate-map:set-generate-map(false);
+}@else if else($generate-map==true){
+
 }
 */

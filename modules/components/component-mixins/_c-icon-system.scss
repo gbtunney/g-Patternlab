@@ -1,17 +1,4 @@
 /*SVG ICON SYSTEM*/
-//c-new-icon  relative-size absolute-size
-@mixin c-new-icon( $variant-key: base, $collection-key: relative-size/*relative-size absolute-size*/ ) {
-
-	@include render-queue(get-collection($collection-key, $variant-key));
-
-	display: inline-block;
-
-	svg {
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-}
 
 //********VISUAL OBJECTS ///
 @mixin c-icon-svg-text($color:false,$width: 100%,$height:$width) {

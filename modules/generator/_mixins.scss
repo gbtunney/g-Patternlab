@@ -1,10 +1,23 @@
 ///has to be like this till dynamic mixins are allowed
-@mixin init-generator($-generate-map:$patternlab-render-objects) {
-    $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($-generate-map), parent));
-    $generate-collection-list: ();
-    @each $value in $-generate-map {
-        $generate-collection-list: _push($generate-collection-list, map-get($value, key))
-    }
+@mixin init-generator($-generate-map: $generate-map ) {
+    @if (($GENERATOR_ON == force) or ($GENERATOR_ON==true)) {
+        @each $key, $value in $-generate-map {
+            @if ($value == true) {
+                @if ($key == scheme-classes) {
+                   // @include g-generate-scheme-utility-classes;
+                } @else if ($key== swatch-classes) {
+                   //  @include g-generate-swatches();
+                } @else if ($key== type-classes) {
+                   // @include g-generate-all-font-utility-classes;
 
-    @include render-queue(get-collection($generate-collection-list));
+                } @else if ($key== rhythm-spacing) {
+                   // @include g-generate-utility-spacing();
+                } @else if ($key== utility-static) {
+
+                } @else if ($key== components) {
+
+                }
+            }
+        }
+    }
 }

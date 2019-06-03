@@ -128,10 +128,7 @@ $patternlab: batch-add-to-style-dictionary($base-render-objects);
 ///multilevel "inheritance"
 $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($secondary-objects), parent));
 
-
-
-
-//$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects), parent));
+$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects), parent));
 
 $test: init-typography-module();
 
