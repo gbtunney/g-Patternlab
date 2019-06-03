@@ -34,16 +34,17 @@
 		}
 
 		&.--lg {
-			width: get-lookup-prop(relative-icon-size, lg);
-			height: get-lookup-prop(relative-icon-size, lg);
+			width: get-lookup-prop(relative-size, lg);
+			height: get-lookup-prop(relative-size, lg);
 		}
 		&.--md {
-			width: get-lookup-prop(relative-icon-size, md);
-			height: get-lookup-prop(relative-icon-size, md);
+			width: get-lookup-prop(relative-size, md);
+			height: get-lookup-prop(relative-size, md);
 		}
 		&.-sm {
-			width: get-lookup-prop(relative-icon-size, sm);
-			height: get-lookup-prop(relative-icon-size, sm);
+			//alrtgillian
+			width: get-lookup-prop(relative-size, sm);
+			height: get-lookup-prop(relative-size, sm);
 		}
 	}
 
@@ -62,5 +63,13 @@
 	////NOTE:   NOBJECTS WITH NO_SELECTOR AND NO VARIANT KEY WILL ERROR.
 	///*****TEMPORARY COMPONENT: BUTTON - NEWER METHOD!!
 	@include c-button(button);
-	@include c-input(input);
+	//@include c-input(input);
+}
+
+@include block(icon-abs, component) {
+	@include c-new-icon(base, absolute-size);
+}
+
+@include block(testing, component) {
+	@include c-new-icon(base, relative-size);
 }

@@ -272,7 +272,7 @@ $base-render-objects:(
                     font-style: italic
                 ),
                 font-serif-bold:(
-                    font-family: "adobe-garamond-pro",
+                    font-family: "cormorant-garamond",
                     title: "'bold serif'",
                     font-weight: 700
                 ),
@@ -315,12 +315,11 @@ $base-render-objects:(
                 md: 1,
                 lg: 2,
                 xl: 3,
-                xxl: 4,
+                xxl: 7,
                 xxxl: 5
             )
         )
     ),
-
     (
         key: rhythm-units,
         selector: false,
@@ -427,6 +426,7 @@ $base-render-objects:(
         selector:static-size-demo
     ),
 (
+    key: relative-size,
     description: "Relative Icon Sizes for inline - based on current font settings. ",
     render:(
         module:size, //dont know??
@@ -447,7 +447,6 @@ $base-render-objects:(
             xl: 3em
         )
     ),
-    key: relative-icon-size,
     selector:false
 ),
     (
@@ -513,71 +512,15 @@ $secondary-objects:(
         parent: base-spacing,
         description: "Base Padding Values",
     ),
-
-(
-    key: icon-sizes,
-    parent: relative-icon-size,
-    description: "Base Padding Values",
-    render:(
-        props: (width,height),
-    ),
-)
-);
-
-$generator-render-objects: (
     (
-        key: generator-typography,
-        parent: typography,
-        selector: '.g-type',
-        suffix: true, //if it is to be generated, use a class suffix before,
-    ),
-    (
-        key: generator-font-size,
+        key: absolute-size,
         parent: font-size,
-        selector: '.g-type',
-        description: "Demo: modularscale size operation.",
-        suffix: true, //if it is to be generated, use a class suffix before,
-    ),
-    (
-        key: generator-padding,
-        parent: base-padding,
-        selector: '.g-padding',
-        description: "padding.",
-        suffix: true, //if it is to be generated, use a class suffix before,
-    ),
-    (
-        key: generator-margin,
-        parent: base-margin,
-        selector: '.g-margin',
-        description: "-margin.",
-        suffix: true, //if it is to be generated, use a class suffix before,
-    ),
-    (   key: generator-color-swatches,
-        description: "color swatches",
-        selector: '.u-color-swatches',
-        parent: color-swatches,
-        suffix: true
-    ),
-    (
-        key: generator-color-schemes,
-        description: "color schemes",
-        selector: '.u-color-schemes',
-        parent: color-schemes,
-        suffix: true,
-        variants:(
-            options: (
-                obj: (
-                    background: true,
-                    foreground: true,
-                    accent:false,
-                    border: lighten foreground 10%,
-                    fill:foreground,
-                    hover-background:true,
-                    hover-foreground:true
-                )
-            )
-        )
+        description: "height and width based on font sizes.",
+        render:(
+            props: (width,height),
+        ),
     )
 );
+
 $bem-throw-errors:false;
 $include-helper-classes:true!default;

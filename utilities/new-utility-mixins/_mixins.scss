@@ -85,11 +85,11 @@ Settings
 
 
 @mixin u-transition($what: all, $time: 0.2s, $how: ease-in-out , $delay: 0) {
-    -webkit-transition: $what $time $how $delay;
-    -moz-transition:    $what $time $how $delay;
-    -ms-transition:     $what $time $how $delay;
-    -o-transition:      $what $time $how $delay;
-    transition:         $what $time $how $delay;
+    -webkit-transition: $what $time $how;
+    -moz-transition:    $what $time $how ;
+    -ms-transition:     $what $time $how ;
+    -o-transition:      $what $time $how ;
+    transition:         $what $time $how ;
 }
 
 @mixin u-reflect-X(){
