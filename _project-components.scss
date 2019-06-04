@@ -70,6 +70,6 @@
 	@include c-new-icon(base, absolute-size);
 }
 
-@include block(testing, component) {
+@include block(icon-rel, component) {
 	@include c-new-icon(base, relative-size);
 }

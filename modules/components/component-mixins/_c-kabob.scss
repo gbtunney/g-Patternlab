@@ -41,7 +41,7 @@
 	@content;
 }
 
-@mixin c-kabob( $color-scheme: $chroma-active-scheme,$schemeProps:false,$reflect: false, $divider: true, $width: auto,$type-collection:( (font-size typography),(base font-serif)),$icon-collection:( relative-icon-size) ) {
+@mixin c-kabob( $color-scheme: $chroma-active-scheme,$schemeProps:false,$reflect: false, $divider: true, $width: auto,$type-collection:( (font-size typography),(base font-serif)),$icon-collection:( relative-size) ) {
 	$self: &;
 
 	@include dry(c-kabob, $DRY_ENABLED) {
@@ -75,6 +75,10 @@
 
 
 	&__left, &__right {
+
+		//@include c-new-icon(base, relative-size);
+
+
 		$collection: get-collection($icon-collection, base);
 		@include render-queue($collection);
 
