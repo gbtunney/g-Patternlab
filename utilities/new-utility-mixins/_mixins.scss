@@ -164,6 +164,7 @@ Settings
 ////*******************
 
 @mixin border-single-side($side: top, $size:1px) {
+    border-width: 0px;
  border-#{$side}-width: $size;
 }
 @mixin u-round($value, $type: all){

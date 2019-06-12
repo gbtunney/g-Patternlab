@@ -1,3 +1,5 @@
+
+
 %c-button-static-props {
 
 	$self: &;
@@ -13,6 +15,66 @@
 	@extend %u-reset-link-color;
 
 }
+
+@mixin g-button-base() {
+
+	@extend %c-button-static-props;
+	&.--no-background, &.--no-background:hover {
+		background-color: transparent;
+	}
+
+	&.--no-border {
+		border: none;
+	}
+
+	&.--border-right {
+		@include border-single-side(right);
+	}
+	&.--border-left {
+		@include border-single-side(left);
+	}
+	&.--border-top {
+		@include border-single-side(top);
+	}
+	&.--border-bottom {
+		@include border-single-side(bottom);
+	}
+	&.--circle {
+		@include u-round(100%);
+		padding: get-lookup-prop(base-padding, xs);
+	}
+	&.--rounded {
+		@include u-round(get-lookup-prop(base-padding, sm), all);
+
+	}
+	&.--round-right {
+		@include u-round(get-lookup-prop(base-padding, sm), right);
+		border-left-width: 0px;
+	}
+	&.--round-left {
+		@include u-round(get-lookup-prop(base-padding, sm), left);
+		border-left-width: 0px;
+	}
+
+	&.--no-padding {
+		padding: 0;
+	}
+
+	&__icon {
+		@include u-icon-svg(false, 1em);
+	}
+	&__label {
+
+	}
+	&__icon + &__label {
+		//	background: red;
+		padding-left: get-spacing(1, base);
+	}
+	&__label + &__icon {
+		background: red;
+	}
+}
+
 
 $button-color-schemes: (
 	description: "INVERT FUNCTIONAL COLOR ",
@@ -62,7 +124,7 @@ $font-flags: (
 			@include u-round(get-lookup-prop(base-padding,sm),all);
 
 		}
-		#{$self}.--round-right {
+		&.--round-right {
 			@include u-round(get-lookup-prop(base-padding,sm),right);
 			border-left-width:0px;
 		}
