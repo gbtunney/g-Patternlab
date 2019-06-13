@@ -1,14 +1,18 @@
+$base-line-height: 20px;
+$relative-font-sizing: true !global;
+
 @import "dependencies";
+
 @import "project-variables";
 //todo: fix this
-@import "objects/objects";
 @import "modules/core/module";
 @import "modules/colors/module";
 @import "modules/typography/module";
+@import "modules/responsive/module";
 @import "modules/rhythm-spacing/module";
-//@import "../g-Patternlab/modules/components/module";
-@import "modules/generator/module";
+@import "modules/components/module";
 @import "modules/unit-test/module";
+//@import "utilities/core/u-scheme-helper-classes";
 //typekit
 @import url('https://use.typekit.net/kxg6qeb.css');
 $generate-map: (
@@ -20,30 +24,46 @@ $generate-map: (
 	components:false
 );
 @include init-color-module;
-
 $example-functional-render-queue: (
 	description: "INVERT FUNCTIONAL COLOR ",
-	variant-key: invert-functional,
-	selector:false,
+	selector: '.-#{&}',
 	parent: color-schemes,
-	render:(suffix:false)
+	suffix:true
+);
+
+$example-component-render2: (
+	description: "color schemes",
+	selector: false,
+	parent: color-schemes,
+	variant-key: light dark,
+	suffix:true,
+	variants:(
+		options: (
+			obj: (
+				background: true,
+				foreground: true,
+				accent:true,
+				border: lighten foreground 10%,
+				fill:foreground,
+				hover-background:true,
+				hover-foreground:true
+			)
+		)
+	)
 );
 
 $example-component-render: (
 	(
 		description: "color schemes",
-		selector: false,
+		selector:false,
 		parent: color-schemes,
-		variant-key: dark,
-		render:(
-			suffix:false,
-		),
+		suffix:true,
 		variants:(
 			options: (
 				obj: (
 					background: true,
 					foreground: true,
-					accent:false,
+					accent:true,
 					border: lighten foreground 10%,
 					fill:foreground,
 					hover-background:true,
@@ -57,12 +77,9 @@ $example-component-render: (
 		selector: false,
 		parent: font-size,
 		variant-key: xl,
-		render:(
-			suffix:false,
-		)
+		suffix:false,
 	)
 );
-
 
 /*********RENDER OBJECT FOR BASE COLOR SCHEMES + SWATCHES***********/
 $color-module-render-queue: (
@@ -73,7 +90,7 @@ $color-module-render-queue: (
 	),
 	(
 		description: "color schemes",
-		selector: '.color-schemes',
+		selector: '.color-schemes-gilliN',
 		parent: color-schemes,
 		variants:(
 			options: (
@@ -90,132 +107,65 @@ $color-module-render-queue: (
 		)
 	)
 );
-
-$no-selectors:(
-selector: false,
-render:(
-suffix:false,
-)
+x
+$no-selectors: (
+	selector: false,
+	suffix:false,
 );
 
-$no-selectors-test-obj:(
+$no-selectors-test-obj: (
 	selector: true,
-	render:(
-		suffix:true,
-	)
+	suffix:true,
 );
 
 ///ADD COLORS
-
 //add something to dictionary
-$patternlab: batch-add-to-style-dictionary( $base-render-color-objs);
+$patternlab: batch-add-to-style-dictionary($base-render-color-objs);
 
 ///ADD SIZING VALUES
-$patternlab: batch-add-to-style-dictionary( $base-render-objects);
+$patternlab: batch-add-to-style-dictionary($base-render-objects);
+
+///multilevel "inheritance"
+$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($secondary-objects), parent));
 
 
-//// extend a dictionary item, for the genb  erator etc.
-//@debug coalateCollections(merge-style-key( font-size color-schemes,  $no-selectors-obj), font-serif dark);
+
+
+//$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects), parent));
+
+$test: init-typography-module();
+
+//TODO: move ths
 
 /*****************************************/
 /*********EXAMPLE GENERTE QUEUE***********/
+/*
+.testing {
+	@include render-queue(get-collection($example-component-render2));
+	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
+}
 
-$GENERATE-QUEUE: false;
+%button-static {
+	border-radius: 20px;
+}
 
-@if ( $GENERATE-QUEUE ) {
-	/***------COLOR SCHEMES and SWATCHES-----****/
-	$generator-queue: extend-style-key($color-module-render-queue);
-	@include render-queue($generator-queue);
-
-	/***------TYPEOGRAPHY-----****/
-	@include render-queue(typography);
-
-	/***------FONT SIZES-----****/
-	@include render-queue(font-size);
-
-	/***-----PADDING-----****/
-	@include render-queue(base-spacing);
-
-	.example{
-		//$new-list: coalateCollections(merge-style-key( color-schemes font-size,  $no-selectors-obj) , font-serif dark);
-		//@debug length($new-list);
-		//$new-list:(merge-style-key( color-schemes font-size,  $no-selectors-obj));
-		//$new-list: extend-style-key( color-test-2,$no-selectors-obj);
-
-		//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
-		/*********EXAMPLE COMPONENT***********/
-		$new-list: extend-style-key( (base-spacing, color-schemes, font-size),$no-selectors);
-		$new-list: extend-style-key( $new-list, (sm, dark, sm ), variant-key );
-		@include render-queue($new-list);
+$the-placeholder: button-static;
+@include block(divider, component) {
+	@each $key in $scheme-list {
+		@include modifier($key) {
+			///	@include c-divider($key);
+		}
 	}
+}
+///sexample of how to extend a single collection item
+$valuetest: extend-collection-item(vue-generator-margin, render props,(margin-top margin-bottom) ); //map-deep-set( get-collection-item(vue-generator-margin), render props,  (margin-top margin-bottom) );
 
-
+@debug $valuetest;
+.rendertest{
+	@include output-css-declarations($valuetest...);
 }
 
-
-//EXAMPLE COMPONENT WITHOUT A SELECTOR..
-
-
-
-.mycomponent{
-	//@debug $example-component-render;
-	@debug extend-collection( font-size font-size);
-	//@include render-queue();
-}
-
-
-/*********PADDING GENERATOR EXAMPLE***********/
-//@include render-queue(padding-demo);
-
-
-//@debug get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),);
-
-///@debug " transform #{get-rendered-data(transform-data(get-single-render-style-props(color-test, variants)...),get-single-render-style-props(color-test, render)...)}";
-
-
-//EXAMPLES:::::
-.example1 {
-	//use key "color-test" and render multiple variants within parent selector
-
-
-	  // @include render-queue(extend-style-key( base-component-test,$basic-component-render));
-	// @include render-queue(extend-style-key( color-test-2,$functional-render-queue));
-}
-
-//
-
-
-//$generator-color-queue: extend-style-key( color-test-2,$generate-render-queue);
+*/
 
 
 
-//$generator-component-test : extend-style-key( color-test-2,$functional-render-queue);
-
-//@include render-queue( $generator-color-queue);
-//@include render-queue( padding-demo);
-
-
-
-
-
-
-
-//@debug $generator-component-test;
-///@debug "HHHH";
-@debug get-lookup-prop(typography, font-serif, font-family);
-
-//@warn "#{choose-contrast-color(#200379)}";
-.hi {
-
-	//@include render-queue(base-component-test);
-
-
-}
-
-@include block(gbt, utility) {
-
-	//@include render-queue(font-size, sm);
-}
-
-
-//@debug "AVAILABLE STYLES IN DICTIONARY ARE:#{_keys($style-dictionary)}";
