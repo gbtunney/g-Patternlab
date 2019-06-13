@@ -107,7 +107,7 @@ $color-module-render-queue: (
 		)
 	)
 );
-x
+
 $no-selectors: (
 	selector: false,
 	suffix:false,
@@ -127,45 +127,3 @@ $patternlab: batch-add-to-style-dictionary($base-render-objects);
 
 ///multilevel "inheritance"
 $patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($secondary-objects), parent));
-
-
-
-
-//$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($generator-render-objects), parent));
-
-$test: init-typography-module();
-
-//TODO: move ths
-
-/*****************************************/
-/*********EXAMPLE GENERTE QUEUE***********/
-/*
-.testing {
-	@include render-queue(get-collection($example-component-render2));
-	@include render-queue(get-collection(base-padding base-margin $example-functional-render-queue, md lg false));
-}
-
-%button-static {
-	border-radius: 20px;
-}
-
-$the-placeholder: button-static;
-@include block(divider, component) {
-	@each $key in $scheme-list {
-		@include modifier($key) {
-			///	@include c-divider($key);
-		}
-	}
-}
-///sexample of how to extend a single collection item
-$valuetest: extend-collection-item(vue-generator-margin, render props,(margin-top margin-bottom) ); //map-deep-set( get-collection-item(vue-generator-margin), render props,  (margin-top margin-bottom) );
-
-@debug $valuetest;
-.rendertest{
-	@include output-css-declarations($valuetest...);
-}
-
-*/
-
-
-
