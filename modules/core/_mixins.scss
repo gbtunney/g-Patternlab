@@ -80,7 +80,8 @@
 								@include _declare($my-map);
 							}
 						} @else {
-							@include _rules($my-map);
+							//@debug $render-data-map;
+							@include _rules($render-data-map);
 						}
 					}
 				}

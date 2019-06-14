@@ -4,3 +4,98 @@ $default-font-size-variant: base!default;
 
 $default-typography-key: typography!default;
 $default-typography-variant: font-serif!default;
+
+$default-typography-map:(
+	(
+		key: default-typography,
+		selector: false,
+		suffix: false, //if it is to be generated, use a class suffix before,
+		render:(
+			module:size, //dont know??
+			filter: include,
+			props: (
+				font-family,
+				text-transform,
+				text-decoration,
+				font-style,
+				font-weight,
+				line-height
+			),
+		),
+		variants:(
+			transform: false,
+			//DEFAULT PROPERTIES.
+			options: (
+				size-scale: type,
+				text-transform: none,
+				text-decoration: none,
+				font-weight: normal,
+				font-style: normal,
+				line-height:1.4
+			),
+			units: (
+				default:(
+					font-family: monospace
+				),
+				default-san-serif: (
+					font-family: "Helvetica, Arial, Sans-Serif",
+					title: 'Default San Serif'
+				),
+				default-serif:(
+					font-family: "Times New Roman",
+					title: 'Default Serif'
+				),
+				default-italic: (
+					font-family: "Times New Roman",
+					title: 'Default Italic Serif',
+					font-style: italic
+				),
+				font-reset: (
+					font-family: inherit,
+					letter-spacing:inherit,
+					size-scale: inherit,
+					text-transform: inherit,
+					text-decoration: inherit,
+					font-weight: inherit,
+					font-style: inherit,
+					line-height: inherit,
+					title: 'Reset all properties to inherit'
+				),
+			),
+		),
+	),
+	(
+		key: default-font-scale,
+		selector: false,
+		suffix: false, //if it is to be generated, use a class suffix before,
+		description: "Demo: modularscale size operation.",
+		render:(
+			module:size, //dont know??
+			filter: assign,
+			props: (font-size),
+		),
+		variants:(
+			transform: ms,
+			options: (
+				base:16px,
+				ratio:1.2
+			), ///option is the thread is for modular scale
+			units: (
+				xxs: -2,
+				xs: -1,
+				sm: -1,
+				base:0,
+				md: 1,
+				lg: 2,
+				3:3,
+				4:4,
+				5:5,
+				6:6,
+				headline:8,
+				xl: 4,
+				xxl: 7,
+				xxxl: 5
+			)
+		)
+	)
+);
