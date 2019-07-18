@@ -10,6 +10,10 @@
   },
   "author": "Gillian Tunney",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gbtunney/g-Patternlab.git"
+  },
   "dependencies": {
     "breakpoint-range": "^1.0.2",
     "chroma-sass": "^1.2.6",
