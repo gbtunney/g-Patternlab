@@ -1,0 +1,22 @@
+{
+  "name": "g-patternlab",
+  "version": "1.0.0",
+  "description": "my personal color scheme manager, utility modules and style generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "styles": "node-sass  -r --watch -rw examples.scss examples.css",
+    "generator-test": "node-sass  -r --watch -rw generator-examples.scss generator-examples.css"
+  },
+  "author": "Gillian Tunney",
+  "license": "ISC",
+  "dependencies": {
+    "breakpoint-range": "^1.0.2",
+    "chroma-sass": "^1.2.6",
+    "modularscale-sass": "^3.0.8",
+    "node-sass": "^4.12.0",
+    "sass-bem-constructor": "^1.1.0",
+    "sassdash": "^0.9.0",
+    "sassytester": "^1.1.0"
+  }
+}

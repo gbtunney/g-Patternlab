@@ -1,0 +1,16 @@
+@import "stylesheets/base";
+@import "stylesheets/specific-project-variables";
+@include init-cm($baseColors,$schemes);
+
+///ADD COLORS
+//add something to dictionary
+$patternlab: batch-add-to-style-dictionary($base-render-color-objs);
+
+///ADD SIZING VALUES
+$patternlab: batch-add-to-style-dictionary($base-render-objects);
+
+///multilevel "inheritance"
+$patternlab: batch-add-to-style-dictionary(clean-collection(get-collection($secondary-objects), parent));
+
+$GENERATOR_ON:true;
+@import "stylesheets/generator";

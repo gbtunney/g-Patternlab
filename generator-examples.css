@@ -1,0 +1,674 @@
+/* EXAMPLE USAGE! */
+[class*=featured-product] {
+  outline: 2px solid green; }
+  [class*=featured-product]:before {
+    content: attr(class);
+    background: white;
+    height: 40px;
+    width: 40px;
+    color: red; }
+
+/**
+ * Calculate the luminance for a color.
+ * See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
+ */
+/**
+ * Calculate the contrast ratio between two colors.
+ * See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
+ */
+/**
+ * Determine whether to use dark or light text on top of given color.
+ * Returns black for dark text and white for light text.
+ */
+/*
+Settings
+
+'absolute center fixed': false (fixed position item)
+'absolute center extend': false
+'absolute center vertical midpoint': 50%
+'absolute center fixed horizontal': 0%
+'absolute center fixed horizontal midpoint': 50% (horizontal midpoint for fixed position item)
+*/
+/*
+exAMPLE usage:
+
+@include pl-colorscheme(dark-accent-secondary,(
+    background: true,
+    foreground: true,
+    accent:true,
+    border: true,
+    fill:true
+) )*/
+/*units: (
+xs: .25,
+sm: .5,
+md: 1 1 ,
+md2: .5 1 ,
+lg: 1.5,
+xl: 2
+)*/
+.g-scheme--light {
+  background-color: white;
+  color: #555;
+  border-color: #555; }
+  .g-scheme--light path, .g-scheme--light rect, .g-scheme--light g, .g-scheme--light circle {
+    fill: #555; }
+
+.g-scheme--light-alt {
+  background-color: white;
+  color: #555;
+  border-color: #555; }
+  .g-scheme--light-alt path, .g-scheme--light-alt rect, .g-scheme--light-alt g, .g-scheme--light-alt circle {
+    fill: #555; }
+
+.g-scheme--accent-default {
+  background-color: white;
+  color: #8d8f92;
+  border-color: #8d8f92; }
+  .g-scheme--accent-default path, .g-scheme--accent-default rect, .g-scheme--accent-default g, .g-scheme--accent-default circle {
+    fill: #8d8f92; }
+
+.g-scheme--accent-primary {
+  background-color: white;
+  color: #afd2c2;
+  border-color: #afd2c2; }
+  .g-scheme--accent-primary path, .g-scheme--accent-primary rect, .g-scheme--accent-primary g, .g-scheme--accent-primary circle {
+    fill: #afd2c2; }
+
+.g-scheme--accent-secondary {
+  background-color: white;
+  color: #eec517;
+  border-color: #eec517; }
+  .g-scheme--accent-secondary path, .g-scheme--accent-secondary rect, .g-scheme--accent-secondary g, .g-scheme--accent-secondary circle {
+    fill: #eec517; }
+
+.g-scheme--dark {
+  background-color: #555;
+  color: white;
+  border-color: white; }
+  .g-scheme--dark path, .g-scheme--dark rect, .g-scheme--dark g, .g-scheme--dark circle {
+    fill: white; }
+
+.g-scheme--dark-accent-default {
+  background-color: #8d8f92;
+  color: white;
+  border-color: white; }
+  .g-scheme--dark-accent-default path, .g-scheme--dark-accent-default rect, .g-scheme--dark-accent-default g, .g-scheme--dark-accent-default circle {
+    fill: white; }
+
+.g-scheme--dark-accent-secondary {
+  background-color: #eec517;
+  color: white;
+  border-color: white; }
+  .g-scheme--dark-accent-secondary path, .g-scheme--dark-accent-secondary rect, .g-scheme--dark-accent-secondary g, .g-scheme--dark-accent-secondary circle {
+    fill: white; }
+
+.g-scheme--dark-accent-primary {
+  background-color: #afd2c2;
+  color: white;
+  border-color: white; }
+  .g-scheme--dark-accent-primary path, .g-scheme--dark-accent-primary rect, .g-scheme--dark-accent-primary g, .g-scheme--dark-accent-primary circle {
+    fill: white; }
+
+.g-scheme--alt-light {
+  background-color: #555;
+  color: white;
+  border-color: white; }
+  .g-scheme--alt-light path, .g-scheme--alt-light rect, .g-scheme--alt-light g, .g-scheme--alt-light circle {
+    fill: white; }
+
+.g-scheme--functional {
+  background-color: red;
+  color: blue;
+  border-color: purple; }
+  .g-scheme--functional path, .g-scheme--functional rect, .g-scheme--functional g, .g-scheme--functional circle {
+    fill: blue; }
+
+.g-scheme--invert-functional {
+  background-color: #cc6329;
+  color: purple;
+  border-color: purple; }
+  .g-scheme--invert-functional path, .g-scheme--invert-functional rect, .g-scheme--invert-functional g, .g-scheme--invert-functional circle {
+    fill: purple; }
+
+.g-size-abs--xxs {
+  width: 11.11111px;
+  height: 11.11111px; }
+
+.g-size-abs--xs {
+  width: 13.33333px;
+  height: 13.33333px; }
+
+.g-size-abs--sm {
+  width: 13.33333px;
+  height: 13.33333px; }
+
+.g-size-abs--base {
+  width: 16px;
+  height: 16px; }
+
+.g-size-abs--md {
+  width: 19.2px;
+  height: 19.2px; }
+
+.g-size-abs--lg {
+  width: 23.04px;
+  height: 23.04px; }
+
+.g-size-abs--3 {
+  width: 27.648px;
+  height: 27.648px; }
+
+.g-size-abs--4 {
+  width: 33.1776px;
+  height: 33.1776px; }
+
+.g-size-abs--5 {
+  width: 39.81312px;
+  height: 39.81312px; }
+
+.g-size-abs--6 {
+  width: 47.77574px;
+  height: 47.77574px; }
+
+.g-size-abs--headline {
+  width: 68.79707px;
+  height: 68.79707px; }
+
+.g-size-abs--xl {
+  width: 33.1776px;
+  height: 33.1776px; }
+
+.g-size-abs--xxl {
+  width: 57.33089px;
+  height: 57.33089px; }
+
+.g-size-abs--xxxl {
+  width: 39.81312px;
+  height: 39.81312px; }
+
+.g-size-rel--sm {
+  width: 0.75em;
+  height: 0.75em; }
+
+.g-size-rel--base {
+  width: 1em;
+  height: 1em; }
+
+.g-size-rel--md {
+  width: 1.5em;
+  height: 1.5em; }
+
+.g-size-rel--lg {
+  width: 2em;
+  height: 2em; }
+
+.g-size-rel--xl {
+  width: 3em;
+  height: 3em; }
+
+.u-color-swatches--white {
+  background-color: #fff;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--black {
+  background-color: #000;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--dark-gray {
+  background-color: #585858;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--gum-leaf {
+  background-color: #afd2c2;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--silver-chalice {
+  background-color: #adadad;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--saffron {
+  background-color: #edc433;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--light-gray {
+  background-color: #d2d3d2;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--oslo-gray {
+  background-color: #8d8f92;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--brown-bramble {
+  background-color: #562d19;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--kournikova {
+  background-color: #f5cd51;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--copper {
+  background-color: #b97131;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--kilamanjaro {
+  background-color: #3e3030;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--slugger {
+  background-color: #432e2e;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--silverleaf {
+  background-color: #71b799;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--fuscous-gray {
+  background-color: #555;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--lightning-yellow {
+  background-color: #eec517;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--tana {
+  background-color: #bdba9c;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--khaki {
+  background-color: #f0e68c;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--west-coast {
+  background-color: #64551f;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--highball {
+  background-color: #90813b;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--sandstone {
+  background-color: #7b6d5c;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--schooner {
+  background-color: #8b8378;
+  color: black;
+  border-color: black; }
+
+.u-color-swatches--spice {
+  background-color: #66543e;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--madras {
+  background-color: #4c3b25;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--onion {
+  background-color: #33250d;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--woodrush {
+  background-color: #332915;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--jacko-bean {
+  background-color: #2e1c08;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--acadia {
+  background-color: #1e1205;
+  color: white;
+  border-color: white; }
+
+.u-color-swatches--crowshead {
+  background-color: #1a130a;
+  color: white;
+  border-color: white; }
+
+.g-type--default {
+  font-family: monospace;
+  letter-spacing: 0px;
+  word-spacing: -1px;
+  text-transform: none;
+  text-decoration: none;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.4; }
+
+.g-type--font-san-serif {
+  font-family: "cronos-pro-display";
+  letter-spacing: 0px;
+  word-spacing: -1px;
+  text-transform: none;
+  text-decoration: none;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.4; }
+
+.g-type--font-serif {
+  font-family: "adobe-garamond-pro";
+  letter-spacing: 0px;
+  word-spacing: -1px;
+  text-transform: none;
+  text-decoration: none;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.4; }
+
+.g-type--font-serif-italic {
+  font-family: "adobe-garamond-pro";
+  letter-spacing: 0px;
+  word-spacing: -1px;
+  text-transform: none;
+  text-decoration: none;
+  font-style: italic;
+  font-weight: normal;
+  line-height: 1.4; }
+
+.g-type--font-serif-bold {
+  font-family: "cormorant-garamond";
+  letter-spacing: 0px;
+  word-spacing: -1px;
+  text-transform: none;
+  text-decoration: none;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.4; }
+
+.g-type--font-small-caps {
+  font-family: "cronos-pro-display";
+  letter-spacing: 1px;
+  word-spacing: -1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.4; }
+
+.g-type--font-test {
+  font-family: "adobe-garamond-pro";
+  letter-spacing: 0px;
+  word-spacing: -1px;
+  text-transform: "testing";
+  text-decoration: none;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.4; }
+
+.g-type--font-reset {
+  font-family: inherit;
+  letter-spacing: inherit;
+  word-spacing: -1px;
+  text-transform: inherit;
+  text-decoration: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit; }
+
+.g-font--xxs {
+  font-size: 11.11111px; }
+
+.g-font--xs {
+  font-size: 13.33333px; }
+
+.g-font--sm {
+  font-size: 13.33333px; }
+
+.g-font--base {
+  font-size: 16px; }
+
+.g-font--md {
+  font-size: 19.2px; }
+
+.g-font--lg {
+  font-size: 23.04px; }
+
+.g-font--3 {
+  font-size: 27.648px; }
+
+.g-font--4 {
+  font-size: 33.1776px; }
+
+.g-font--5 {
+  font-size: 39.81312px; }
+
+.g-font--6 {
+  font-size: 47.77574px; }
+
+.g-font--headline {
+  font-size: 68.79707px; }
+
+.g-font--xl {
+  font-size: 33.1776px; }
+
+.g-font--xxl {
+  font-size: 57.33089px; }
+
+.g-font--xxxl {
+  font-size: 39.81312px; }
+
+.g-padding--xxs {
+  padding: 0.15em; }
+
+.g-padding--xs {
+  padding: 0.2em; }
+
+.g-padding--sm {
+  padding: 0.25em; }
+
+.g-padding--md {
+  padding: 0.5em; }
+
+.g-padding--lg {
+  padding: 1em; }
+
+.g-padding--xl {
+  padding: 1.5em; }
+
+.g-margin--xxs {
+  margin: 0.15em; }
+
+.g-margin--xs {
+  margin: 0.2em; }
+
+.g-margin--sm {
+  margin: 0.25em; }
+
+.g-margin--md {
+  margin: 0.5em; }
+
+.g-margin--lg {
+  margin: 1em; }
+
+.g-margin--xl {
+  margin: 1.5em; }
+
+.--scheme-hover.g-scheme--light {
+  background-color: white;
+  color: #555;
+  border-color: #555; }
+  .--scheme-hover.g-scheme--light path, .--scheme-hover.g-scheme--light rect, .--scheme-hover.g-scheme--light g, .--scheme-hover.g-scheme--light circle {
+    fill: #555; }
+
+.--scheme-hover.g-scheme--light:hover {
+  background-color: white;
+  color: dimgray; }
+
+.--scheme-hover.g-scheme--light-alt {
+  background-color: white;
+  color: #555;
+  border-color: #555; }
+  .--scheme-hover.g-scheme--light-alt path, .--scheme-hover.g-scheme--light-alt rect, .--scheme-hover.g-scheme--light-alt g, .--scheme-hover.g-scheme--light-alt circle {
+    fill: #555; }
+
+.--scheme-hover.g-scheme--light-alt:hover {
+  background-color: white;
+  color: dimgray; }
+
+.--scheme-hover.g-scheme--accent-default {
+  background-color: white;
+  color: #8d8f92;
+  border-color: #8d8f92; }
+  .--scheme-hover.g-scheme--accent-default path, .--scheme-hover.g-scheme--accent-default rect, .--scheme-hover.g-scheme--accent-default g, .--scheme-hover.g-scheme--accent-default circle {
+    fill: #8d8f92; }
+
+.--scheme-hover.g-scheme--accent-default:hover {
+  background-color: white;
+  color: #a2a3a6; }
+
+.--scheme-hover.g-scheme--accent-primary {
+  background-color: white;
+  color: #afd2c2;
+  border-color: #afd2c2; }
+  .--scheme-hover.g-scheme--accent-primary path, .--scheme-hover.g-scheme--accent-primary rect, .--scheme-hover.g-scheme--accent-primary g, .--scheme-hover.g-scheme--accent-primary circle {
+    fill: #afd2c2; }
+
+.--scheme-hover.g-scheme--accent-primary:hover {
+  background-color: white;
+  color: #c9e1d6; }
+
+.--scheme-hover.g-scheme--accent-secondary {
+  background-color: white;
+  color: #eec517;
+  border-color: #eec517; }
+  .--scheme-hover.g-scheme--accent-secondary path, .--scheme-hover.g-scheme--accent-secondary rect, .--scheme-hover.g-scheme--accent-secondary g, .--scheme-hover.g-scheme--accent-secondary circle {
+    fill: #eec517; }
+
+.--scheme-hover.g-scheme--accent-secondary:hover {
+  background-color: white;
+  color: #f1cf3d; }
+
+.--scheme-hover.g-scheme--dark {
+  background-color: #555;
+  color: white;
+  border-color: white; }
+  .--scheme-hover.g-scheme--dark path, .--scheme-hover.g-scheme--dark rect, .--scheme-hover.g-scheme--dark g, .--scheme-hover.g-scheme--dark circle {
+    fill: white; }
+
+.--scheme-hover.g-scheme--dark:hover {
+  background-color: dimgray;
+  color: white; }
+
+.--scheme-hover.g-scheme--dark-accent-default {
+  background-color: #8d8f92;
+  color: white;
+  border-color: white; }
+  .--scheme-hover.g-scheme--dark-accent-default path, .--scheme-hover.g-scheme--dark-accent-default rect, .--scheme-hover.g-scheme--dark-accent-default g, .--scheme-hover.g-scheme--dark-accent-default circle {
+    fill: white; }
+
+.--scheme-hover.g-scheme--dark-accent-default:hover {
+  background-color: #a2a3a6;
+  color: white; }
+
+.--scheme-hover.g-scheme--dark-accent-secondary {
+  background-color: #eec517;
+  color: white;
+  border-color: white; }
+  .--scheme-hover.g-scheme--dark-accent-secondary path, .--scheme-hover.g-scheme--dark-accent-secondary rect, .--scheme-hover.g-scheme--dark-accent-secondary g, .--scheme-hover.g-scheme--dark-accent-secondary circle {
+    fill: white; }
+
+.--scheme-hover.g-scheme--dark-accent-secondary:hover {
+  background-color: #f1cf3d;
+  color: white; }
+
+.--scheme-hover.g-scheme--dark-accent-primary {
+  background-color: #afd2c2;
+  color: white;
+  border-color: white; }
+  .--scheme-hover.g-scheme--dark-accent-primary path, .--scheme-hover.g-scheme--dark-accent-primary rect, .--scheme-hover.g-scheme--dark-accent-primary g, .--scheme-hover.g-scheme--dark-accent-primary circle {
+    fill: white; }
+
+.--scheme-hover.g-scheme--dark-accent-primary:hover {
+  background-color: #c9e1d6;
+  color: white; }
+
+.--scheme-hover.g-scheme--alt-light {
+  background-color: #555;
+  color: white;
+  border-color: white; }
+  .--scheme-hover.g-scheme--alt-light path, .--scheme-hover.g-scheme--alt-light rect, .--scheme-hover.g-scheme--alt-light g, .--scheme-hover.g-scheme--alt-light circle {
+    fill: white; }
+
+.--scheme-hover.g-scheme--alt-light:hover {
+  background-color: dimgray;
+  color: white; }
+
+.--scheme-hover.g-scheme--functional {
+  background-color: red;
+  color: blue;
+  border-color: purple; }
+  .--scheme-hover.g-scheme--functional path, .--scheme-hover.g-scheme--functional rect, .--scheme-hover.g-scheme--functional g, .--scheme-hover.g-scheme--functional circle {
+    fill: blue; }
+
+.--scheme-hover.g-scheme--functional:hover {
+  background-color: #ff2929;
+  color: #2929ff; }
+
+.--scheme-hover.g-scheme--invert-functional {
+  background-color: #cc6329;
+  color: purple;
+  border-color: purple; }
+  .--scheme-hover.g-scheme--invert-functional path, .--scheme-hover.g-scheme--invert-functional rect, .--scheme-hover.g-scheme--invert-functional g, .--scheme-hover.g-scheme--invert-functional circle {
+    fill: purple; }
+
+.--scheme-hover.g-scheme--invert-functional:hover {
+  background-color: #d97944;
+  color: #a900a9; }
+
+/*
+@if ($GENERATE-QUEUE) {
+
+	!***------COLOR SCHEMES and SWATCHES-----****!
+	@include render-queue(get-collection(generator-color-schemes generator-color-swatches));
+
+	!***------TYPEOGRAPHY-----****!
+	@include render-queue(get-collection(generator-typography));
+
+	!***------FONT SIZES-----****!
+	@include render-queue(get-collection(generator-font-size));
+
+	!***-----PADDING-----****!
+	@include render-queue(get-collection(generator-padding));
+
+	!***-----MARGIN-----****!
+	@include render-queue(get-collection(generator-margin));
+
+	.example {
+		//TODO: BUG WITH OUTPUT of 2 items with the same unit overwriten.
+		!*********EXAMPLE COMPONENT***********!
+		$new-list: get-collection((base-spacing, color-schemes, font-size), $no-selectors);
+		$new-list: overwrite-collections($new-list, (sm, dark, sm), variant-key);
+		@include render-queue($new-list);
+	}
+	.example-button {
+		@include render-queue(get-collection($example-component-render));
+	}
+}
+*/
