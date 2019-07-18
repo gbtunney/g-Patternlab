@@ -7,9 +7,8 @@
 @import "variables";
 @import "mixins";
 
-@if ($GENERATE-QUEUE) {
+@if ($GENERATOR_ON) {
 	@include init-generator;
-
 }@else{
 	@debug "QUEUE NOT BEING GENERATED";
 }

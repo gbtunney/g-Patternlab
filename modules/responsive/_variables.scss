@@ -1,7 +1,0 @@
-//                         0        480           768          992         1200
-//                          └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘ └────┬────
-// Slice numbers:                1           2           3           4           5
-
-$slicer-breakpoints: 0 480px 768px 992px 1200px 1500px ;
-
-$slicer-breakpoint-names: xs sm md lg xl; ///!default causes error for some reason?
