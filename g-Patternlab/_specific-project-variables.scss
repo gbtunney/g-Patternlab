@@ -1,0 +1,542 @@
+$TEST-DEPENDANCIES:false;
+
+//$chroma-active-scheme:light;
+$baseColors: (
+    white: #fff,
+    black: #000,
+    dark-gray: #585858,
+    gum-leaf: #afd2c2,
+    silver-chalice: #adadad,
+    saffron: #edc433,
+    light-gray: #d2d3d2,
+    oslo-gray: #8d8f92,
+    brown-bramble: #562d19,
+    kournikova: #f5cd51,
+    copper: #b97131,
+    kilamanjaro: #3e3030,
+    slugger: #432e2e,
+    silverleaf: #71b799,
+    fuscous-gray: #555,
+    lightning-yellow: #eec517,
+    tana: #bdba9c,
+    khaki: #f0e68c,
+    west-coast: #64551f,
+    highball: #90813b,
+    sandstone: #7b6d5c,
+    schooner: #8b8378,
+    spice: #66543e,
+    madras: #4c3b25,
+    onion: #33250d,
+    woodrush: #332915,
+    jacko-bean: #2e1c08,
+    acadia: #1e1205,
+    crowshead: #1a130a
+);
+
+$schemes: (
+    light: (
+        key: light,
+        description: 'The main light on dark theme.',
+        parent: false,
+        colors:(
+            foreground: fuscous-gray,
+            background: white,
+            accent: gum-leaf,
+            border: fuscous_gray,
+            link: gum-leaf,
+            placeholder:rgba(#555,.9)
+        )
+    ),
+    light-alt: (
+        key: light-alt,
+        description: 'The main light on dark theme, extended',
+        parent: light,
+        colors:(
+            accent: lightning-yellow,
+            link: lightning-yellow
+        )
+    ),
+    accent-default:(
+        key: accent-default,
+        description: 'light grey foreground',
+        parent: light,
+        colors:(
+            foreground: oslo-gray,
+            accent: red,
+            border: oslo-gray
+        )
+    ),
+    accent-primary: (
+        key: accent-primary,
+        description: 'light mint foreground',
+        parent: light,
+        colors:(
+            foreground: gum-leaf,
+            border: gum-leaf
+        )
+    ),
+    accent-secondary: (
+        key: accent-secondary,
+        description: 'light yellow foreground',
+        parent: light,
+        colors:(
+            foreground: lightning-yellow,
+            border: lightning-yellow
+        )
+    ),
+    dark:  (
+        key: dark,
+        description: 'inverted',
+        parent: light,
+        transform:inverted,
+        colors:(
+            placeholder:rgba(white,.8)
+        )
+    ),
+    dark-accent-default:(
+        key: dark-accent-default,
+        description: 'light grey background',
+        parent: accent-default,
+        transform:inverted,
+        colors:()
+    ),
+    dark-accent-secondary: (
+        key: dark-accent-secondary,
+        description: 'inverted',
+        parent: accent-secondary,
+        transform:inverted,
+        colors:()
+    ),
+    dark-accent-primary : (
+        key: dark-accent-primary,
+        description: 'inverted',
+        parent: accent-primary,
+        transform:inverted,
+        colors:()
+    ),
+    alt-light:(
+        key: alt-light,
+        description: 'DARK THEME!!',
+        parent: accent-secondary,
+        transform:inverted,
+
+        colors: (
+            foreground: fuscous_gray,
+            background: white,
+            accent: lightning-yellow,
+            border: lightning-yellow,
+            link:lightning-yellow,
+            random:white,
+        )
+    ),
+    functional: (
+        key: functional,
+        description: 'Colors used by functional parts of the design.',
+        parent: false,
+        colors:(
+            foreground: blue,
+            background: red,
+            accent: orange,
+            border: purple,
+            link: orange,
+            link-focus:  link,
+            placeholder:blue
+        )
+    ),
+    invert-functional: (
+        key: invert-functional,
+        description: 'Inverted Colors used by functional parts of the design.',
+        parent: 'functional',
+        transform:(
+            foreground: background,
+            background: foreground
+        ),
+        colors:(
+            background: purple,
+            new-linl: purple
+        )
+    )
+);
+
+$scheme-list: _keys($schemes);
+
+$base-render-color-objs:((
+    key: color-schemes,
+    selector: false,
+    description: "color object",
+    suffix: false, //if it is to be generated, use a class suffix before,
+    render:(
+        module:size, //dont know??
+        filter: assign-map,
+        props: (
+            background: background-color ,
+            accent: ( prop-to-write: color,selector: 'h1, h2, h3, h4, h5, h6,a ') ,
+            foreground: ( prop-to-write: color),
+            border: border-color,
+            link: color,
+            fill: ( prop-to-write: fill,selector: 'path,rect, g,circle'),
+            hover-background: ( prop-to-write: background-color,selector: ':hover', at-root:true) ,
+            hover-foreground: ( prop-to-write: color,selector: ':hover', at-root:true) ,
+            hover-fill: ( prop-to-write: fill,selector: ':hover', at-root:true)
+        ),
+    ), //  background:( prop-to-write: background-color, at-root:true , selector: '--hover')  ,
+    variants:(
+        transform: color-test,
+        options: (
+            obj: (
+                background: true,
+                foreground: true,
+                accent:false,
+                border: true,
+                fill:true
+            )
+        ), ///option is the thread is for modular scale
+        units: (
+            $scheme-list
+        )
+    )
+),
+(
+    key: color-swatches,
+    selector: false,
+    description: "color swatches",
+    suffix: false, //if it is to be generated, use a class suffix before,
+    render:(
+        module:size, //dont know??
+        filter: assign-map,
+        props: (
+            background:background-color,
+            foreground: color,
+            border: border-color,
+        ),
+    ),
+    variants:(
+        transform: get-color-contrast,
+        options: (
+            func:choose-contrast-color
+        ),
+        units: (
+            $baseColors
+        )
+    )
+)
+);
+
+$base-render-objects:(
+    (
+        key: typography,
+        selector: false,
+        suffix: false, //if it is to be generated, use a class suffix before,
+        render:(
+            module:size, //dont know??
+            filter: include,
+            props: (
+                font-family,
+                letter-spacing,
+                word-spacing,
+                text-transform,
+                text-decoration,
+                font-style,
+                font-weight,
+                line-height
+            ),
+        ),
+        variants:(
+            transform: false,
+            options: (
+                size-scale: type,
+                text-transform: none,
+                text-decoration: none,
+                letter-spacing: 0px,
+                word-spacing: -1px,
+                font-weight: normal,
+                font-style: normal,
+                line-height:1.4
+            ),
+            units: (
+                default:(
+                    font-family: monospace
+                ),
+                font-san-serif: (
+                    font-family: "cronos-pro-display",
+                    letter-spacing:0px,
+                    title: 'Primary: Mr Eaves Sans'
+                ),
+                font-serif:(
+                    font-family: "adobe-garamond-pro",
+                    title: 'Secondary, Headers : Mrs Eaves'
+                ),
+                font-serif-italic: (
+                    font-family: "adobe-garamond-pro",
+                    title: 'italic serif',
+                    font-style: italic
+                ),
+                font-serif-bold:(
+                    font-family: "cormorant-garamond",
+                    title: "'bold serif'",
+                    font-weight: 700
+                ),
+                font-small-caps:(
+                    font-family: "cronos-pro-display",
+                    text-transform: uppercase,
+                    letter-spacing: 1px,
+
+                    title: 'Accent, Small Caps : Mrs Eaves Roman Small Caps'
+                ),
+                font-test:(
+                    font-family: "adobe-garamond-pro",
+                    text-transform: "testing",
+                    title: "testing"
+                ),
+                font-reset: (
+                    font-family: inherit,
+                    letter-spacing:inherit,
+                    size-scale: inherit,
+                    text-transform: inherit,
+                    text-decoration: inherit,
+                    font-weight: inherit,
+                    font-style: inherit,
+                    line-height: inherit,
+                    title: 'Primary: Mr Eaves Sans'
+                ),
+            ),
+        ),
+    ),
+    (
+        key: font-size,
+        selector: false,
+        suffix: false, //if it is to be generated, use a class suffix before,
+        description: "Demo: modularscale size operation.",
+        render:(
+            module:size, //dont know??
+            filter: assign,
+            props: (font-size),
+        ),
+        variants:(
+            transform: ms,
+            options: (
+                base:16px,
+                ratio:1.2
+            ), ///option is the thread is for modular scale
+            units: (
+                xxs: -2,
+                xs: -1,
+                sm: -1,
+                base:0,
+                md: 1,
+                lg: 2,
+                3:3,
+                4:4,
+                5:5,
+                6:6,
+                headline:8,
+                xl: 4,
+                xxl: 7,
+                xxxl: 5
+            )
+        )
+    ),
+    (
+        key: rhythm-units,
+        selector: false,
+        suffix: false, //if it is to be generated, use a class suffix before,
+        description: "DEMO Rhythm function",
+        render:(
+            module:size, //dont know??
+            filter: assign,
+            props: (padding),
+        ),
+        variants:(
+            transform: rhythm,
+            var: lines,
+            options:
+            (
+                font-size: 26px,
+                offset: 2
+                ),
+            units: (
+                xxs: .25,
+                xs: .5,
+                sm: .75 ,
+                base:1,
+                md: 1,
+                lg: 2,
+                xl: 3,
+                xxl: 4,
+                xxxl: 5
+            )
+        )
+    ),
+    (
+        key: ratio-size-demo,
+        selector:ratio-size-demo,
+        description: "Demo: ratio size operation.",
+        suffix: true, //if it is to be generated, use a class suffix before,
+        render:(
+            module:size, //dont know??
+            filter: assign,
+            props: (font-size),
+        ),
+        variants:(
+            transform: ratio-size,
+            options: (
+                base:36px
+            ), ///option is the thread is for modular scale
+            units: (
+                xxs: -2,
+                xs: -1,
+                sm: 2,
+                md: 1,
+                lg: 2,
+                xl: 3,
+                xxl: 4,
+                xxxl: 5
+            )
+        )
+    ),
+    (
+    key: base-spacing,
+    selector: false,
+    description: "Ration Size Base SPACING Values",
+    suffix: false, //if it is to be generated, use a class suffix before,
+    render:(
+        module:size, //dont know??
+        filter: assign,
+        props: (padding),  //maybe needs to go??
+    ),
+    variants:(
+        transform: ratio-size,
+        options: (
+            base: 1em,
+        ), ///option is the thread is for modular scale
+        units: (
+            xxs: .15,
+            xs: .20,
+            sm: .25,
+            md: .5 ,
+            lg: 1,
+            xl: 1.5
+        )
+    )
+),
+    (
+        description: "Demo - static size values.",
+        render:(
+            module:size, //dont know??
+            filter: assign,
+            props: (font-size),
+        ),
+        suffix: true, //if it is to be generated, use a class suffix before,
+        variants:(
+            transform: no-transformation,
+            options: (
+
+            ), ///option is the thread is for modular scale
+            units: (
+                sm: 20px,
+                md:  lighten red 5%,
+                lg: 30px,
+            )
+        ),
+        key: static-size-demo,
+        selector:static-size-demo
+    ),
+(
+    key: relative-size,
+    description: "Relative Icon Sizes for inline - based on current font settings. ",
+    render:(
+        module:size, //dont know??
+        filter: assign,
+        props: (width,height),
+    ),
+    suffix: false, //if it is to be generated, use a class suffix before,
+    variants:(
+        transform: no-transformation,
+        options: (
+
+        ), ///option is the thread is for modular scale
+        units: (
+            sm: .75em,
+            base: 1em,
+            md: 1.5em,
+            lg: 2em,
+            xl: 3em
+        )
+    ),
+    selector:false
+),
+    (
+        key: icon-new-sizes,
+        selector: false,
+        description: "Ration Size Base SPACING Values",
+        suffix: false, //if it is to be generated, use a class suffix before,
+        render:(
+            module:size, //dont know??
+            filter: assign,
+            props: (width,height),  //maybe needs to go??
+        ),
+        variants:(
+            transform: no-transformation,
+            options: (
+
+            ), ///option is the thread is for modular scale
+            units: (
+                sm: 10px,
+                base: 16px,
+                md:  25px,
+                lg: 50px,
+                xl:100px
+            )
+        )
+    )
+);
+
+/*units: (
+xs: .25,
+sm: .5,
+md: 1 1 ,
+md2: .5 1 ,
+lg: 1.5,
+xl: 2
+)*/
+
+//things with a parent.
+$secondary-objects:(
+    (
+        key: base-margin,
+        parent: base-spacing,
+        render:(
+            props: (margin)
+        )
+    ),
+    (
+        key: rhythm-margin,
+        parent: base-spacing,
+        render:(
+            props: (margin-top,margin-bottom)
+        )
+    ),
+    (
+        key: margin-sides,
+        parent: base-spacing,
+        render:(
+            props: (margin-left,margin-right)
+        )
+    ),
+    (
+        key: base-padding,
+        parent: base-spacing,
+        description: "Base Padding Values",
+    ),
+    (
+        key: absolute-size,
+        parent: font-size,
+        description: "height and width based on font sizes.",
+        render:(
+            props: (width,height),
+        ),
+    )
+);
+
+$bem-throw-errors:false;
+$include-helper-classes:true!default;
